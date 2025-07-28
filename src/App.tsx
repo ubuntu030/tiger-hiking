@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import HomePage from './pages/HomePage';
+import AllActivitiesPage from './pages/AllActivitiesPage';
+import ActivityDetailPage from './pages/ActivityDetailPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
+import AboutUsPage from './pages/AboutUsPage';
+import FAQPage from './pages/FAQPage';
+import ContactUsPage from './pages/ContactUsPage';
+import PhotoGalleryPage from './pages/PhotoGalleryPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Header from './components/layout/Header';
+import PageContainer from './components/layout/PageContainer';
+import { theme } from './constants/theme';
+import Footer from './components/layout/Footer';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <BrowserRouter>
+      <div className={`${theme.background} font-sans`}>
+        <Header />
+        <PageContainer>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/activities" element={<AllActivitiesPage />} />
+            <Route
+              path="/activities/:activityId"
+              element={<ActivityDetailPage />}
+            />
+            <Route path="/gallery" element={<PhotoGalleryPage />} />
+            <Route path="/announcements" element={<AnnouncementsPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/contact" element={<ContactUsPage />} />
+            {/* 可以加入一個 404 Not Found 頁面 */}
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </PageContainer>
+        <Footer />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
