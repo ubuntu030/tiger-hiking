@@ -8,14 +8,13 @@ const HomePage = () => {
   const recentActivities = [...mockData.activities]
     .sort(
       (a, b) =>
-        parse(b.date, 'yyyy/MM/dd', new Date()).getTime() -
-        parse(a.date, 'yyyy/MM/dd', new Date()).getTime()
+        parse(b.startDate, 'yyyy/MM/dd', new Date()).getTime() -
+        parse(a.startDate, 'yyyy/MM/dd', new Date()).getTime()
     )
-    .slice(0, 5);
+    .slice(0, 6);
 
   return (
     <div>
-      {/* Hero Section */}
       <section className="relative h-[60vh] rounded-xl overflow-hidden flex items-center justify-center text-center text-white bg-stone-700 mb-16">
         <img
           src="https://placehold.co/1200x800/57534e/FFFFFF?text=探索台灣山林之美"
@@ -43,12 +42,7 @@ const HomePage = () => {
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {recentActivities.map((activity) => (
-            <ActivityCard
-              key={activity.id}
-              setPage={() => {}}
-              setSelectedActivity={() => {}}
-              activity={activity}
-            />
+            <ActivityCard key={activity.id} activity={activity} />
           ))}
         </div>
       </section>

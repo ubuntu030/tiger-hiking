@@ -4,7 +4,8 @@ export interface IActivity {
   id: number;
   name: string;
   status: ACTIVITY_STATUS;
-  date: string;
+  startDate: string;
+  endDate: string;
   currentRegistrations: number;
   maxSlots: number;
   priceA: number;

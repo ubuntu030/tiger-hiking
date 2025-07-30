@@ -1,6 +1,6 @@
 import PageTitle from '../components/layout/PageTitle';
 import { mockData } from '../constants/mockData';
-import { theme } from '../constants/theme';
+import theme  from '../constants/theme';
 
 const FAQPage = () => (
   <div>

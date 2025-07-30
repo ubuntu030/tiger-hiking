@@ -1,4 +1,4 @@
-import { theme } from "../../constants/theme";
+import theme from "../../constants/theme";
 
 const PageTitle = ({ title, subtitle }: { title: string; subtitle?: string }) => (
     <div className="text-center mb-12">

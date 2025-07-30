@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { theme } from '../../constants/theme';
+import theme from '../../constants/theme';
 
 interface ButtonProps {
   children: React.ReactNode;

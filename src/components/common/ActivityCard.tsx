@@ -1,12 +1,10 @@
 import { Calendar } from 'lucide-react';
-import { theme } from '../../constants/theme';
 import type { IActivity } from '../../types/activity';
 import { Link } from 'react-router-dom';
+import theme from '../../constants/theme';
 
 interface ActivityCardProps {
   activity: IActivity;
-  setPage: (page: string) => void;
-  setSelectedActivity: (activity: ActivityCardProps['activity']) => void;
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
@@ -40,7 +38,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
         </h3>
         <p className={`flex items-center ${theme.textSecondary} mb-4`}>
           <Calendar className="w-5 h-5 mr-2" />
-          {activity.date}
+          {activity.startDate} ~ {activity.endDate}
         </p>
         <p className={`flex-grow ${theme.textSecondary} mb-4 line-clamp-2`}>
           {activity.description}

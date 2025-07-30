@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
-import { theme } from '../constants/theme';
+import theme from '../constants/theme';
 import Button from '../components/common/Button';
 import PageTitle from '../components/layout/PageTitle';
 

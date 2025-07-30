@@ -10,7 +10,7 @@ import PhotoGalleryPage from './pages/PhotoGalleryPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/layout/Header';
 import PageContainer from './components/layout/PageContainer';
-import { theme } from './constants/theme';
+import theme from './constants/theme';
 import Footer from './components/layout/Footer';
 
 function App() {

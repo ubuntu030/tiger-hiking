@@ -1,4 +1,4 @@
-import { theme } from '../../constants/theme';
+import theme from '../../constants/theme';
 
 const Footer = () => (
   <footer className={`${theme.secondary} ${theme.textSecondary}`}>

@@ -1,4 +1,4 @@
-import { theme } from "../../constants/theme";
+import theme from '../../constants/theme';
 
 const PageContainer = ({ children }: { children: React.ReactNode }) => (
   <main className={`${theme.background} ${theme.textPrimary} min-h-screen`}>

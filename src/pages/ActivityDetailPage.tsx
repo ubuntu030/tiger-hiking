@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import Button from '../components/common/Button';
 import PageTitle from '../components/layout/PageTitle';
 import { mockData } from '../constants/mockData';
-import { theme } from '../constants/theme';
+import theme from '../constants/theme';
 
 const ActivityDetailPage = () => {
   const { activityId } = useParams(); // 從 URL 讀取 activityId
@@ -32,7 +32,7 @@ const ActivityDetailPage = () => {
         <div className="lg:col-span-3">
           <h1 className="text-4xl font-bold mb-2">{activity.name}</h1>
           <p className={`text-lg ${theme.textSecondary} mb-6`}>
-            {activity.date}
+            {activity.startDate} ~ {activity.endDate}
           </p>
           <img
             src={activity.image}

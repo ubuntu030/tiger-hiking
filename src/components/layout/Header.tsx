@@ -1,5 +1,5 @@
 import { Mountain } from 'lucide-react';
-import { theme } from '../../constants/theme';
+import theme from '../../constants/theme';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
