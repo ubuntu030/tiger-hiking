@@ -10,6 +10,7 @@ interface InputFieldProps {
   ) => void;
   placeholder?: string;
   rows?: number;
+  error?: boolean;
 }
 
 const InputField = ({
@@ -20,14 +21,19 @@ const InputField = ({
   onChange,
   placeholder,
   rows,
+  error,
 }: InputFieldProps) => {
+  const errorClasses = error
+    ? 'border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.4)]'
+    : `${theme.border} focus:shadow-[0_0_0_3px_rgba(5,150,105,0.3)] ${theme.focusRing}`;
+
   const commonProps = {
     id,
     name,
     value,
     onChange,
     placeholder,
-    className: `w-full p-3 border ${theme.border} rounded-md ${theme.inputBg} ${theme.textPrimary} focus:outline-none focus:ring-2 ${theme.focusRing} transition-colors`,
+    className: `w-full p-3 border rounded-md ${theme.inputBg} ${theme.textPrimary} focus:outline-none transition-all duration-300 ${errorClasses}`,
   };
 
   if (rows) {

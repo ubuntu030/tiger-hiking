@@ -9,7 +9,6 @@ const theme = {
   border: 'border-stone-300',
   cardBg: 'bg-white',
   inputBg: 'bg-stone-50',
-  focusRing: 'focus:ring-green-700 focus:border-green-700',
+  focusRing: 'focus:border-green-700',
 };
-
 export default theme;
