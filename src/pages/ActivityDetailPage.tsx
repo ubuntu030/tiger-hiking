@@ -3,12 +3,27 @@ import Button from '../components/common/Button';
 import PageTitle from '../components/layout/PageTitle';
 import { mockData } from '../constants/mockData';
 import theme from '../constants/theme';
+import RegistrationForm from '../components/common/RegistrationForm';
+import Dialog from '../components/common/Dialog';
+import { useRef, useState } from 'react';
+
+export interface RegistrationFormHandle {
+  submit: () => boolean;
+}
 
 const ActivityDetailPage = () => {
-  const { activityId } = useParams(); // 從 URL 讀取 activityId
+  const { activityId } = useParams();
   const activity = mockData.activities.find(
     (act) => act.id === parseInt(activityId || '')
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const formRef = useRef<RegistrationFormHandle | null>(null);
+
+  const handleConfirmRegistration = () => {
+    if (formRef.current?.submit()) {
+      setIsModalOpen(false);
+    }
+  };
 
   if (!activity) {
     return (
@@ -32,7 +47,7 @@ const ActivityDetailPage = () => {
         <div className="lg:col-span-3">
           <h1 className="text-4xl font-bold mb-2">{activity.name}</h1>
           <p className={`text-lg ${theme.textSecondary} mb-6`}>
-            {activity.startDate} ~ {activity.endDate}
+            {activity.startDate} - {activity.endDate}
           </p>
           <img
             src={activity.image}
@@ -85,30 +100,40 @@ const ActivityDetailPage = () => {
                   }}
                 ></div>
               </div>
-              <div className="pt-4 space-y-2">
-                <div className="flex justify-between items-baseline">
-                  <span className={`font-semibold ${theme.textSecondary}`}>
-                    A方案
-                  </span>
-                  <span className={`text-2xl font-bold ${theme.accent}`}>
-                    NT$ {activity.priceA.toLocaleString()}
-                  </span>
+              <div className="pt-4 space-y-4">
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <span className={`font-semibold ${theme.textSecondary}`}>
+                      A方案
+                    </span>
+                    <span className={`text-2xl font-bold ${theme.accent}`}>
+                      NT$ {activity.priceA.toLocaleString()}
+                    </span>
+                  </div>
+                  <p className={`text-sm ${theme.textSecondary} text-right`}>
+                    含嚮導、交通、餐食與保險
+                  </p>
                 </div>
-                <div className="flex justify-between items-baseline">
-                  <span className={`font-semibold ${theme.textSecondary}`}>
-                    B方案
-                  </span>
-                  <span className={`text-xl font-bold ${theme.accent}`}>
-                    NT$ {activity.priceB.toLocaleString()}
-                  </span>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <span className={`font-semibold ${theme.textSecondary}`}>
+                      B方案
+                    </span>
+                    <span className={`text-xl font-bold ${theme.accent}`}>
+                      NT$ {activity.priceB.toLocaleString()}
+                    </span>
+                  </div>
+                  <p className={`text-sm ${theme.textSecondary} text-right`}>
+                    全程自理 (僅含嚮導與保險)
+                  </p>
                 </div>
               </div>
             </div>
             <div className="mt-8">
               <Button
+                onClick={() => setIsModalOpen(true)}
                 disabled={!isRegistrationOpen}
                 className="w-full text-lg"
-                onClick={() => {}}
               >
                 {isRegistrationOpen ? '立即報名申請' : '報名截止'}
               </Button>
@@ -116,8 +141,15 @@ const ActivityDetailPage = () => {
           </div>
         </div>
       </div>
+      <Dialog
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmRegistration}
+        title={`報名活動：${activity.name}`}
+      >
+        <RegistrationForm ref={formRef} />
+      </Dialog>
     </div>
   );
 };
-
 export default ActivityDetailPage;

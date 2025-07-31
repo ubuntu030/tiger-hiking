@@ -1,14 +1,13 @@
-import  theme  from '../../constants/theme';
+import theme from '../../constants/theme';
 
-const FormField = ({
-  label,
-  htmlFor,
-  children,
-}: {
+interface FormFieldProps {
   label: string;
   htmlFor: string;
   children: React.ReactNode;
-}) => (
+  error?: string | null;
+}
+
+const FormField = ({ label, htmlFor, children, error }: FormFieldProps) => (
   <div className="flex flex-col">
     <label
       htmlFor={htmlFor}
@@ -17,6 +16,7 @@ const FormField = ({
       {label}
     </label>
     {children}
+    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
   </div>
 );
 

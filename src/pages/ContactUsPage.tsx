@@ -18,15 +18,19 @@ const ContactUsPage = () => {
     email: '',
     message: '',
   });
-  const [errors, setErrors] = useState<ErrorMessages>({});
+  const [errors, setErrors] = useState<ErrorMessages>({
+    name: '',
+    email: '',
+    message: '',
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof ErrorMessages]) {
-      setErrors((prev: ErrorMessages) => ({ ...prev, [name]: undefined }));
+    if (errors && errors[name as keyof ErrorMessages]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
@@ -46,7 +50,7 @@ const ContactUsPage = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -59,6 +63,7 @@ const ContactUsPage = () => {
       setErrors({});
     }
   };
+
   return (
     <div>
       <PageTitle
@@ -86,7 +91,7 @@ const ContactUsPage = () => {
         <div>
           <h2 className="text-2xl font-bold mb-6">傳送訊息給我們</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <FormField label="您的姓名" htmlFor="name">
+            <FormField label="您的姓名" htmlFor="name" error={errors.name}>
               <InputField
                 id="name"
                 name="name"
@@ -96,7 +101,7 @@ const ContactUsPage = () => {
                 error={!!errors.name}
               />
             </FormField>
-            <FormField label="電子郵件" htmlFor="email">
+            <FormField label="電子郵件" htmlFor="email" error={errors.email}>
               <InputField
                 id="email"
                 name="email"
@@ -107,7 +112,11 @@ const ContactUsPage = () => {
                 error={!!errors.email}
               />
             </FormField>
-            <FormField label="您的訊息" htmlFor="message">
+            <FormField
+              label="您的訊息"
+              htmlFor="message"
+              error={errors.message}
+            >
               <InputField
                 id="message"
                 name="message"
