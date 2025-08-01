@@ -5,15 +5,20 @@ import ContactUsForm, {
   type ContactFormHandle,
 } from '../components/features/contact/ContactUsForm';
 import PageTitle from '../components/layout/PageTitle';
+import { useToast } from '../hooks/useToast';
 import theme from '../constants/theme';
 
 const ContactUsPage = () => {
   const formRef = useRef<ContactFormHandle>(null);
+  const { showToast } = useToast();
 
   const handleSendMessage = () => {
     // Trigger the submit method exposed by ContactUsForm via the ref
     if (formRef.current) {
-      formRef.current.submit();
+      const isSuccess = formRef.current.submit();
+      if (isSuccess) {
+        showToast('您的訊息已成功送出，我們會盡快與您聯繫！', 'success');
+      }
     }
   };
 

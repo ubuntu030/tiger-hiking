@@ -6,6 +6,7 @@ import theme from '../constants/theme';
 import Dialog from '../components/common/Dialog';
 import { useRef, useState } from 'react';
 import RegistrationForm from '../components/features/registration/RegistrationForm';
+import { useToast } from '../hooks/useToast';
 
 export interface RegistrationFormHandle {
   submit: () => boolean;
@@ -18,10 +19,13 @@ const ActivityDetailPage = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formRef = useRef<RegistrationFormHandle | null>(null);
+  const { showToast } = useToast();
 
   const handleConfirmRegistration = () => {
-    if (formRef.current?.submit()) {
+    const isSuccess = formRef.current?.submit();
+    if (isSuccess) {
       setIsModalOpen(false);
+      showToast('報名成功！感謝您的參與。', 'success');
     }
   };
 

@@ -20,9 +20,6 @@ const ContactUsForm = forwardRef<ContactFormHandle, object>((_props, ref) => {
           setErrors(validationErrors);
           return false;
         }
-        alert(
-          `表單已提交:\n姓名: ${formData.name}\n郵件: ${formData.email}\n訊息: ${formData.message}`
-        );
         resetForm();
         return true;
       },

@@ -20,7 +20,6 @@ const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
             setErrors(validationErrors);
             return false;
           }
-          alert('報名資料已送出！\n' + JSON.stringify(formData, null, 2));
           resetForm();
           return true;
         },
