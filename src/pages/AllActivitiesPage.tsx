@@ -6,11 +6,11 @@ import InputField from '../components/common/InputField';
 import FormField from '../components/common/FormField';
 import SelectField from '../components/common/SelectField';
 import ActivityCard from '../components/features/activities/ActivityCard';
+import { usePagination } from '../hooks/usePagination';
+import Pagination from '../components/common/Pagination';
 
 const AllActivitiesPage = () => {
   const [filters, setFilters] = useState({ status: 'all', date: '', name: '' });
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
 
   const filteredActivities = useMemo(() => {
     return mockData.activities.filter((activity) => {
@@ -24,11 +24,12 @@ const AllActivitiesPage = () => {
     });
   }, [filters]);
 
-  const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);
-  const paginatedActivities = filteredActivities.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const {
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedActivities,
+  } = usePagination(filteredActivities, { itemsPerPage: 6 });
 
   const handleFilterChange = (
     e: React.ChangeEvent<
@@ -94,23 +95,11 @@ const AllActivitiesPage = () => {
         </div>
       )}
 
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-12 space-x-2">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={`px-4 py-2 rounded-md font-medium ${
-                currentPage === page
-                  ? `${theme.primary} text-white`
-                  : `${theme.secondary} ${theme.textPrimary}`
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
