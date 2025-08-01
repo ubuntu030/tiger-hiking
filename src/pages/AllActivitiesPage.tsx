@@ -8,19 +8,43 @@ import SelectField from '../components/common/SelectField';
 import ActivityCard from '../components/features/activities/ActivityCard';
 import { usePagination } from '../hooks/usePagination';
 import Pagination from '../components/common/Pagination';
+import { RotateCcw } from 'lucide-react';
 
 const AllActivitiesPage = () => {
-  const [filters, setFilters] = useState({ status: 'all', date: '', name: '' });
+  const initialFilters = {
+    status: 'all',
+    startDate: '',
+    endDate: '',
+    name: '',
+  };
+  const [filters, setFilters] = useState(initialFilters);
 
   const filteredActivities = useMemo(() => {
     return mockData.activities.filter((activity) => {
       const statusMatch =
         filters.status === 'all' || activity.status === filters.status;
-      const dateMatch = !filters.date || activity.startDate === filters.date;
       const nameMatch =
         !filters.name ||
         activity.name.toLowerCase().includes(filters.name.toLowerCase());
-      return statusMatch && dateMatch && nameMatch;
+
+      if (filters.startDate && filters.endDate) {
+        const activityDate = new Date(activity.startDate);
+        const startDate = new Date(filters.startDate);
+        const endDate = new Date(filters.endDate);
+        if (activityDate < startDate || activityDate > endDate) {
+          return false;
+        }
+      } else if (filters.startDate) {
+        if (new Date(activity.startDate) < new Date(filters.startDate)) {
+          return false;
+        }
+      } else if (filters.endDate) {
+        if (new Date(activity.startDate) > new Date(filters.endDate)) {
+          return false;
+        }
+      }
+
+      return statusMatch && nameMatch;
     });
   }, [filters]);
 
@@ -41,6 +65,11 @@ const AllActivitiesPage = () => {
     setCurrentPage(1);
   };
 
+  const handleClearFilters = () => {
+    setFilters(initialFilters);
+    setCurrentPage(1);
+  };
+
   const statusOptions = [
     { value: 'all', label: '所有狀態' },
     { value: '報名登記', label: '報名登記' },
@@ -53,7 +82,7 @@ const AllActivitiesPage = () => {
       <PageTitle title="所有活動" subtitle="尋找下一次屬於您的山林冒險" />
 
       <div
-        className={`p-6 rounded-lg ${theme.cardBg} shadow-sm mb-8 grid grid-cols-1 md:grid-cols-3 gap-6`}
+        className={`p-6 rounded-lg ${theme.cardBg} shadow-sm mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`}
       >
         <FormField label="活動名稱" htmlFor="name">
           <InputField
@@ -73,15 +102,33 @@ const AllActivitiesPage = () => {
             options={statusOptions}
           />
         </FormField>
-        <FormField label="活動日期" htmlFor="date">
+        <FormField label="開始日期" htmlFor="startDate">
           <InputField
-            id="date"
-            name="date"
+            id="startDate"
+            name="startDate"
             type="date"
-            value={filters.date}
+            value={filters.startDate}
             onChange={handleFilterChange}
           />
         </FormField>
+        <FormField label="結束日期" htmlFor="endDate">
+          <InputField
+            id="endDate"
+            name="endDate"
+            type="date"
+            value={filters.endDate}
+            onChange={handleFilterChange}
+          />
+        </FormField>
+        <div className="md:col-span-2 lg:col-span-4 flex justify-end items-center mt-4">
+          <button
+            onClick={handleClearFilters}
+            className={`flex items-center px-4 py-2 font-semibold ${theme.textSecondary} bg-transparent hover:bg-stone-200 rounded-md transition-colors`}
+          >
+            <RotateCcw className="w-4 h-4 mr-2" />
+            清除搜尋條件
+          </button>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
