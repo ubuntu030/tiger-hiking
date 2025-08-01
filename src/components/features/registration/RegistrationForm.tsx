@@ -1,9 +1,9 @@
 import { forwardRef, useImperativeHandle } from 'react';
-import FormField from './FormField';
-import InputField from './InputField';
-import RadioGroupField from './RadioGroupField';
-import type { RegistrationFormHandle } from '../../pages/ActivityDetailPage';
-import { useRegistrationForm } from '../../hooks/useRegistrationForm';
+import { useRegistrationForm } from '../../../hooks/useRegistrationForm';
+import type { RegistrationFormHandle } from '../../../pages/ActivityDetailPage';
+import FormField from '../../common/FormField';
+import InputField from '../../common/InputField';
+import RadioGroupField from '../../common/RadioGroupField';
 
 const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
   (_props, ref) => {

@@ -1,7 +1,7 @@
 import { Calendar } from 'lucide-react';
-import type { IActivity } from '../../types/activity';
 import { Link } from 'react-router-dom';
-import theme from '../../constants/theme';
+import theme from '../../../constants/theme';
+import type { IActivity } from '../../../types/activity';
 
 interface ActivityCardProps {
   activity: IActivity;

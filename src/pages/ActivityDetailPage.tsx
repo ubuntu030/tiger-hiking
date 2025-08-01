@@ -3,9 +3,9 @@ import Button from '../components/common/Button';
 import PageTitle from '../components/layout/PageTitle';
 import { mockData } from '../constants/mockData';
 import theme from '../constants/theme';
-import RegistrationForm from '../components/common/RegistrationForm';
 import Dialog from '../components/common/Dialog';
 import { useRef, useState } from 'react';
+import RegistrationForm from '../components/features/registration/RegistrationForm';
 
 export interface RegistrationFormHandle {
   submit: () => boolean;

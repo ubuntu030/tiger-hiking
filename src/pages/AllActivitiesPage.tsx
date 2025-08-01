@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react';
 import PageTitle from '../components/layout/PageTitle';
 import theme from '../constants/theme';
 import { mockData } from '../constants/mockData';
-import ActivityCard from '../components/common/ActivityCard';
 import InputField from '../components/common/InputField';
 import FormField from '../components/common/FormField';
 import SelectField from '../components/common/SelectField';
+import ActivityCard from '../components/features/activities/ActivityCard';
 
 const AllActivitiesPage = () => {
   const [filters, setFilters] = useState({ status: 'all', date: '', name: '' });
@@ -31,7 +31,9 @@ const AllActivitiesPage = () => {
   );
 
   const handleFilterChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement  | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));

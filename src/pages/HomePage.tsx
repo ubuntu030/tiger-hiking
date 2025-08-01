@@ -1,8 +1,8 @@
 import { parse } from 'date-fns';
-import ActivityCard from '../components/common/ActivityCard';
 import Button from '../components/common/Button';
 import PageTitle from '../components/layout/PageTitle';
 import { mockData } from '../constants/mockData';
+import ActivityCard from '../components/features/activities/ActivityCard';
 
 const HomePage = () => {
   const recentActivities = [...mockData.activities]
