@@ -139,4 +139,6 @@ const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
   }
 );
 
+RegistrationForm.displayName = 'RegistrationForm';
+
 export default RegistrationForm;
