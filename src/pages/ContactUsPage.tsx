@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Button from '../components/common/Button';
 import ContactUsForm, {
   type ContactFormHandle,
@@ -10,15 +10,35 @@ import theme from '../constants/theme';
 
 const ContactUsPage = () => {
   const formRef = useRef<ContactFormHandle>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { showToast } = useToast();
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     // Trigger the submit method exposed by ContactUsForm via the ref
-    if (formRef.current) {
-      const isSuccess = formRef.current.submit();
-      if (isSuccess) {
-        showToast('您的訊息已成功送出，我們會盡快與您聯繫！', 'success');
-      }
+    if (!formRef.current || isSubmitting) return;
+
+    const isFormValid = formRef.current.submit();
+    if (!isFormValid) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // 模擬 API 呼叫，延遲 1.5 秒
+      // --- 正常情況 ---
+      // await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // --- 模擬失敗情況 (您可以取消註解此行來測試錯誤提示) ---
+      await new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Simulated API Error')), 1500)
+      );
+
+      showToast('您的訊息已成功送出，我們會盡快與您聯繫！', 'success');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      showToast('訊息送出失敗，請稍後再試。', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -50,7 +70,11 @@ const ContactUsPage = () => {
           <h2 className="text-2xl font-bold mb-6">傳送訊息給我們</h2>
           <div className="space-y-6">
             <ContactUsForm ref={formRef} />
-            <Button className="w-full" onClick={handleSendMessage}>
+            <Button
+              className="w-full"
+              onClick={handleSendMessage}
+              isLoading={isSubmitting}
+            >
               <Send className="w-5 h-5 mr-2 inline-block" />
               送出訊息
             </Button>
