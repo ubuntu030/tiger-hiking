@@ -1,17 +1,11 @@
-import { parse } from 'date-fns';
-import Button from '../components/common/Button';
-import PageTitle from '../components/layout/PageTitle';
-import { mockData } from '../constants/mockData';
-import ActivityCard from '../components/features/activities/ActivityCard';
+import Button from "../components/common/Button";
+import PageTitle from "../components/layout/PageTitle";
+import ActivityCard from "../components/features/activities/ActivityCard";
+import theme from "../constants/theme";
+import { useRecentActivities } from "../hooks/useRecentActivities";
 
 const HomePage = () => {
-  const recentActivities = [...mockData.activities]
-    .sort(
-      (a, b) =>
-        parse(b.startDate, 'yyyy/MM/dd', new Date()).getTime() -
-        parse(a.startDate, 'yyyy/MM/dd', new Date()).getTime()
-    )
-    .slice(0, 6);
+  const { recentActivities, loading, error } = useRecentActivities(6);
 
   return (
     <div>
@@ -40,11 +34,25 @@ const HomePage = () => {
           title="近期活動"
           subtitle="最新的出團計畫，名額有限，即刻報名！"
         />
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {recentActivities.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
-        </div>
+        {loading && (
+          <div className="text-center py-16">
+            <p className={theme.textSecondary}>正在載入最新活動...</p>
+          </div>
+        )}
+        {error && (
+          <div className="text-center py-16">
+            <p className="text-red-500">
+              讀取活動失敗，請稍後再試。 ({error.message})
+            </p>
+          </div>
+        )}
+        {!loading && !error && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {recentActivities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
