@@ -1,6 +1,7 @@
 import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import theme from '../../../constants/theme';
+import { format } from 'date-fns';
 import type { IActivity } from '../../../types/activity';
 
 interface ActivityCardProps {
@@ -38,7 +39,8 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
         </h3>
         <p className={`flex items-center ${theme.textSecondary} mb-4`}>
           <Calendar className="w-5 h-5 mr-2" />
-          {activity.startDate} ~ {activity.endDate}
+          {format(new Date(activity.startDate), 'yyyy-MM-dd')} ~{' '}
+          {format(new Date(activity.endDate), 'yyyy-MM-dd')}
         </p>
         <p className={`flex-grow ${theme.textSecondary} mb-4 line-clamp-2`}>
           {activity.description}

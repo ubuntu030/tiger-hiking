@@ -7,6 +7,7 @@ import Dialog from '../components/common/Dialog';
 import { useRef, useState } from 'react';
 import RegistrationForm from '../components/features/registration/RegistrationForm';
 import { useToast } from '../hooks/useToast';
+import { format } from 'date-fns';
 
 export interface RegistrationFormHandle {
   submit: () => boolean;
@@ -51,7 +52,8 @@ const ActivityDetailPage = () => {
         <div className="lg:col-span-3">
           <h1 className="text-4xl font-bold mb-2">{activity.name}</h1>
           <p className={`text-lg ${theme.textSecondary} mb-6`}>
-            {activity.startDate} - {activity.endDate}
+            {format(new Date(activity.startDate), 'yyyy-MM-dd')} -{' '}
+            {format(new Date(activity.endDate), 'yyyy-MM-dd')}
           </p>
           <img
             src={activity.image}
