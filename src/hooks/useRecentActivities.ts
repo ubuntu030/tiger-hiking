@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { GET_RECENT_ACTIVITIES } from "../graphql/queries";
-import type { IActivity } from "../types/activity";
+import type { ActivityCard } from "../types/ActivityCard";
 
 interface GetRecentActivitiesData {
-  activities: IActivity[];
+  activities: ActivityCard[];
 }
 
 export const useRecentActivities = (limit: number = 6) => {

@@ -1,6 +1,6 @@
-export type ACTIVITY_STATUS = "報名登記" | "不可報名" | "活動結束";
+import type { ACTIVITY_STATUS } from "./activityStatus";
 
-export interface IActivity {
+export interface AllActivity {
   id: number;
   name: string;
   status: ACTIVITY_STATUS;

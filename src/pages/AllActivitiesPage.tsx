@@ -1,28 +1,29 @@
-import { useMemo, useState } from 'react';
-import PageTitle from '../components/layout/PageTitle';
-import theme from '../constants/theme';
-import { mockData } from '../constants/mockData';
-import InputField from '../components/common/InputField';
-import FormField from '../components/common/FormField';
-import SelectField from '../components/common/SelectField';
-import ActivityCard from '../components/features/activities/ActivityCard';
-import { usePagination } from '../hooks/usePagination';
-import Pagination from '../components/common/Pagination';
-import { RotateCcw } from 'lucide-react';
+import { useMemo, useState } from "react";
+import PageTitle from "../components/layout/PageTitle";
+import theme from "../constants/theme";
+import { mockData } from "../constants/mockData";
+import InputField from "../components/common/InputField";
+import FormField from "../components/common/FormField";
+import SelectField from "../components/common/SelectField";
+import ActivityCard from "../components/features/activities/ActivityCard";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/common/Pagination";
+import { RotateCcw } from "lucide-react";
+import { useAllActivities } from "../hooks/useAllActivities";
 
 const AllActivitiesPage = () => {
   const initialFilters = {
-    status: 'all',
-    startDate: '',
-    endDate: '',
-    name: '',
+    status: "all",
+    startDate: "",
+    endDate: "",
+    name: "",
   };
   const [filters, setFilters] = useState(initialFilters);
 
   const filteredActivities = useMemo(() => {
     return mockData.activities.filter((activity) => {
       const statusMatch =
-        filters.status === 'all' || activity.status === filters.status;
+        filters.status === "all" || activity.status === filters.status;
       const nameMatch =
         !filters.name ||
         activity.name.toLowerCase().includes(filters.name.toLowerCase());
@@ -71,10 +72,10 @@ const AllActivitiesPage = () => {
   };
 
   const statusOptions = [
-    { value: 'all', label: '所有狀態' },
-    { value: '報名登記', label: '報名登記' },
-    { value: '不可報名', label: '不可報名' },
-    { value: '活動結束', label: '活動結束' },
+    { value: "all", label: "所有狀態" },
+    { value: "報名登記", label: "報名登記" },
+    { value: "不可報名", label: "不可報名" },
+    { value: "活動結束", label: "活動結束" },
   ];
 
   return (

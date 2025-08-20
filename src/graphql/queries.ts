@@ -12,9 +12,30 @@ export const GET_RECENT_ACTIVITIES = gql`
       image
       status
       priceA
-      currentRegistrations
-      maxSlots
     }
   }
 `;
 
+export const GET_ALL_ACTIVITIES = gql`
+  # 這裡我們新增 $status 變數，讓你可以同時根據活動名稱和狀態進行查詢
+  # 變數型別可能是 String 或後端定義的 ACTIVITY_STATUS enum
+  query GetAllActivities($name: String, $status: String) {
+    # 針對欄位的模糊查詢，常見的作法是使用 "where" 搭配 "contains" 條件。
+    # 注意：實際的參數名稱 (例如 where, contains) 取決於你的後端 GraphQL Schema 定義。
+    # 你可能需要查閱 API 文件或使用 GraphQL Playground 來確認確切的語法。
+    # 當 $name 或 $status 為 null/undefined 時，後端應忽略該過濾條件，
+    # 這樣就能實現「非必須」的查詢。
+    activities(
+      orderBy: { startDate: DESC }
+      where: { name: { contains: $name }, status: { equals: $status } }
+    ) {
+      id
+      name
+      startDate
+      endDate
+      image
+      status
+      priceA
+    }
+  }
+`;

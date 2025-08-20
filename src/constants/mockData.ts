@@ -1,4 +1,4 @@
-import type { IActivity } from "../types/activity";
+import type { ActivityCard } from "../types/ActivityCard";
 
 export const mockData: MockData = {
   // 活動資料
@@ -66,7 +66,7 @@ export interface Album {
 }
 
 export interface MockData {
-  activities: IActivity[];
+  activities: ActivityCard[];
   announcements: Announcement[];
   guides: Guide[];
   faqs: FAQ[];
