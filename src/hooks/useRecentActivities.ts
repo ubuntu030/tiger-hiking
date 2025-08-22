@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { GET_RECENT_ACTIVITIES } from "../graphql/queries";
-import type { ActivityCard } from "../types/ActivityCard";
+import type { ActivityCard } from "../types/activityCard.model";
 
 interface GetRecentActivitiesData {
   activities: ActivityCard[];

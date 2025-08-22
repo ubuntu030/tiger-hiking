@@ -1,6 +1,6 @@
 import type { ACTIVITY_STATUS } from "./activityStatus";
 
-export interface AllActivity {
+export interface ActivityDetail {
   id: number;
   name: string;
   status: ACTIVITY_STATUS;

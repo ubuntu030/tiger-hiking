@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { GET_ALL_ACTIVITIES } from "../graphql/queries";
-import type { ActivityCard } from "../types/ActivityCard";
+import type { ActivityCard } from "../types/activityCard.model";
 import type { ACTIVITY_STATUS } from "../types/activityStatus";
 
 interface GetAllActivitiesData {

@@ -4,7 +4,7 @@ export interface ActivityCard {
   id: number;
   name: string;
   status: ACTIVITY_STATUS;
-  startDate: string;
+  startDate: string;  
   endDate: string;
   priceA: number;
   image: string;

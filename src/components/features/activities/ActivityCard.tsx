@@ -2,7 +2,7 @@ import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import theme from '../../../constants/theme';
 import { format } from 'date-fns';
-import type { IActivity } from '../../../types/ActivityCard';
+import type { IActivity } from '../../../types/activityCard.model';
 
 interface ActivityCardProps {
   activity: IActivity;
