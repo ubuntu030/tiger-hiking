@@ -1,29 +1,36 @@
-import { useNavigate } from 'react-router-dom';
-import theme from '../../constants/theme';
-import Spinner from './Spinner';
+import { useNavigate } from "react-router-dom";
+import theme from "../../constants/theme";
+import Spinner from "./Spinner";
 
 interface ButtonProps {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   className?: string;
   isLoading?: boolean;
-  type?: 'button' | 'submit' | 'reset';
-  to?: string; // Add 'to' prop for navigation
+  type?: "button" | "submit" | "reset";
+  to?: string;
+  variant?: "primary" | "secondary";
 }
 
 const Button = ({
   children,
   onClick,
   disabled = false,
+  type = "button",
   isLoading = false,
-  className = '',
+  className = "",
   to,
+  variant = "primary",
 }: ButtonProps) => {
   const navigate = useNavigate();
-  const commonClasses = `relative px-6 py-3 font-semibold rounded-lg shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2`;
-  const disabledClasses = 'bg-stone-300 text-stone-500 cursor-not-allowed';
-  const enabledClasses = `${theme.primary} text-white ${theme.primaryHover} transform hover:-translate-y-0.5`;
+  const commonClasses = `px-4 py-2 font-semibold relative px-3 py-1 font-semibold rounded-lg shadow-sm transition-all duration-300 focus:outline-none`;
+  const disabledClasses = "bg-stone-300 text-stone-500 cursor-not-allowed";
+  const variantClasses = {
+    primary: `${theme.primary} text-white ${theme.primaryHover} transform hover:-translate-y-0.5`,
+    secondary: `${theme.secondary} ${theme.secondaryHover} transform hover:-translate-y-0.5`,
+  };
+  const enabledClasses = variantClasses[variant];
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (to) {
@@ -37,6 +44,7 @@ const Button = ({
 
   return (
     <button
+      type={type}
       onClick={handleClick}
       disabled={disabled || isLoading}
       className={`${commonClasses} ${
@@ -48,7 +56,7 @@ const Button = ({
           <Spinner />
         </div>
       )}
-      <span className={isLoading ? 'opacity-0' : 'opacity-100'}>
+      <span className={isLoading ? "opacity-0" : "opacity-100"}>
         {children}
       </span>
     </button>
