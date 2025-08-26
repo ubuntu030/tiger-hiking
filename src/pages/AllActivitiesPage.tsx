@@ -7,7 +7,7 @@ import SelectField from "../components/common/SelectField";
 import ActivityCard from "../components/features/activities/ActivityCard";
 import { usePagination } from "../hooks/usePagination";
 import Pagination from "../components/common/Pagination";
-import { Frown } from "lucide-react";
+import { Frown, RotateCcw } from "lucide-react";
 import { useAllActivities } from "../hooks/useAllActivities";
 import type { ACTIVITY_STATUS } from "../types/activityStatus";
 import { endOfDay, parseISO, startOfDay } from "date-fns";
@@ -110,7 +110,10 @@ const AllActivitiesPage = () => {
           />
         </FormField>
         <div className="md:col-span-3 lg:col-span-4 flex justify-end items-center self-end">
-          <Button onClick={handleClearFilters} variant="secondary">清除搜尋條件</Button>
+          <Button onClick={handleClearFilters} variant="ghost">
+            <RotateCcw className="w-4 h-4 mr-2" />
+            清除搜尋條件
+          </Button>
         </div>
       </div>
 

@@ -6,7 +6,10 @@ const theme = {
   // Secondary button styles
   secondary: "bg-white text-stone-700 border border-stone-300",
   secondaryHover: "hover:bg-stone-100",
-  // secondary: "bg-stone-200",
+
+  // Ghost button styles
+  ghost: "bg-transparent text-stone-600",
+  ghostHover: "hover:bg-stone-100 hover:text-stone-800",
 
   background: "bg-stone-50",
   textPrimary: "text-stone-800",
