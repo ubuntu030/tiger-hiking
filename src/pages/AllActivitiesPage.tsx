@@ -110,7 +110,7 @@ const AllActivitiesPage = () => {
           />
         </FormField>
         <div className="md:col-span-3 lg:col-span-4 flex justify-end items-center self-end">
-          <Button onClick={handleClearFilters}>清除搜尋條件</Button>
+          <Button onClick={handleClearFilters} variant="secondary">清除搜尋條件</Button>
         </div>
       </div>
 
