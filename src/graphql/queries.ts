@@ -52,3 +52,14 @@ export const GET_ALL_ACTIVITIES = gql`
     }
   }
 `;
+
+export const GET_ALL_ANNOUNCEMENT = gql`
+  query GetAnnouncements($search: String) {
+    announcements(search: $search) {
+      id
+      title
+      date
+      content
+    }
+  }
+`;
