@@ -1,17 +1,49 @@
 import { useQuery } from "@apollo/client";
 import { GET_ALL_ANNOUNCEMENT } from "../graphql/queries";
-import type { Announcement } from "../types/announcemet.model";
+
+/**
+ * @description 公告的資料結構
+ */
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 /**
  * @description 查詢所有公告的回傳資料結構
  */
 interface AllAnnouncementsData {
-  announcements: Announcement[];
+  announcements: {
+    nodes: Announcement[];
+    totalCount: number;
+  };
 }
 
-export const useAllAnnouncements = () => {
-  const { data, loading, error, refetch } =
-    useQuery<AllAnnouncementsData>(GET_ALL_ANNOUNCEMENT);
+interface UseAllAnnouncementsProps {
+  search?: string;
+  limit: number;
+  offset: number;
+}
 
-  return { announcements: data?.announcements || [], loading, error, refetch };
+export const useAllAnnouncements = ({
+  search,
+  limit,
+  offset,
+}: UseAllAnnouncementsProps) => {
+  const { data, loading, error } = useQuery<AllAnnouncementsData>(
+    GET_ALL_ANNOUNCEMENT,
+    {
+      variables: { search: search || undefined, limit, offset },
+    }
+  );
+
+  return {
+    announcements: data?.announcements.nodes || [],
+    totalCount: data?.announcements.totalCount,
+    loading,
+    error,
+  };
 };
