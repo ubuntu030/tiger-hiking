@@ -1,4 +1,5 @@
 import type { ActivityDetail } from "../types/allActivity.model";
+import type { Guide } from "../types/guide.model";
 
 export const mockData: MockData = {
   // 活動資料
@@ -216,14 +217,6 @@ export interface Announcement {
   title: string;
   date: string;
   content: string;
-}
-
-export interface Guide {
-  id: number;
-  name: string;
-  role: string;
-  experience: string;
-  image: string;
 }
 
 export interface FAQ {

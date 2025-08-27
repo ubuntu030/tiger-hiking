@@ -1,5 +1,8 @@
 import { gql } from "@apollo/client";
 
+/**
+ * 獲取最新活動列表
+ */
 // 這個查詢會根據傳入的 limit 參數獲取最新的活動
 // 後端 GraphQL schema 需要支援排序 (orderBy) 和限制數量 (limit)
 export const GET_RECENT_ACTIVITIES = gql`
@@ -16,6 +19,9 @@ export const GET_RECENT_ACTIVITIES = gql`
   }
 `;
 
+/**
+ * 獲取所有活動，支援名稱、狀態、日期篩選
+ */
 export const GET_ALL_ACTIVITIES = gql`
   # 這裡我們新增 $status 變數，讓你可以同時根據活動名稱和狀態進行查詢
   # 同時新增 $startDate 和 $endDate，用於日期範圍查詢
@@ -53,6 +59,9 @@ export const GET_ALL_ACTIVITIES = gql`
   }
 `;
 
+/**
+ * 獲取公告列表，支援搜尋和分頁
+ */
 export const GET_ALL_ANNOUNCEMENT = gql`
   query GetAllAnnouncements($search: String, $limit: Int, $offset: Int) {
     announcements(search: $search, limit: $limit, offset: $offset) {
@@ -63,6 +72,21 @@ export const GET_ALL_ANNOUNCEMENT = gql`
         date
       }
       totalCount
+    }
+  }
+`;
+
+/**
+ * 獲取所有嚮導列表
+ */
+export const GET_ALL_GUIDES = gql`
+  query GetAllGuides {
+    guides {
+      id
+      name
+      role
+      experience
+      image
     }
   }
 `;
