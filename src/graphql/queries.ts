@@ -90,3 +90,16 @@ export const GET_ALL_GUIDES = gql`
     }
   }
 `;
+
+/**
+ * 獲取所有問答
+ */
+export const GET_FAQ = gql`
+  query SearchFaqs($keyword: String) {
+    searchFaqs(keyword: $keyword) {
+      id
+      q
+      a
+    }
+  }
+`;
