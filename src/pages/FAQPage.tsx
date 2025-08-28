@@ -4,10 +4,12 @@ import InputField from "../components/common/InputField";
 import PageTitle from "../components/layout/PageTitle";
 import theme from "../constants/theme";
 import { useFAQs } from "../hooks/useFAQs";
+import useDebounce from "../hooks/useDebounce";
 
 const FAQPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { faqs, loading, error } = useFAQs(searchTerm);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const { faqs, loading, error } = useFAQs(debouncedSearchTerm);
 
   return (
     <div>
@@ -19,7 +21,7 @@ const FAQPage = () => {
       <div
         className={`p-6 rounded-lg ${theme.cardBg} shadow-sm mb-8 grid grid-cols-1 gap-6`}
       >
-        <FormField label="公告搜尋" htmlFor="name">
+        <FormField label="公告搜尋" htmlFor="faqContext">
           <InputField
             id="faqContext"
             name="faqContext"

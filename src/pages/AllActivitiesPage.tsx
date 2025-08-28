@@ -12,6 +12,7 @@ import { useAllActivities } from "../hooks/useAllActivities";
 import type { ACTIVITY_STATUS } from "../types/activityStatus";
 import { endOfDay, parseISO, startOfDay } from "date-fns";
 import Button from "../components/common/Button";
+import useDebounce from "../hooks/useDebounce";
 
 const AllActivitiesPage = () => {
   const initialFilters = {
@@ -22,11 +23,13 @@ const AllActivitiesPage = () => {
   };
   const [filters, setFilters] = useState(initialFilters);
 
+  const debouncedName = useDebounce(filters.name, 500); // 500ms 延遲
+
   // 1. 使用 useAllActivities hook 進行後端查詢
   // - 當 filters.name 是空字串時，hook 會忽略它
   // - 當 filters.status 是 'all' 時，我們傳遞空字串，hook 也會忽略它
   const { activities, loading, error, refetch } = useAllActivities({
-    name: filters.name,
+    name: debouncedName, // 使用延遲後的名稱
     status: filters.status === "all" ? "" : (filters.status as ACTIVITY_STATUS),
     startDate: filters.startDate
       ? startOfDay(parseISO(filters.startDate)).toISOString()
