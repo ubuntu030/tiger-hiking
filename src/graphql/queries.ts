@@ -103,3 +103,18 @@ export const GET_FAQ = gql`
     }
   }
 `;
+
+export const SEND_CONTACT_MESSAGE = gql`
+  mutation SendContactMessage(
+    $name: String!
+    $email: String!
+    $message: String!
+  ) {
+    sendContactMessage(
+      input: { name: $name, email: $email, message: $message }
+    ) {
+      success
+      message
+    }
+  }
+`;

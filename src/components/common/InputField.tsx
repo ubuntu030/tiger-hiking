@@ -11,6 +11,7 @@ interface InputFieldProps {
   placeholder?: string;
   rows?: number;
   error?: boolean;
+  disabled?: boolean;
 }
 
 const InputField = ({
@@ -22,10 +23,15 @@ const InputField = ({
   placeholder,
   rows,
   error,
+  disabled = false,
 }: InputFieldProps) => {
   const errorClasses = error
     ? 'border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.4)]'
     : `${theme.border} focus:shadow-[0_0_0_3px_rgba(5,150,105,0.3)] ${theme.focusRing}`;
+
+  const disabledClasses = disabled
+    ? 'cursor-not-allowed bg-gray-100 dark:bg-gray-200 opacity-70'
+    : '';
 
   const commonProps = {
     id,
@@ -33,7 +39,8 @@ const InputField = ({
     value,
     onChange,
     placeholder,
-    className: `w-full p-3 border rounded-md ${theme.inputBg} ${theme.textPrimary} focus:outline-none transition-all duration-300 ${errorClasses}`,
+    disabled,
+    className: `w-full p-3 border rounded-md ${theme.inputBg} ${theme.textPrimary} focus:outline-none transition-all duration-300 ${errorClasses} ${disabledClasses}`,
   };
 
   if (rows) {
