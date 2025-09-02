@@ -1,45 +1,16 @@
-import { Mail, MapPin, Phone, Send } from 'lucide-react';
-import { useRef, useState } from 'react';
-import Button from '../components/common/Button';
-import ContactUsForm, {
-  type ContactFormHandle,
-} from '../components/features/contact/ContactUsForm';
-import PageTitle from '../components/layout/PageTitle';
-import { useToast } from '../hooks/useToast';
-import theme from '../constants/theme';
+import { Mail, MapPin, Phone } from "lucide-react";
+import Button from "../components/common/Button";
+import PageTitle from "../components/layout/PageTitle";
+import theme from "../constants/theme";
+import { useContactUs } from "../hooks/useContactUs";
+import ContactUsForm from "../components/features/contact/ContactUsForm";
 
 const ContactUsPage = () => {
-  const formRef = useRef<ContactFormHandle>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { showToast } = useToast();
+  const { formData, errors, loading, handleChange, submit } = useContactUs();
 
-  const handleSendMessage = async () => {
-    // Trigger the submit method exposed by ContactUsForm via the ref
-    if (!formRef.current || isSubmitting) return;
-
-    const isFormValid = formRef.current.submit();
-    if (!isFormValid) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      // 模擬 API 呼叫，延遲 1.5 秒
-      // --- 正常情況 ---
-      // await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // --- 模擬失敗情況 (您可以取消註解此行來測試錯誤提示) ---
-      await new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Simulated API Error')), 1500)
-      );
-
-      showToast('您的訊息已成功送出，我們會盡快與您聯繫！', 'success');
-    } catch (error) {
-      console.error('Error sending message:', error);
-      showToast('訊息送出失敗，請稍後再試。', 'error');
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await submit(); // 直接呼叫 submit，hook 會處理後續的通知
   };
 
   return (
@@ -69,15 +40,20 @@ const ContactUsPage = () => {
         <div>
           <h2 className="text-2xl font-bold mb-6">傳送訊息給我們</h2>
           <div className="space-y-6">
-            <ContactUsForm ref={formRef} />
-            <Button
-              className="w-full"
-              onClick={handleSendMessage}
-              isLoading={isSubmitting}
-            >
-              <Send className="w-5 h-5 mr-2 inline-block" />
-              送出訊息
-            </Button>
+            <form onSubmit={handleSubmit} noValidate>
+              <ContactUsForm
+                formData={formData}
+                errors={errors}
+                loading={loading}
+                handleChange={handleChange}
+              />
+
+              <div className="mt-8 flex justify-end">
+                <Button type="submit" disabled={loading}>
+                  {loading ? "傳送中..." : "送出訊息"}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ interface InputFieldProps {
   rows?: number;
   error?: boolean;
   disabled?: boolean;
+  maxLength?: number;
 }
 
 const InputField = ({
@@ -24,6 +25,7 @@ const InputField = ({
   rows,
   error,
   disabled = false,
+  maxLength,
 }: InputFieldProps) => {
   const errorClasses = error
     ? 'border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.4)]'
@@ -40,6 +42,7 @@ const InputField = ({
     onChange,
     placeholder,
     disabled,
+    maxLength,
     className: `w-full p-3 border rounded-md ${theme.inputBg} ${theme.textPrimary} focus:outline-none transition-all duration-300 ${errorClasses} ${disabledClasses}`,
   };
 

@@ -1,30 +1,32 @@
-import { forwardRef, useImperativeHandle } from 'react';
-import FormField from '../../common/FormField';
-import InputField from '../../common/InputField';
-import { useContactUs } from '../../../hooks/useContactUs';
+import type {
+  ContactFormData,
+  ContactFormErrors,
+} from "../../../hooks/useContactUs";
+import FormField from "../../common/FormField";
+import InputField from "../../common/InputField";
 
-export interface ContactFormHandle {
-  submit: () => Promise<boolean>;
+interface ContactUsFormProps {
+  formData: ContactFormData;
+  errors: ContactFormErrors;
+  loading: boolean;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
-const ContactUsForm = forwardRef<ContactFormHandle, object>((_props, ref) => {
-  const { formData, errors, loading, handleChange, submit } = useContactUs();
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      submit: async () => {
-        // Prevent multiple submissions while loading
-        if (loading) return false;
-        return await submit();
-      },
-    }),
-    [submit, loading]
-  );
-
+const ContactUsForm = ({
+  formData,
+  errors,
+  loading,
+  handleChange,
+}: ContactUsFormProps) => {
   return (
     <div className="space-y-6">
-      {errors.form && <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">{errors.form}</div>}
+      {errors.form && (
+        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
+          {errors.form}
+        </div>
+      )}
       <FormField label="您的姓名" htmlFor="name" error={errors.name}>
         <InputField
           id="name"
@@ -33,6 +35,7 @@ const ContactUsForm = forwardRef<ContactFormHandle, object>((_props, ref) => {
           onChange={handleChange}
           placeholder="請輸入您的姓名"
           disabled={loading}
+          maxLength={20}
           error={!!errors.name}
         />
       </FormField>
@@ -45,6 +48,7 @@ const ContactUsForm = forwardRef<ContactFormHandle, object>((_props, ref) => {
           onChange={handleChange}
           placeholder="請輸入您的電子郵件"
           disabled={loading}
+          maxLength={30}
           error={!!errors.email}
         />
       </FormField>
@@ -57,13 +61,12 @@ const ContactUsForm = forwardRef<ContactFormHandle, object>((_props, ref) => {
           onChange={handleChange}
           placeholder="請在此輸入您的訊息..."
           disabled={loading}
+          maxLength={1000}
           error={!!errors.message}
         />
       </FormField>
     </div>
   );
-});
-
-ContactUsForm.displayName = 'ContactUsForm';
+};
 
 export default ContactUsForm;
