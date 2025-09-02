@@ -1,23 +1,21 @@
-import { useParams } from 'react-router-dom';
-import Button from '../components/common/Button';
-import PageTitle from '../components/layout/PageTitle';
-import { mockData } from '../constants/mockData';
-import theme from '../constants/theme';
-import Dialog from '../components/common/Dialog';
-import { useRef, useState } from 'react';
-import RegistrationForm from '../components/features/registration/RegistrationForm';
-import { useToast } from '../hooks/useToast';
-import { format } from 'date-fns';
+import { useParams } from "react-router-dom";
+import Button from "../components/common/Button";
+import theme from "../constants/theme";
+import Dialog from "../components/common/Dialog";
+import { useRef, useState } from "react";
+import RegistrationForm from "../components/features/registration/RegistrationForm";
+import { useToast } from "../hooks/useToast";
+import { format } from "date-fns";
+import { useActivityDetail } from "../hooks/useActivityDetail";
 
 export interface RegistrationFormHandle {
   submit: () => boolean;
 }
 
 const ActivityDetailPage = () => {
-  const { activityId } = useParams();
-  const activity = mockData.activities.find(
-    (act) => act.id === parseInt(activityId || '')
-  );
+  const { activityId } = useParams<{ activityId: string }>();
+  const { activity, loading, error } = useActivityDetail(activityId || "");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formRef = useRef<RegistrationFormHandle | null>(null);
   const { showToast } = useToast();
@@ -26,25 +24,39 @@ const ActivityDetailPage = () => {
     const isSuccess = formRef.current?.submit();
     if (isSuccess) {
       setIsModalOpen(false);
-      showToast('報名成功！感謝您的參與。', 'success');
+      showToast("報名成功！感謝您的參與。", "success");
     }
   };
 
-  if (!activity) {
+  if (loading) {
     return (
-      <div className="text-center">
-        <PageTitle
-          title="404 - 找不到活動"
-          subtitle="您要找的活動可能已經不存在或被移動了。"
-        />
-        <Button to="/" onClick={() => {}}>
-          回到首頁
-        </Button>
+      <div className="text-center py-16">
+        <p className={theme.textPrimary}>載入中，請稍候...</p>
       </div>
     );
   }
 
-  const isRegistrationOpen = activity.status === '報名登記';
+  if (error) {
+    return (
+      <div className="text-center py-16 text-red-500">
+        <p>讀取活動時發生錯誤：{error.message}</p>
+      </div>
+    );
+  }
+
+  if (!activity) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 text-center">
+        <h1 className="text-2xl font-bold mb-4">404 - 找不到活動</h1>
+        <p className={`${theme.textSecondary} mb-6`}>
+          您要找的活動可能已經不存在或被移動了。
+        </p>
+        <Button to="/">回到首頁</Button>
+      </div>
+    );
+  }
+
+  const isRegistrationOpen = activity.status === "報名登記";
 
   return (
     <div>
@@ -52,8 +64,8 @@ const ActivityDetailPage = () => {
         <div className="lg:col-span-3">
           <h1 className="text-4xl font-bold mb-2">{activity.name}</h1>
           <p className={`text-lg ${theme.textSecondary} mb-6`}>
-            {format(new Date(activity.startDate), 'yyyy-MM-dd')} -{' '}
-            {format(new Date(activity.endDate), 'yyyy-MM-dd')}
+            {format(new Date(activity.startDate), "yyyy-MM-dd")} -{" "}
+            {format(new Date(activity.endDate), "yyyy-MM-dd")}
           </p>
           <img
             src={activity.image}
@@ -82,7 +94,7 @@ const ActivityDetailPage = () => {
                   隨行人員
                 </span>
                 <span className="text-right">
-                  {activity.guides.leader}(領隊), {activity.guides.guide}(嚮導)
+                  {activity.leader}(領隊), {activity.guide}(嚮導)
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -141,7 +153,7 @@ const ActivityDetailPage = () => {
                 disabled={!isRegistrationOpen}
                 className="w-full text-lg"
               >
-                {isRegistrationOpen ? '立即報名申請' : '報名截止'}
+                {isRegistrationOpen ? "立即報名申請" : "報名截止"}
               </Button>
             </div>
           </div>

@@ -20,6 +20,31 @@ export const GET_RECENT_ACTIVITIES = gql`
 `;
 
 /**
+ * 根據 ID 獲取單一活動的詳細資訊
+ */
+export const GET_ACTIVITY_BY_ID = gql`
+  query GetActivityById($id: Int!) {
+    activity(where: { id: $id }) {
+      id
+      name
+      status
+      startDate
+      endDate
+      currentRegistrations #目前報名人數
+      maxSlots
+      priceA
+      priceB
+      image
+      description
+      transport #交通方式說明
+      leader #領隊名稱
+      guide #嚮導名稱
+      sweeper #掃隊嚮導名稱
+    }
+  }
+`;
+
+/**
  * 獲取所有活動，支援名稱、狀態、日期篩選
  */
 export const GET_ALL_ACTIVITIES = gql`
