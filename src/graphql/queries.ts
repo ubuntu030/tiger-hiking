@@ -37,9 +37,11 @@ export const GET_ACTIVITY_BY_ID = gql`
       image
       description
       transport #交通方式說明
+      guides {
       leader #領隊名稱
       guide #嚮導名稱
       sweeper #掃隊嚮導名稱
+      }
     }
   }
 `;
@@ -129,6 +131,9 @@ export const GET_FAQ = gql`
   }
 `;
 
+/**
+ * 送出聯繫我們資料
+ */
 export const SEND_CONTACT_MESSAGE = gql`
   mutation SendContactMessage(
     $name: String!
