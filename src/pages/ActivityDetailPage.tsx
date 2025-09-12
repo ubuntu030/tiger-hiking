@@ -94,7 +94,8 @@ const ActivityDetailPage = () => {
                   隨行人員
                 </span>
                 <span className="text-right">
-                  {activity.leader}(領隊), {activity.guide}(嚮導)
+                  {activity.guides.leader}(領隊), {activity.guides.guide}(嚮導),
+                  {activity.guides.sweeper}(押隊)
                 </span>
               </div>
               <div className="flex justify-between items-center">
