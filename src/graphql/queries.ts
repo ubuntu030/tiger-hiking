@@ -148,3 +148,39 @@ export const SEND_CONTACT_MESSAGE = gql`
     }
   }
 `;
+
+/**
+ * 建立一個新的活動報名
+ */
+export const CREATE_REGISTRATION = gql`
+  mutation CreateRegistration(
+    $activityId: Int!
+    $name: String!
+    $idNumber: String!
+    $email: String!
+    $nationality: String!
+    $emergencyContact: String!
+    $emergencyPhone: String!
+    $address: String!
+    $mobile: String!
+    $phone: String
+  ) {
+    createRegistration(
+      input: {
+        activityId: $activityId
+        name: $name
+        idNumber: $idNumber
+        email: $email
+        nationality: $nationality
+        emergencyContact: $emergencyContact
+        emergencyPhone: $emergencyPhone
+        address: $address
+        mobile: $mobile
+        phone: $phone
+      }
+    ) {
+      success
+      message
+    }
+  }
+`;

@@ -1,9 +1,14 @@
-import { forwardRef, useImperativeHandle } from 'react';
-import type { RegistrationFormHandle } from '../../../pages/ActivityDetailPage';
-import FormField from '../../common/FormField';
-import InputField from '../../common/InputField';
-import RadioGroupField from '../../common/RadioGroupField';
-import { useRegistrationForm } from './useRegistrationForm';
+import { forwardRef, useImperativeHandle } from "react";
+import type { RegistrationFormData } from "./useRegistrationForm";
+import FormField from "../../common/FormField";
+import InputField from "../../common/InputField";
+import RadioGroupField from "../../common/RadioGroupField";
+import { useRegistrationForm } from "./useRegistrationForm";
+
+export interface RegistrationFormHandle {
+  submit: () => RegistrationFormData | null;
+  reset: () => void;
+}
 
 const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
   (_props, ref) => {
@@ -18,11 +23,11 @@ const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
           const validationErrors = validate();
           if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-            return false;
+            return null;
           }
-          resetForm();
-          return true;
+          return formData;
         },
+        reset: resetForm,
       }),
       [formData, validate, setErrors, resetForm]
     );
@@ -40,7 +45,7 @@ const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
             />
           </FormField>
           <FormField
-            label="身分證號碼"
+            label="身分證號碼/護照號碼"
             htmlFor="idNumber"
             error={errors.idNumber}
           >
@@ -69,8 +74,8 @@ const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
           selectedValue={formData.nationality}
           onChange={handleChange}
           options={[
-            { label: '本國人', value: 'local' },
-            { label: '外籍人士', value: 'foreign' },
+            { label: "本國人", value: "local" },
+            { label: "外籍人士", value: "foreign" },
           ]}
           error={errors.nationality}
         />
@@ -138,6 +143,6 @@ const RegistrationForm = forwardRef<RegistrationFormHandle, object>(
   }
 );
 
-RegistrationForm.displayName = 'RegistrationForm';
+RegistrationForm.displayName = "RegistrationForm";
 
 export default RegistrationForm;

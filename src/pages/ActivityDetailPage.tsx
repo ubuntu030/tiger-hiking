@@ -4,27 +4,47 @@ import theme from "../constants/theme";
 import Dialog from "../components/common/Dialog";
 import { useRef, useState } from "react";
 import RegistrationForm from "../components/features/registration/RegistrationForm";
+import type { RegistrationFormHandle } from "../components/features/registration/RegistrationForm";
 import { useToast } from "../hooks/useToast";
 import { format } from "date-fns";
 import { useActivityDetail } from "../hooks/useActivityDetail";
-
-export interface RegistrationFormHandle {
-  submit: () => boolean;
-}
+import { useCreateRegistration } from "../hooks/useCreateRegistration";
 
 const ActivityDetailPage = () => {
   const { activityId } = useParams<{ activityId: string }>();
-  const { activity, loading, error } = useActivityDetail(activityId || "");
+  const { activity, loading, error, refetch } = useActivityDetail(
+    activityId || ""
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formRef = useRef<RegistrationFormHandle | null>(null);
   const { showToast } = useToast();
+  const { createRegistration, loading: isSubmitting } = useCreateRegistration();
 
-  const handleConfirmRegistration = () => {
-    const isSuccess = formRef.current?.submit();
-    if (isSuccess) {
-      setIsModalOpen(false);
-      showToast("報名成功！感謝您的參與。", "success");
+  const handleConfirmRegistration = async () => {
+    const formData = formRef.current?.submit();
+    if (formData && activityId) {
+      try {
+        const result = await createRegistration({
+          ...formData,
+          activityId: parseInt(activityId, 10),
+        });
+
+        if (result.data?.createRegistration.success) {
+          setIsModalOpen(false);
+          showToast("報名成功！感謝您的參與。", "success");
+          formRef.current?.reset(); // 成功後重設表單
+          refetch(); // 重新獲取活動資料以更新報名人數
+        } else {
+          // 處理後端回傳的業務邏輯錯誤 (例如：名額已滿)
+          const errorMessage =
+            result.data?.createRegistration.message || "報名失敗，請檢查資料。";
+          showToast(errorMessage, "error");
+        }
+      } catch (apiError) {
+        // 錯誤通知已在 useCreateRegistration hook 中處理
+        console.error("Registration failed:", apiError);
+      }
     }
   };
 
@@ -164,6 +184,7 @@ const ActivityDetailPage = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmRegistration}
+        isConfirming={isSubmitting}
         title={`報名活動：${activity.name}`}
       >
         <RegistrationForm ref={formRef} />
