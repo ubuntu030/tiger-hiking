@@ -47,7 +47,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
         </p>
         <div className="flex justify-between items-center mt-auto">
           <p className={`text-xl font-bold ${theme.accent}`}>
-            NT$ {activity.priceA.toLocaleString()}
+            NT$ {activity.plans[0].price.toLocaleString()}
           </p>
           <Link
             to={`/activities/${activity.id}`}

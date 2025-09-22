@@ -1,11 +1,12 @@
 import type { ACTIVITY_STATUS } from "./activityStatus";
 
-export interface ActivityCard {
+export interface IActivity {
   id: number;
   name: string;
   status: ACTIVITY_STATUS;
-  startDate: string;  
+  startDate: string;
   endDate: string;
-  priceA: number;
+  plans: { name: string; detail: string; price: number }[];
   image: string;
+  description: string;
 }

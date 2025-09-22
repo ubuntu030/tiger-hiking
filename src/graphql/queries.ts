@@ -14,7 +14,12 @@ export const GET_RECENT_ACTIVITIES = gql`
       endDate
       image
       status
-      priceA
+      description
+      plans {
+        name
+        price
+        detail
+      }
     }
   }
 `;
@@ -32,15 +37,18 @@ export const GET_ACTIVITY_BY_ID = gql`
       endDate
       currentRegistrations #目前報名人數
       maxSlots
-      priceA
-      priceB
       image
       description
       transport #交通方式說明
       guides {
-      leader #領隊名稱
-      guide #嚮導名稱
-      sweeper #掃隊嚮導名稱
+        leader #領隊名稱
+        guide #嚮導名稱
+        sweeper #掃隊嚮導名稱
+      }
+      plans {
+        name
+        detail
+        price
       }
     }
   }
@@ -81,7 +89,10 @@ export const GET_ALL_ACTIVITIES = gql`
       endDate
       image
       status
-      priceA
+      description
+      plans {
+        price
+      }
     }
   }
 `;

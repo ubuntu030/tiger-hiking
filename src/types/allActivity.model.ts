@@ -1,5 +1,11 @@
 import type { ACTIVITY_STATUS } from "./activityStatus";
 
+export interface Plan {
+  name: string;
+  detail: string;
+  price: number;
+}
+
 export interface ActivityDetail {
   id: number;
   name: string;
@@ -8,8 +14,7 @@ export interface ActivityDetail {
   endDate: string;
   currentRegistrations: number;
   maxSlots: number;
-  priceA: number;
-  priceB: number;
+  plans: Plan[];
   image: string;
   description: string;
   transport: string;

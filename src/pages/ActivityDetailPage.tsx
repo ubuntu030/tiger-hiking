@@ -140,32 +140,25 @@ const ActivityDetailPage = () => {
                 ></div>
               </div>
               <div className="pt-4 space-y-4">
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <span className={`font-semibold ${theme.textSecondary}`}>
-                      A方案
-                    </span>
-                    <span className={`text-2xl font-bold ${theme.accent}`}>
-                      NT$ {activity.priceA.toLocaleString()}
-                    </span>
+                {activity.plans.map((plan, index) => (
+                  <div key={plan.name}>
+                    <div className="flex justify-between items-baseline">
+                      <span className={`font-semibold ${theme.textSecondary}`}>
+                        {plan.name}
+                      </span>
+                      <span
+                        className={`font-bold ${
+                          index === 0 ? "text-2xl" : "text-xl"
+                        } ${theme.accent}`}
+                      >
+                        NT$ {plan.price.toLocaleString()}
+                      </span>
+                    </div>
+                    <p className={`text-sm ${theme.textSecondary} text-right`}>
+                      {plan.detail}
+                    </p>
                   </div>
-                  <p className={`text-sm ${theme.textSecondary} text-right`}>
-                    含嚮導、交通、餐食與保險
-                  </p>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <span className={`font-semibold ${theme.textSecondary}`}>
-                      B方案
-                    </span>
-                    <span className={`text-xl font-bold ${theme.accent}`}>
-                      NT$ {activity.priceB.toLocaleString()}
-                    </span>
-                  </div>
-                  <p className={`text-sm ${theme.textSecondary} text-right`}>
-                    全程自理 (僅含嚮導與保險)
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
             <div className="mt-8">

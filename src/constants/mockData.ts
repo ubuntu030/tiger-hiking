@@ -12,8 +12,10 @@ export const mockData: MockData = {
       endDate: "2025-08-16",
       currentRegistrations: 5,
       maxSlots: 10,
-      priceA: 3500,
-      priceB: 2800,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 3500 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 2800 },
+      ],
       image: "https://placehold.co/600x400/6b7280/FFFFFF?text=玉山",
       description:
         "台灣第一高峰，是登山者的夢想殿堂。本次活動為單日攻頂，考驗體力與意志力，適合有經驗的登山者。",
@@ -28,8 +30,10 @@ export const mockData: MockData = {
       endDate: "2025-08-23",
       currentRegistrations: 8,
       maxSlots: 15,
-      priceA: 2200,
-      priceB: 1600,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 2200 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 1600 },
+      ],
       image: "https://placehold.co/600x400/78716c/FFFFFF?text=雪山東峰",
       description:
         "雪山入門路線，風景秀麗，可欣賞黑森林與圈谷的壯闊景致。適合初學者體驗高山之美。",
@@ -44,8 +48,10 @@ export const mockData: MockData = {
       endDate: "2025-09-06",
       currentRegistrations: 12,
       maxSlots: 12,
-      priceA: 7800,
-      priceB: 6500,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 7800 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 6500 },
+      ],
       image: "https://placehold.co/600x400/57534e/FFFFFF?text=嘉明湖",
       description:
         "探訪天使的眼淚，高山湖泊的湛藍讓人心醉。此行程需背負重裝，並入住山屋。",
@@ -60,8 +66,10 @@ export const mockData: MockData = {
       endDate: "2025-09-13",
       currentRegistrations: 3,
       maxSlots: 20,
-      priceA: 1800,
-      priceB: 1200,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 1800 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 1200 },
+      ],
       image: "https://placehold.co/600x400/a8a29e/FFFFFF?text=合歡山",
       description:
         "最親民的百岳之一，欣賞壯麗的日出雲海。路線平緩，適合全家大小一同參與。",
@@ -76,8 +84,10 @@ export const mockData: MockData = {
       endDate: "2025-07-21",
       currentRegistrations: 10,
       maxSlots: 10,
-      priceA: 5500,
-      priceB: 4800,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 5500 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 4800 },
+      ],
       image: "https://placehold.co/600x400/d6d3d1/FFFFFF?text=奇萊南華",
       description:
         "黃金大草原的壯闊景觀，是奇萊南華最吸引人的地方。夜晚可在無光害的環境下觀星。",
@@ -92,8 +102,10 @@ export const mockData: MockData = {
       endDate: "2025-09-21",
       currentRegistrations: 1,
       maxSlots: 25,
-      priceA: 900,
-      priceB: 500,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 900 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 500 },
+      ],
       image: "https://placehold.co/600x400/b7a99b/FFFFFF?text=陽明山",
       description:
         "挑戰台北市的經典縱走路線，全程約24公里，考驗耐力。可自行前往風櫃嘴登山口集合。",
@@ -108,8 +120,10 @@ export const mockData: MockData = {
       endDate: "2025-10-11",
       currentRegistrations: 8,
       maxSlots: 8,
-      priceA: 8200,
-      priceB: 7000,
+      plans: [
+        { name: "A方案", detail: "含嚮導、交通、餐食與保險", price: 8200 },
+        { name: "B方案", detail: "全程自理 (僅含嚮導與保險)", price: 7000 },
+      ],
       image: "https://placehold.co/600x400/8c7e6e/FFFFFF?text=北大武山",
       description:
         "南台灣的聖山，以雲海、鐵杉、杜鵑聞名。路途遙遠，是體力與毅力的一大挑戰。",
