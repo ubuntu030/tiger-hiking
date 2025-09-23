@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { isValidTaiwanId } from "../../../utils/validators";
 
 interface ErrorMessages {
   [key: string]: string | null;
@@ -7,6 +8,7 @@ interface ErrorMessages {
 export interface RegistrationFormData {
   plan: string;
   name: string;
+  gender: "MALE" | "FEMALE";
   idNumber: string;
   email: string;
   nationality: "local" | "foreign";
@@ -20,6 +22,7 @@ export interface RegistrationFormData {
 const initialFormState = {
   plan: "",
   name: "",
+  gender: "MALE",
   idNumber: "",
   email: "",
   nationality: "local",
@@ -28,37 +31,6 @@ const initialFormState = {
   address: "",
   mobile: "",
   phone: "",
-};
-
-const isValidTaiwanId = (id: string): boolean => {
-  if (!/^[A-Z][12]\d{8}$/.test(id)) {
-    return false;
-  }
-
-  const letterValues: { [key: string]: number } = {
-    A: 10, B: 11, C: 12, D: 13, E: 14, F: 15, G: 16, H: 17, I: 34, J: 18, K: 19, L: 20, M: 21,
-    N: 22, O: 35, P: 23, Q: 24, R: 25, S: 26, T: 27, U: 28, V: 29, W: 32, X: 30, Y: 31, Z: 33,
-  };
-
-  const firstLetter = id.charAt(0).toUpperCase();
-  const letterValue = letterValues[firstLetter];
-
-  if (letterValue === undefined) {
-    return false;
-  }
-
-  const d1 = Math.floor(letterValue / 10);
-  const d2 = letterValue % 10;
-
-  let sum = d1;
-  sum += d2 * 9;
-
-  for (let i = 1; i < 9; i++) {
-    sum += parseInt(id.charAt(i), 10) * (9 - i);
-  }
-  sum += parseInt(id.charAt(9), 10);
-
-  return sum % 10 === 0;
 };
 
 export const useRegistrationForm = () => {
@@ -88,6 +60,7 @@ export const useRegistrationForm = () => {
 
     if (!formData.plan) newErrors.plan = "方案選擇為必填欄位";
     if (!formData.name) newErrors.name = "姓名為必填欄位";
+    if (!formData.gender) newErrors.gender = "性別為必填欄位";
     if (!formData.idNumber) {
       newErrors.idNumber = "身分證號碼/護照號碼為必填欄位";
     } else if (

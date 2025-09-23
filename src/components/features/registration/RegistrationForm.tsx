@@ -56,6 +56,30 @@ const RegistrationForm = forwardRef<
         error={errors.plan}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <RadioGroupField
+          label="性別"
+          name="gender"
+          selectedValue={formData.gender}
+          onChange={handleChange}
+          options={[
+            { label: "男性", value: "MALE" },
+            { label: "女性", value: "FEMALE" },
+          ]}
+          error={errors.gender}
+        />
+        <RadioGroupField
+          label="國籍"
+          name="nationality"
+          selectedValue={formData.nationality}
+          onChange={handleChange}
+          options={[
+            { label: "本國人", value: "local" },
+            { label: "外籍人士", value: "foreign" },
+          ]}
+          error={errors.nationality}
+        />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="姓名" htmlFor="name" error={errors.name}>
           <InputField
             id="name"
@@ -89,17 +113,6 @@ const RegistrationForm = forwardRef<
           error={!!errors.email}
         />
       </FormField>
-      <RadioGroupField
-        label="國籍"
-        name="nationality"
-        selectedValue={formData.nationality}
-        onChange={handleChange}
-        options={[
-          { label: "本國人", value: "local" },
-          { label: "外籍人士", value: "foreign" },
-        ]}
-        error={errors.nationality}
-      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
           label="緊急聯絡人"
@@ -158,6 +171,7 @@ const RegistrationForm = forwardRef<
             onChange={handleChange}
           />
         </FormField>
+        
       </div>
     </form>
   );

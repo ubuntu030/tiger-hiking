@@ -168,6 +168,7 @@ export const CREATE_REGISTRATION = gql`
     $activityId: Int!
     $plan: String!
     $name: String!
+    $gender: Gender!
     $idNumber: String!
     $email: String!
     $nationality: String!
@@ -182,6 +183,7 @@ export const CREATE_REGISTRATION = gql`
         activityId: $activityId
         plan: $plan
         name: $name
+        gender: $gender
         idNumber: $idNumber
         email: $email
         nationality: $nationality
