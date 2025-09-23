@@ -69,9 +69,9 @@ export const useRegistrationForm = () => {
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
       let processedValue = value;
-      if (name === "idNumber" && value.length > 0) {
-        // Automatically convert the first letter to uppercase for Taiwan ID format
-        processedValue = value.charAt(0).toUpperCase() + value.slice(1);
+      if (name === "idNumber") {
+        // Automatically convert to uppercase for both Taiwan ID and Passport
+        processedValue = value.toUpperCase();
       }
       setFormData((prev) => ({ ...prev, [name]: processedValue }));
       if (errors[name]) {
@@ -84,6 +84,7 @@ export const useRegistrationForm = () => {
   const validate = useCallback(() => {
     const newErrors: ErrorMessages = {};
     const phoneRegex = /^\d+$/;
+    const passportRegex = /^[A-Z0-9]+$/;
 
     if (!formData.plan) newErrors.plan = "方案選擇為必填欄位";
     if (!formData.name) newErrors.name = "姓名為必填欄位";
@@ -94,6 +95,11 @@ export const useRegistrationForm = () => {
       !isValidTaiwanId(formData.idNumber)
     ) {
       newErrors.idNumber = "台灣身分證格式不正確";
+    } else if (
+      formData.nationality === "foreign" &&
+      !passportRegex.test(formData.idNumber)
+    ) {
+      newErrors.idNumber = "護照號碼格式不正確 (僅能包含英數字)";
     }
     if (!formData.email) {
       newErrors.email = "電子郵件為必填欄位";
