@@ -5,6 +5,7 @@ interface ErrorMessages {
 }
 
 export interface RegistrationFormData {
+  plan: string;
   name: string;
   idNumber: string;
   email: string;
@@ -17,6 +18,7 @@ export interface RegistrationFormData {
 }
 
 const initialFormState = {
+  plan: "",
   name: "",
   idNumber: "",
   email: "",
@@ -28,6 +30,37 @@ const initialFormState = {
   phone: "",
 };
 
+const isValidTaiwanId = (id: string): boolean => {
+  if (!/^[A-Z][12]\d{8}$/.test(id)) {
+    return false;
+  }
+
+  const letterValues: { [key: string]: number } = {
+    A: 10, B: 11, C: 12, D: 13, E: 14, F: 15, G: 16, H: 17, I: 34, J: 18, K: 19, L: 20, M: 21,
+    N: 22, O: 35, P: 23, Q: 24, R: 25, S: 26, T: 27, U: 28, V: 29, W: 32, X: 30, Y: 31, Z: 33,
+  };
+
+  const firstLetter = id.charAt(0).toUpperCase();
+  const letterValue = letterValues[firstLetter];
+
+  if (letterValue === undefined) {
+    return false;
+  }
+
+  const d1 = Math.floor(letterValue / 10);
+  const d2 = letterValue % 10;
+
+  let sum = d1;
+  sum += d2 * 9;
+
+  for (let i = 1; i < 9; i++) {
+    sum += parseInt(id.charAt(i), 10) * (9 - i);
+  }
+  sum += parseInt(id.charAt(9), 10);
+
+  return sum % 10 === 0;
+};
+
 export const useRegistrationForm = () => {
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState<ErrorMessages>({});
@@ -35,7 +68,12 @@ export const useRegistrationForm = () => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      let processedValue = value;
+      if (name === "idNumber" && value.length > 0) {
+        // Automatically convert the first letter to uppercase for Taiwan ID format
+        processedValue = value.charAt(0).toUpperCase() + value.slice(1);
+      }
+      setFormData((prev) => ({ ...prev, [name]: processedValue }));
       if (errors[name]) {
         setErrors((prev) => ({ ...prev, [name]: null }));
       }
@@ -47,8 +85,16 @@ export const useRegistrationForm = () => {
     const newErrors: ErrorMessages = {};
     const phoneRegex = /^\d+$/;
 
+    if (!formData.plan) newErrors.plan = "方案選擇為必填欄位";
     if (!formData.name) newErrors.name = "姓名為必填欄位";
-    if (!formData.idNumber) newErrors.idNumber = "身分證為必填欄位";
+    if (!formData.idNumber) {
+      newErrors.idNumber = "身分證號碼/護照號碼為必填欄位";
+    } else if (
+      formData.nationality === "local" &&
+      !isValidTaiwanId(formData.idNumber)
+    ) {
+      newErrors.idNumber = "台灣身分證格式不正確";
+    }
     if (!formData.email) {
       newErrors.email = "電子郵件為必填欄位";
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {

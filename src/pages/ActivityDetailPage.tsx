@@ -180,7 +180,7 @@ const ActivityDetailPage = () => {
         isConfirming={isSubmitting}
         title={`報名活動：${activity.name}`}
       >
-        <RegistrationForm ref={formRef} />
+        <RegistrationForm ref={formRef} plans={activity.plans} />
       </Dialog>
     </div>
   );

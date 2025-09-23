@@ -166,6 +166,7 @@ export const SEND_CONTACT_MESSAGE = gql`
 export const CREATE_REGISTRATION = gql`
   mutation CreateRegistration(
     $activityId: Int!
+    $plan: String!
     $name: String!
     $idNumber: String!
     $email: String!
@@ -179,6 +180,7 @@ export const CREATE_REGISTRATION = gql`
     createRegistration(
       input: {
         activityId: $activityId
+        plan: $plan
         name: $name
         idNumber: $idNumber
         email: $email
