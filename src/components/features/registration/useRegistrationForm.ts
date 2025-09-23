@@ -17,6 +17,7 @@ export interface RegistrationFormData {
   address: string;
   mobile: string;
   phone: string | null;
+  hikingExperience: string;
 }
 
 const initialFormState = {
@@ -31,6 +32,7 @@ const initialFormState = {
   address: "",
   mobile: "",
   phone: "",
+  hikingExperience: "",
 };
 
 export const useRegistrationForm = () => {
@@ -95,6 +97,9 @@ export const useRegistrationForm = () => {
     }
     if (formData.phone && !phoneRegex.test(formData.phone)) {
       newErrors.phone = "市話號碼僅能包含數字";
+    }
+    if (formData.hikingExperience && formData.hikingExperience.length > 500) {
+      newErrors.hikingExperience = "登山經歷簡述不能超過 500 字";
     }
     return newErrors;
   }, [formData]);

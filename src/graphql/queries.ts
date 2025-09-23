@@ -177,6 +177,7 @@ export const CREATE_REGISTRATION = gql`
     $address: String!
     $mobile: String!
     $phone: String
+    $hikingExperience: String
   ) {
     createRegistration(
       input: {
@@ -192,6 +193,7 @@ export const CREATE_REGISTRATION = gql`
         address: $address
         mobile: $mobile
         phone: $phone
+        hikingExperience: $hikingExperience
       }
     ) {
       success

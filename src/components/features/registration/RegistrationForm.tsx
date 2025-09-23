@@ -151,6 +151,7 @@ const RegistrationForm = forwardRef<
           error={!!errors.address}
         />
       </FormField>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="手機" htmlFor="mobile" error={errors.mobile}>
           <InputField
@@ -171,8 +172,21 @@ const RegistrationForm = forwardRef<
             onChange={handleChange}
           />
         </FormField>
-        
       </div>
+      <FormField
+        label="登山經歷簡述 (最多500字)"
+        htmlFor="hikingExperience"
+        error={errors.hikingExperience}
+      >
+        <InputField
+          id="hikingExperience"
+          name="hikingExperience"
+          type="text"
+          rows={4}
+          value={formData.hikingExperience}
+          onChange={handleChange}
+        />
+      </FormField>
     </form>
   );
 });

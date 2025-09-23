@@ -34,10 +34,11 @@ export const useCreateRegistration = () => {
   });
 
   const createRegistration = async (variables: CreateRegistrationVars) => {
-    // 確保選填的 phone 欄位在空值時傳遞 null，以符合 GraphQL schema
+    // 確保選填的欄位在空值時傳遞 null，以符合 GraphQL schema
     const submissionVars = {
       ...variables,
       phone: variables.phone || null,
+      hikingExperience: variables.hikingExperience || null,
     };
     return mutate({ variables: submissionVars });
   };
