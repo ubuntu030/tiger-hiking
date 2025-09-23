@@ -35,11 +35,6 @@ const ActivityDetailPage = () => {
           showToast("報名成功！感謝您的參與。", "success");
           formRef.current?.reset(); // 成功後重設表單
           refetch(); // 重新獲取活動資料以更新報名人數
-        } else {
-          // 處理後端回傳的業務邏輯錯誤 (例如：名額已滿)
-          const errorMessage =
-            result.data?.createRegistration.message || "報名失敗，請檢查資料。";
-          showToast(errorMessage, "error");
         }
       } catch (apiError) {
         // 錯誤通知已在 useCreateRegistration hook 中處理
@@ -110,7 +105,9 @@ const ActivityDetailPage = () => {
             <h2 className="text-2xl font-bold mb-6">報名資訊</h2>
             <div className="space-y-4">
               <div className="flex justify-between items-center gap-4">
-                <span className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}>
+                <span
+                  className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}
+                >
                   隨行人員
                 </span>
                 <span className="text-right">
@@ -119,7 +116,9 @@ const ActivityDetailPage = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center gap-4">
-                <span className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}>
+                <span
+                  className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}
+                >
                   報名人數
                 </span>
                 <div>
@@ -143,7 +142,9 @@ const ActivityDetailPage = () => {
                 {activity.plans.map((plan, index) => (
                   <div key={plan.name}>
                     <div className="flex justify-between items-baseline gap-4">
-                      <span className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}>
+                      <span
+                        className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}
+                      >
                         {plan.name}
                       </span>
                       <span

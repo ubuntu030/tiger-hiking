@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client";
 import { CREATE_REGISTRATION } from "../graphql/queries";
-import { useToast } from "./useToast";
 import type { RegistrationFormData } from "../components/features/registration/useRegistrationForm";
 
 // 為 mutation 的變數和回傳資料定義 TypeScript 型別
@@ -20,16 +19,14 @@ interface CreateRegistrationData {
  * 它封裝了 mutation 的執行、載入狀態和錯誤處理。
  */
 export const useCreateRegistration = () => {
-  const { showToast } = useToast();
-
   const [mutate, { loading, error }] = useMutation<
     CreateRegistrationData,
     CreateRegistrationVars
   >(CREATE_REGISTRATION, {
     onError: (e) => {
-      // 這裡只做 console log，具體的 UI 反饋交給呼叫端處理
+      // 全域的 Apollo Error Link 會處理 toast 通知。
+      // 這裡只做 console log，或處理特定於此 mutation 的 UI 狀態。
       console.error("Registration mutation failed:", e);
-      showToast(e.message || "報名失敗，請稍後再試。", "error");
     },
   });
 

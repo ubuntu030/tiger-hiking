@@ -1,23 +1,25 @@
-import './App.css';
-import HomePage from './pages/HomePage';
-import AllActivitiesPage from './pages/AllActivitiesPage';
-import ActivityDetailPage from './pages/ActivityDetailPage';
-import AnnouncementsPage from './pages/AnnouncementsPage';
-import AboutUsPage from './pages/AboutUsPage';
-import FAQPage from './pages/FAQPage';
-import ContactUsPage from './pages/ContactUsPage';
-import PhotoGalleryPage from './pages/PhotoGalleryPage';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './components/layout/Header';
-import PageContainer from './components/layout/PageContainer';
-import theme from './constants/theme';
-import Footer from './components/layout/Footer';
-import { ToastProvider } from './contexts/ToastProvider';
+import "./App.css";
+import HomePage from "./pages/HomePage";
+import AllActivitiesPage from "./pages/AllActivitiesPage";
+import ActivityDetailPage from "./pages/ActivityDetailPage";
+import AnnouncementsPage from "./pages/AnnouncementsPage";
+import AboutUsPage from "./pages/AboutUsPage";
+import FAQPage from "./pages/FAQPage";
+import ContactUsPage from "./pages/ContactUsPage";
+import PhotoGalleryPage from "./pages/PhotoGalleryPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Header from "./components/layout/Header";
+import PageContainer from "./components/layout/PageContainer";
+import theme from "./constants/theme";
+import Footer from "./components/layout/Footer";
+import { ToastProvider } from "./contexts/ToastProvider";
+import GlobalErrorListener from "./components/common/GlobalErrorListener";
 
 function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
+        <GlobalErrorListener />
         <div className={`${theme.background} font-sans`}>
           <Header />
           <PageContainer>
