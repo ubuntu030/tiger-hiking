@@ -109,8 +109,8 @@ const ActivityDetailPage = () => {
           >
             <h2 className="text-2xl font-bold mb-6">報名資訊</h2>
             <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className={`font-semibold ${theme.textSecondary}`}>
+              <div className="flex justify-between items-center gap-4">
+                <span className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}>
                   隨行人員
                 </span>
                 <span className="text-right">
@@ -118,8 +118,8 @@ const ActivityDetailPage = () => {
                   {activity.guides.sweeper}(押隊)
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className={`font-semibold ${theme.textSecondary}`}>
+              <div className="flex justify-between items-center gap-4">
+                <span className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}>
                   報名人數
                 </span>
                 <div>
@@ -142,8 +142,8 @@ const ActivityDetailPage = () => {
               <div className="pt-4 space-y-4">
                 {activity.plans.map((plan, index) => (
                   <div key={plan.name}>
-                    <div className="flex justify-between items-baseline">
-                      <span className={`font-semibold ${theme.textSecondary}`}>
+                    <div className="flex justify-between items-baseline gap-4">
+                      <span className={`font-semibold ${theme.textSecondary} whitespace-nowrap flex-shrink-0`}>
                         {plan.name}
                       </span>
                       <span
