@@ -1,69 +1,44 @@
-# React + TypeScript + Vite
+# Tiger Hiking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+這是一個提供登山活動資訊和報名功能的網站。
 
-Currently, two official plugins are available:
+## ✨ 功能列表 (Features)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **活動瀏覽**: 查看所有登山活動的列表及詳細資訊。
+*   **首頁**: 顯示最近的活動。
+*   **活動報名**: 使用者可以填寫表單報名參加活動。
+*   **聯絡我們**: 提供聯絡表單讓使用者可以提交問題。
+*   **最新消息**: 查看網站的最新公告。
+*   **常見問題**: 提供常見問題的解答。
+*   **關於我們**: 顯示網站的背景及宗旨。
+*   **活動相簿**: 瀏覽過去活動的照片。
 
-## Expanding the ESLint configuration
+## 🚀 技術棧 (Tech Stack)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+*   **前端框架**: React
+*   **語言**: TypeScript
+*   **建置工具**: Vite
+*   **資料請求**: Apollo Client (GraphQL)
+*   **路由**: React Router
+*   **樣式**: Tailwind CSS
+*   **程式碼檢查**: ESLint
+*   **UI 元件**: Lucide React (圖示), React Toastify (通知)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 如何安裝和執行 (Installation and Setup)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+1.  **複製專案**:
+    ```bash
+    git clone <repository-url>
+    cd tiger-hiking
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2.  **安裝依賴**:
+    ```bash
+    npm install
+    ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3.  **啟動開發伺服器**:
+    ```bash
+    npm run dev
+    ```
+    應用程式將會執行在 `http://localhost:5173`。
