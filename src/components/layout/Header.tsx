@@ -1,20 +1,20 @@
-import { Mountain } from 'lucide-react';
-import theme from '../../constants/theme';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Mountain } from "lucide-react";
+import theme from "../../constants/theme";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // 步驟 3: 將導覽連結從 page state 改為 URL 路徑
   const navLinks = [
-    { name: '首頁', path: '/' },
-    { name: '所有活動', path: '/activities' },
-    { name: '活動相簿', path: '/gallery' },
-    { name: '最新公告', path: '/announcements' },
-    { name: '關於我們', path: '/about' },
-    { name: '常見問題', path: '/faq' },
-    { name: '聯繫我們', path: '/contact' },
+    { name: "首頁", path: "/" },
+    { name: "所有活動", path: "/activities" },
+    // { name: '活動相簿', path: '/gallery' },
+    { name: "最新公告", path: "/announcements" },
+    { name: "關於我們", path: "/about" },
+    { name: "常見問題", path: "/faq" },
+    { name: "聯繫我們", path: "/contact" },
   ];
 
   return (
@@ -41,6 +41,13 @@ const Header = () => {
                   {link.name}
                 </Link>
               ))}
+              <a
+                href="#"
+                className={`font-medium text-stone-400 cursor-not-allowed`}
+                title="即將上線"
+              >
+                活動相簿
+              </a>
               <a
                 href="#"
                 className={`font-medium text-stone-400 cursor-not-allowed`}
@@ -87,6 +94,13 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            <a
+              href="#"
+              className={`block px-3 py-2 rounded-md text-base font-medium text-stone-400 cursor-not-allowed`}
+              title="即將上線"
+            >
+              活動相簿
+            </a>
             <a
               href="#"
               className={`block px-3 py-2 rounded-md text-base font-medium text-stone-400 cursor-not-allowed`}
