@@ -1,32 +1,28 @@
-import Button from "../components/common/Button";
+// import React from "react";
 import PageTitle from "../components/layout/PageTitle";
 import ActivityCard from "../components/features/activities/ActivityCard";
 import theme from "../constants/theme";
 import { useRecentActivities } from "../hooks/useRecentActivities";
+// import Spinner from "../components/common/Spinner";
+import Slideshow from "../components/features/home/Slideshow";
+import { useSlideshow } from "../hooks/useSlideshow";
+import { mockData } from "../constants/mockData";
 
 const HomePage = () => {
   const { recentActivities, loading, error } = useRecentActivities(6);
+  const { currentIndex, setCurrentIndex, imagesLoaded } = useSlideshow(
+    mockData.slideshow
+  );
 
   return (
     <div>
-      <section className="relative h-[60vh] rounded-xl overflow-hidden flex items-center justify-center text-center text-white bg-stone-700 mb-16">
-        <img
-          src="https://placehold.co/1200x800/57534e/FFFFFF?text=探索台灣山林之美"
-          alt="壯麗山景"
-          className="absolute w-full h-full object-cover opacity-50"
-        />
-        <div className="relative z-10 p-4">
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg">
-            探索台灣山林之美
-          </h1>
-          <p className="mt-4 text-xl md:text-2xl max-w-2xl mx-auto drop-shadow-md">
-            從入門百岳到進階縱走，我們帶您安全地體驗每一段壯遊。
-          </p>
-          <Button to="/activities" className="mt-8" onClick={() => {}}>
-            探索所有活動
-          </Button>
-        </div>
-      </section>
+      {/* 首頁幻燈片 */}
+      <Slideshow
+        slides={mockData.slideshow}
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+        imagesLoaded={imagesLoaded}
+      />
 
       {/* Recent Activities Section */}
       <section>

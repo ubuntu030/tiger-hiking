@@ -1,7 +1,26 @@
 import type { ActivityDetail } from "../types/allActivity.model";
 import type { Guide } from "../types/guide.model";
+import type { SlideshowSlide } from "../types/slideshow.model";
 
 export const mockData: MockData = {
+  // 首頁幻燈片資料
+  slideshow: [
+    {
+      img: "https://images.unsplash.com/photo-1655586201147-dbcf6b0613d0?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "探索台灣山林之美",
+      subtitle: "從入門百岳到進階縱走，我們帶您安全地體驗每一段壯遊。",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "挑戰自我極限",
+      subtitle: "專業嚮導帶領，挑戰台灣高山的壯麗與嚴峻。",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "享受靜謐片刻",
+      subtitle: "在山林中尋找寧靜，感受大自然的療癒力量。",
+    },
+  ],
   // 活動資料
   activities: [
     {
@@ -250,4 +269,5 @@ export interface MockData {
   guides: Guide[];
   faqs: FAQ[];
   albums: Album[];
+  slideshow: SlideshowSlide[];
 }

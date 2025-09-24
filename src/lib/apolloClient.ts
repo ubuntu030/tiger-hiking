@@ -3,6 +3,7 @@ import { onError } from "@apollo/client/link/error";
 import { eventBus } from "./eventBus";
 
 const httpLink = new HttpLink({
+  // TODO: 使用環境變數管理
   uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
 });
 
