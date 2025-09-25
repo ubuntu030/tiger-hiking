@@ -4,6 +4,8 @@ import type { MyActivity } from '../../../types/my-activity.model';
 import { EditRegistrationDialog } from './EditRegistrationDialog';
 import theme from '../../../constants/theme';
 import Button from '../../common/Button';
+import { useCancelRegistration } from '../../../hooks/useCancelRegistration';
+import Dialog from '../../common/Dialog';
 
 interface MyActivityCardProps {
   activity: MyActivity;
@@ -12,6 +14,8 @@ interface MyActivityCardProps {
 
 export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpdateSuccess }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const { cancelRegistration, loading: isCanceling } = useCancelRegistration();
 
   const handleEdit = () => {
     setIsEditDialogOpen(true);
@@ -19,6 +23,12 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
 
   const handleCloseDialog = () => {
     setIsEditDialogOpen(false);
+  };
+
+  const handleCancelRegistration = () => {
+    cancelRegistration(activity.id);
+    setIsCancelDialogOpen(false);
+    onUpdateSuccess();
   };
 
   const renderStatusChip = (status: string) => {
@@ -36,7 +46,10 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
             <h3 className={`text-xl font-semibold ${theme.textPrimary} hover:${theme.accent}`}>
               <Link to={`/activities/${activity.activityId}`}>{activity.name}</Link>
             </h3>
-            <Button onClick={handleEdit}>編輯</Button>
+            <div className="flex space-x-2">
+              <Button onClick={handleEdit}>編輯</Button>
+              <Button onClick={() => setIsCancelDialogOpen(true)} variant="danger">取消報名</Button>
+            </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mt-4 text-sm">
@@ -76,7 +89,17 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
           handleCloseDialog();
         }}
       />
+
+      <Dialog
+        isOpen={isCancelDialogOpen}
+        onClose={() => setIsCancelDialogOpen(false)}
+        onConfirm={handleCancelRegistration}
+        title="確認取消報名"
+        confirmText="確認取消"
+        isConfirming={isCanceling}
+      >
+        <p>您確定要取消報名此活動嗎？此操作無法復原。</p>
+      </Dialog>
     </>
   );
 };
-

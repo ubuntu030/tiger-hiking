@@ -15,6 +15,10 @@ import theme from "./constants/theme";
 import Footer from "./components/layout/Footer";
 import { ToastProvider } from "./contexts/ToastProvider";
 import GlobalErrorListener from "./components/common/GlobalErrorListener";
+import ProfileLayout from "./pages/profile/ProfileLayout";
+import ProfileSettingsPage from "./pages/profile/ProfileSettingsPage";
+import ActivityHistoryPage from "./pages/profile/ActivityHistoryPage";
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
@@ -37,6 +41,15 @@ function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/contact" element={<ContactUsPage />} />
               <Route path="/my-activities" element={<MyActivitiesPage />} />
+              <Route path="/profile" element={<ProfileLayout />}>
+                <Route index element={<Navigate to="settings" replace />} />
+                <Route path="settings" element={<ProfileSettingsPage />} />
+                <Route path="my-activities" element={<MyActivitiesPage />} />
+                <Route
+                  path="activity-history"
+                  element={<ActivityHistoryPage />}
+                />
+              </Route>
               {/* 可以加入一個 404 Not Found 頁面 */}
               <Route path="*" element={<HomePage />} />
             </Routes>

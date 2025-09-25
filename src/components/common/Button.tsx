@@ -10,7 +10,7 @@ interface ButtonProps {
   isLoading?: boolean;
   type?: "button" | "submit" | "reset";
   to?: string;
-  variant?: "primary" | "secondary" | "ghost"; // 新增 'ghost'
+  variant?: "primary" | "secondary" | "ghost" | "danger"; // 新增 'danger'
 }
 
 const Button = ({
@@ -24,15 +24,15 @@ const Button = ({
   variant = "primary",
 }: ButtonProps) => {
   const navigate = useNavigate();
-  // 優化：加入 flex 置中，並移除 shadow-sm，讓 variant 控制陰影
   const commonClasses = `relative flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-all duration-300`;
   const disabledClasses = "bg-stone-300 text-stone-500 cursor-not-allowed";
 
   const variantClasses = {
-    primary: `${theme.primary} text-white ${theme.primaryHover} shadow-sm transform hover:-translate-y-0.5`,
+    primary: `${theme.primary} ${theme.primaryHover} text-white shadow-sm transform hover:-translate-y-0.5`,
     secondary: `${theme.secondary} ${theme.secondaryHover} shadow-sm transform hover:-translate-y-0.5`,
-    // 新增 ghost 樣式，無陰影和 transform
     ghost: `${theme.ghost} ${theme.ghostHover}`,
+    // 新增 danger 樣式
+    danger: `${theme.danger} ${theme.dangerHover} text-white shadow-sm transform hover:-translate-y-0.5`,
   };
   const enabledClasses = variantClasses[variant];
 
