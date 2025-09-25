@@ -1,11 +1,12 @@
 import { X } from "lucide-react";
+import { createPortal } from "react-dom";
 import Button from "./Button";
 import theme from "../../constants/theme";
 
 interface DialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   title: string;
   children: React.ReactNode;
   confirmText?: string;
@@ -25,9 +26,9 @@ const Dialog = ({
 }: DialogProps) => {
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4"
+      className="fixed inset-0 bg-black/50 z-[999] flex justify-center items-start p-4 pt-20"
       onClick={isConfirming ? undefined : onClose} // 當確認中時，禁用背景點擊關閉
     >
       <div
@@ -45,23 +46,23 @@ const Dialog = ({
           </button>
         </div>
         <div className="p-6 overflow-y-auto">{children}</div>
-        <div className="flex justify-end items-center p-4 border-t border-gray-300 bg-stone-50 rounded-b-lg">
-          <button
-            onClick={isConfirming ? undefined : onClose}
-            disabled={isConfirming}
-            className={`px-4 py-2 mr-2 font-semibold ${theme.textSecondary} bg-transparent hover:bg-stone-200 rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-50`}
-          >
-            {cancelText}
-          </button>
-          <Button
-            onClick={onConfirm}
-            isLoading={isConfirming}
-          >
-            {confirmText}
-          </Button>
-        </div>
+        {onConfirm && (
+          <div className="flex justify-end items-center p-4 border-t border-gray-300 bg-stone-50 rounded-b-lg">
+            <button
+              onClick={isConfirming ? undefined : onClose}
+              disabled={isConfirming}
+              className={`px-4 py-2 mr-2 font-semibold ${theme.textSecondary} bg-transparent hover:bg-stone-200 rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-50`}
+            >
+              {cancelText}
+            </button>
+            <Button onClick={onConfirm} isLoading={isConfirming}>
+              {confirmText}
+            </Button>
+          </div>
+        )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
