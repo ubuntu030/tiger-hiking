@@ -9,6 +9,7 @@ import ContactUsPage from "./pages/ContactUsPage";
 import PhotoGalleryPage from "./pages/PhotoGalleryPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/layout/Header";
+import MyActivitiesPage from "./pages/MyActivitiesPage";
 import PageContainer from "./components/layout/PageContainer";
 import theme from "./constants/theme";
 import Footer from "./components/layout/Footer";
@@ -35,6 +36,7 @@ function App() {
               <Route path="/about" element={<AboutUsPage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/contact" element={<ContactUsPage />} />
+              <Route path="/my-activities" element={<MyActivitiesPage />} />
               {/* 可以加入一個 404 Not Found 頁面 */}
               <Route path="*" element={<HomePage />} />
             </Routes>

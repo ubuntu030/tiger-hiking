@@ -15,6 +15,7 @@ const Header = () => {
     { name: "關於我們", path: "/about" },
     { name: "常見問題", path: "/faq" },
     { name: "聯繫我們", path: "/contact" },
+    { name: "我的活動", path: "/my-activities" },
   ];
 
   return (
@@ -47,13 +48,6 @@ const Header = () => {
                 title="即將上線"
               >
                 活動相簿
-              </a>
-              <a
-                href="#"
-                className={`font-medium text-stone-400 cursor-not-allowed`}
-                title="即將上線"
-              >
-                我的活動
               </a>
             </nav>
           </div>
@@ -100,13 +94,6 @@ const Header = () => {
               title="即將上線"
             >
               活動相簿
-            </a>
-            <a
-              href="#"
-              className={`block px-3 py-2 rounded-md text-base font-medium text-stone-400 cursor-not-allowed`}
-              title="即將上線"
-            >
-              我的活動
             </a>
           </nav>
         </div>

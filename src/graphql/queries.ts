@@ -161,6 +161,51 @@ export const SEND_CONTACT_MESSAGE = gql`
 `;
 
 /**
+ * 獲取當前使用者的所有報名活動
+ */
+export const GET_MY_ACTIVITIES = gql`
+  query GetMyActivities {
+    myRegistrations {
+      id
+      activity {
+        id
+        name
+        startDate
+        endDate
+      }
+      plan
+      registrationStatus
+      registrationTime
+      amountDue
+      paymentStatus
+      hikingExperience
+    }
+  }
+`;
+
+/**
+ * 更新一個已有的活動報名
+ */
+export const UPDATE_REGISTRATION = gql`
+  mutation UpdateRegistration(
+    $registrationId: ID!
+    $plan: String
+    $hikingExperience: String
+  ) {
+    updateRegistration(
+      input: {
+        registrationId: $registrationId
+        plan: $plan
+        hikingExperience: $hikingExperience
+      }
+    ) {
+      success
+      message
+    }
+  }
+`;
+
+/**
  * 建立一個新的活動報名
  */
 export const CREATE_REGISTRATION = gql`
