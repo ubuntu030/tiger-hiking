@@ -15,6 +15,10 @@ const theme = {
   danger: "bg-[#D97706] text-white", // 使用橘色作為背景，並搭配白色文字
   dangerHover: "hover:bg-[#a85e05]", // hover 時顏色更深一點，增加視覺回饋
 
+  // Outline button styles
+  outline: "bg-transparent border-2 border-[#2C5E1A] text-[#2C5E1A]", // 邊框和文字使用主色深綠
+  outlineHover: "hover:bg-[#2C5E1A]/10", // hover 時使用主色的 10% 透明度作為淺背景
+
   background: "bg-[#F5F5F5]/10 backdrop-blur-sm",
   textPrimary: "text-[#333333]",
   textSecondary: "text-stone-600",

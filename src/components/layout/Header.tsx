@@ -15,8 +15,8 @@ const Header = () => {
     { name: "關於我們", path: "/about" },
     { name: "常見問題", path: "/faq" },
     { name: "聯繫我們", path: "/contact" },
-    { name: "我的活動", path: "/my-activities" },
-    { name: "會員中心", path: "/profile" }, 
+    { name: "會員中心", path: "/profile" },
+    { name: "登入/註冊", path: "/auth" },
   ];
 
   return (

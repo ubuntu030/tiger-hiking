@@ -19,6 +19,7 @@ import ProfileLayout from "./pages/profile/ProfileLayout";
 import ProfileSettingsPage from "./pages/profile/ProfileSettingsPage";
 import ActivityHistoryPage from "./pages/profile/ActivityHistoryPage";
 import { Navigate } from "react-router-dom";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/contact" element={<ContactUsPage />} />
               <Route path="/my-activities" element={<MyActivitiesPage />} />
+              <Route path="/auth" element={<AuthPage />} />
               <Route path="/profile" element={<ProfileLayout />}>
                 <Route index element={<Navigate to="settings" replace />} />
                 <Route path="settings" element={<ProfileSettingsPage />} />

@@ -10,7 +10,7 @@ interface ButtonProps {
   isLoading?: boolean;
   type?: "button" | "submit" | "reset";
   to?: string;
-  variant?: "primary" | "secondary" | "ghost" | "danger"; // 新增 'danger'
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "outline";
 }
 
 const Button = ({
@@ -33,6 +33,10 @@ const Button = ({
     ghost: `${theme.ghost} ${theme.ghostHover}`,
     // 新增 danger 樣式
     danger: `${theme.danger} ${theme.dangerHover} text-white shadow-sm transform hover:-translate-y-0.5`,
+    outline: `${
+      theme.outline ??
+      "bg-transparent border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+    } ${theme.outlineHover ?? ""}`,
   };
   const enabledClasses = variantClasses[variant];
 

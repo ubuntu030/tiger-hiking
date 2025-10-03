@@ -246,3 +246,70 @@ export const CREATE_REGISTRATION = gql`
     }
   }
 `;
+
+/**
+ * 登入
+ */
+export const LOGIN_USER = gql`
+  mutation LoginUser($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      success
+      message
+      accessToken # 成功登入後，返回授權 Token
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
+/**
+ * 請求/發送 OTP 驗證碼 (Request OTP)
+ */
+export const REQUEST_OTP = gql`
+  mutation RequestOTP($email: String!) {
+    requestOtp(email: $email) {
+      success
+      message # 例如: "驗證碼已發送到您的電子郵件，請在 5 分鐘內完成驗證。"
+    }
+  }
+`;
+
+/**
+ * 驗證 OTP 密碼 (Verify OTP)
+ */
+export const VERIFY_OTP = gql`
+  mutation VerifyOTP($email: String!, $otpCode: String!) {
+    verifyOtp(email: $email, otpCode: $otpCode) {
+      success
+      message
+      verificationToken # 驗證成功後，返回用於註冊的短效 Token
+    }
+  }
+`;
+/**
+ * 註冊 (Register)
+ */
+export const REGISTER_USER = gql`
+  mutation RegisterUser($input: RegisterInput!) {
+    register(input: $input) {
+      success
+      message
+      accessToken # 註冊成功後自動登入，返回登入 Token
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
+
+// 備註：後端 RegisterInput 結構應定義為：
+/*
+type RegisterInput {
+  email: String!
+  password: String!
+  verificationToken: String! // 替換了 otpCode，用於證明 Email 已驗證
+  // 可以在此處加入其他欄位，如 name 等...
+}
+*/
