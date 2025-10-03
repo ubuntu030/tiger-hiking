@@ -1,5 +1,10 @@
 import { useState, useCallback } from "react";
-import { isValidTaiwanId } from "../../../utils/validators";
+import {
+  isValidTaiwanId,
+  isValidPassport,
+  isValidEmail,
+  isValidPhone,
+} from "../../../utils/validators";
 
 interface ErrorMessages {
   [key: string]: string | null;
@@ -57,8 +62,6 @@ export const useRegistrationForm = () => {
 
   const validate = useCallback(() => {
     const newErrors: ErrorMessages = {};
-    const phoneRegex = /^\d+$/;
-    const passportRegex = /^[A-Z0-9]+$/;
 
     if (!formData.plan) newErrors.plan = "方案選擇為必填欄位";
     if (!formData.name) newErrors.name = "姓名為必填欄位";
@@ -72,13 +75,13 @@ export const useRegistrationForm = () => {
       newErrors.idNumber = "台灣身分證格式不正確";
     } else if (
       formData.nationality === "foreign" &&
-      !passportRegex.test(formData.idNumber)
+      !isValidPassport(formData.idNumber)
     ) {
       newErrors.idNumber = "護照號碼格式不正確 (僅能包含英數字)";
     }
     if (!formData.email) {
       newErrors.email = "電子郵件為必填欄位";
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    } else if (!isValidEmail(formData.email)) {
       newErrors.email = "電子郵件格式不正確";
     }
     if (!formData.nationality) newErrors.nationality = "國籍為必填欄位";
@@ -86,16 +89,16 @@ export const useRegistrationForm = () => {
       newErrors.emergencyContact = "緊急聯絡人為必填欄位";
     if (!formData.emergencyPhone) {
       newErrors.emergencyPhone = "緊急聯絡人電話為必填欄位";
-    } else if (!phoneRegex.test(formData.emergencyPhone)) {
+    } else if (!isValidPhone(formData.emergencyPhone)) {
       newErrors.emergencyPhone = "電話號碼僅能包含數字";
     }
     if (!formData.address) newErrors.address = "聯絡地址為必填欄位";
     if (!formData.mobile) {
       newErrors.mobile = "手機為必填欄位";
-    } else if (!phoneRegex.test(formData.mobile)) {
+    } else if (!isValidPhone(formData.mobile)) {
       newErrors.mobile = "手機號碼僅能包含數字";
     }
-    if (formData.phone && !phoneRegex.test(formData.phone)) {
+    if (formData.phone && !isValidPhone(formData.phone)) {
       newErrors.phone = "市話號碼僅能包含數字";
     }
     if (formData.hikingExperience && formData.hikingExperience.length > 500) {

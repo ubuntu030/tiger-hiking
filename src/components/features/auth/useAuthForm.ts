@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { isValidEmail } from "../../../utils/validators";
 
 type AuthMode = "login" | "register";
 
@@ -49,11 +50,10 @@ export const useAuthForm = () => {
 
   const validate = useCallback(() => {
     const newErrors: AuthFormErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formData.email) {
       newErrors.email = "電子郵件為必填欄位";
-    } else if (!emailRegex.test(formData.email)) {
+    } else if (!isValidEmail(formData.email)) {
       newErrors.email = "電子郵件格式不正確";
     }
 

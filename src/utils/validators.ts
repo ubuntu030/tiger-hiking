@@ -1,11 +1,14 @@
-/**
- * 驗證台灣身分證號碼格式與校驗碼
- * @param id - 身分證號碼字串
- * @returns boolean - 是否為有效身分證號碼
- */
+import { REGEX_EMAIL, REGEX_PHONE, REGEX_TAIWAN_ID, REGEX_PASSPORT } from "../constants/regex";
+
+// 驗證電子郵件
+export const isValidEmail = (email: string): boolean => REGEX_EMAIL.test(email);
+
+// 驗證電話號碼
+export const isValidPhone = (phone: string): boolean => REGEX_PHONE.test(phone);
+
+// 驗證台灣身份證
 export const isValidTaiwanId = (id: string): boolean => {
-  // 格式檢查：1個英文字母 + 1或2 + 8個數字
-  if (!/^[A-Z][12]\d{8}$/.test(id)) {
+  if (!REGEX_TAIWAN_ID.test(id)) {
     return false;
   }
 
@@ -34,3 +37,5 @@ export const isValidTaiwanId = (id: string): boolean => {
   return sum % 10 === 0;
 };
 
+// 驗證護照
+export const isValidPassport = (passport: string): boolean => REGEX_PASSPORT.test(passport);

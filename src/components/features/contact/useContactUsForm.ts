@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isValidEmail } from "../../../utils/validators";
 
 interface ContactFormData {
   name: string;
@@ -39,7 +40,7 @@ export const useContactUsForm = () => {
     }
     if (!formData.email.trim()) {
       newErrors.email = '電子郵件為必填欄位';
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    } else if (!isValidEmail(formData.email)) {
       newErrors.email = '電子郵件格式不正確';
     }
     if (!formData.message.trim()) {
