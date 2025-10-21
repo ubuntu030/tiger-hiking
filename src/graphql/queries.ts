@@ -267,10 +267,10 @@ export const LOGIN_USER = gql`
  * 請求/發送 OTP 驗證碼 (Request OTP)
  */
 export const REQUEST_OTP = gql`
-  mutation RequestOTP($email: String!) {
-    requestOtp(email: $email) {
+  mutation RequestOTP($input: RequestOtpInput!) {
+    requestOTP(input: $input) {
       success
-      message # 例如: "驗證碼已發送到您的電子郵件，請在 5 分鐘內完成驗證。"
+      message
     }
   }
 `;

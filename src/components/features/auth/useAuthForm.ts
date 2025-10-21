@@ -1,8 +1,13 @@
 import { useState, useCallback } from "react";
-import { isValidEmail } from "../../../utils/validators";
+import { useMutation } from "@apollo/client";
+import { isValidEmail } from "../../../utils/validators"; // 驗證電子郵件格式的工具函式
+import { REQUEST_OTP } from "../../../graphql/queries"; // 引入發送驗證碼的 GraphQL mutation
+import { useToast } from "../../../hooks/useToast"; // 引入 useToast Hook
 
+// 定義登入或註冊模式
 type AuthMode = "login" | "register";
 
+// 定義表單的狀態結構
 export interface AuthFormState {
   email: string;
   password: string;
@@ -10,6 +15,7 @@ export interface AuthFormState {
   verificationCode: string;
 }
 
+// 定義表單的錯誤訊息結構
 export interface AuthFormErrors {
   email?: string;
   password?: string;
@@ -17,6 +23,7 @@ export interface AuthFormErrors {
   verificationCode?: string;
 }
 
+// 初始化表單的預設值
 const initialFormState: AuthFormState = {
   email: "",
   password: "",
@@ -24,39 +31,69 @@ const initialFormState: AuthFormState = {
   verificationCode: "",
 };
 
+// 自訂 Hook：用於管理登入/註冊表單的邏輯
 export const useAuthForm = () => {
+  // 狀態：登入或註冊模式
   const [mode, setMode] = useState<AuthMode>("login");
+
+  // 狀態：表單資料
   const [formData, setFormData] = useState<AuthFormState>(initialFormState);
+
+  // 狀態：表單錯誤訊息
   const [errors, setErrors] = useState<AuthFormErrors>({});
+
+  // 狀態：是否進入冷卻期（防止暴力登入）
   const [isCoolingDown, setIsCoolingDown] = useState(false);
+
+  // 狀態：登入嘗試次數
   const [loginAttempts, setLoginAttempts] = useState(0);
+
+  // 狀態：是否已發送驗證碼
   const [isCodeSent, setIsCodeSent] = useState(false);
+
+  // 狀態：是否正在發送驗證碼
   const [isSendingCode, setIsSendingCode] = useState(false);
+
+  // 狀態：驗證碼相關訊息
   const [verificationMsg, setVerificationMsg] = useState<string | null>(null);
 
+  // 判斷當前是否為登入模式
   const isLogin = mode === "login";
 
+  // 使用 useToast Hook
+  const { showToast } = useToast();
+
+  // GraphQL Mutation：發送驗證碼
+  const [requestOTP] = useMutation(REQUEST_OTP);
+
+  // 處理表單輸入變更
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
+
+      // 更新表單資料
       setFormData((prev) => ({ ...prev, [name]: value }));
+
+      // 如果該欄位有錯誤，清除錯誤訊息
       if (errors[name as keyof AuthFormErrors]) {
         setErrors((prev) => ({ ...prev, [name]: undefined }));
       }
-      console.log(formData);
     },
     [errors]
   );
 
+  // 驗證表單資料
   const validate = useCallback(() => {
     const newErrors: AuthFormErrors = {};
 
+    // 驗證電子郵件
     if (!formData.email) {
       newErrors.email = "電子郵件為必填欄位";
     } else if (!isValidEmail(formData.email)) {
       newErrors.email = "電子郵件格式不正確";
     }
 
+    // 如果是註冊模式，進一步驗證其他欄位
     if (!isLogin) {
       if (!formData.password) {
         newErrors.password = "密碼為必填欄位";
@@ -74,6 +111,7 @@ export const useAuthForm = () => {
     return newErrors;
   }, [formData, isLogin]);
 
+  // 重置表單
   const resetForm = useCallback(() => {
     setFormData(initialFormState);
     setErrors({});
@@ -82,23 +120,65 @@ export const useAuthForm = () => {
     setIsSendingCode(false);
   }, []);
 
-  const handleSendVerificationCode = useCallback(() => {
-    if (!formData.email || errors.email) {
-      setVerificationMsg("請先輸入有效的電子郵件再發送驗證碼。");
+  // 發送驗證碼
+  const handleSendVerificationCode = useCallback(async () => {
+    // 在發送前，先單獨驗證電子郵件欄位
+    const emailError = validate().email;
+    if (emailError) {
+      setErrors((prev) => ({ ...prev, email: emailError }));
+      // 也可以選擇性地設定一個通用的驗證訊息
+      setVerificationMsg("請先輸入有效的電子郵件。");
       return;
     }
+
+    // 如果已有其他 email 相關錯誤，也一併阻擋
+    if (errors.email) {
+      setVerificationMsg("請修正電子郵件錯誤後再試。");
+      return;
+    }
+
+    // 清除之前的驗證訊息並設定為發送中
     setVerificationMsg(null);
     setIsSendingCode(true);
 
-    // 模擬 API 呼叫
-    setTimeout(() => {
-      setIsSendingCode(false);
-      setIsCodeSent(true);
-      setVerificationMsg("驗證碼已發送至電子郵件，請檢查信箱。");
-    }, 1000);
-  }, [formData.email, errors]);
+    try {
+      // 呼叫 GraphQL Mutation 發送驗證碼
+      const { data } = await requestOTP({
+        variables: {
+          input: {
+            email: formData.email,
+          },
+        },
+      });
 
+      // 根據後端回應更新狀態
+      if (data?.requestOTP?.success) {
+        setIsCodeSent(true);
+        setVerificationMsg(
+          data.requestOTP.message || "驗證碼已發送至電子郵件，請檢查信箱。"
+        );
+        // 顯示成功通知
+        showToast(data.requestOTP.message || "驗證碼已成功發送！", "success");
+      } else {
+        setVerificationMsg(
+          data?.requestOTP?.message || "發送驗證碼失敗，請稍後再試。"
+        );
+        // 顯示失敗通知
+        showToast(data?.requestOTP?.message || "發送驗證碼失敗。", "error");
+      }
+    } catch (error) {
+      setVerificationMsg("發送驗證碼時發生錯誤，請稍後再試。");
+      // 顯示錯誤通知
+      showToast("發送驗證碼失敗。", "error");
+    } finally {
+      // 無論成功或失敗，結束發送狀態
+      setIsSendingCode(false);
+    }
+  }, [formData.email, errors.email, requestOTP, showToast, validate]);
+
+  // 提交表單
   const handleSubmit = useCallback(() => {
+    // 驗證表單資料
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -113,6 +193,8 @@ export const useAuthForm = () => {
       ) {
         const newAttempts = loginAttempts + 1;
         setLoginAttempts(newAttempts);
+
+        // 如果嘗試次數超過限制，進入冷卻期
         if (newAttempts >= 5) {
           setIsCoolingDown(true);
           setTimeout(() => {

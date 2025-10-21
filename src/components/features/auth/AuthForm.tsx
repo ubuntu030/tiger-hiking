@@ -136,7 +136,9 @@ const AuthForm = () => {
               placeholder="••••••••"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword}
+              </p>
             )}
           </FormField>
         )}
