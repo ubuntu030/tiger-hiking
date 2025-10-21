@@ -18,8 +18,11 @@ const AuthForm = () => {
     isSendingCode,
     verificationMsg,
     handleChange,
+    handleVerifyOtp,
     handleSendVerificationCode,
     handleSubmit,
+    isVerifyingOtp,
+    isOtpVerified,
   } = useAuthForm();
 
   return (
@@ -89,24 +92,53 @@ const AuthForm = () => {
                 type="text"
                 value={formData.verificationCode}
                 onChange={handleChange}
+                disabled={isOtpVerified} // 如果已驗證，則禁用輸入框
                 placeholder="輸入驗證碼"
               />
-              <Button
-                type="button"
-                variant="outline"
-                className="whitespace-nowrap"
-                onClick={handleSendVerificationCode}
-                disabled={isSendingCode}
-              >
-                {isSendingCode
-                  ? "發送中..."
-                  : isCodeSent
-                  ? "再次發送"
-                  : "發送驗證碼"}
-              </Button>
+              {/* 如果已發送驗證碼且尚未驗證成功，顯示驗證按鈕 */}
+              {isCodeSent && !isOtpVerified && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="whitespace-nowrap"
+                  onClick={handleVerifyOtp}
+                  disabled={isVerifyingOtp}
+                >
+                  {isVerifyingOtp ? "驗證中..." : "驗證"}
+                </Button>
+              )}
+
+              {/* 如果已驗證，則不顯示發送按鈕 */}
+              {!isOtpVerified && (
+                <Button
+                  // 如果正在驗證中，也禁用發送按鈕
+                  type="button"
+                  variant="outline"
+                  className="whitespace-nowrap"
+                  onClick={handleSendVerificationCode}
+                  disabled={isSendingCode}
+                >
+                  {isSendingCode
+                    ? "發送中..."
+                    : isCodeSent
+                    ? "再次發送"
+                    : "發送驗證碼"}
+                </Button>
+              )}
             </div>
             {verificationMsg && (
-              <p className="text-sm mt-1 text-green-600">{verificationMsg}</p>
+              <p
+                className={`text-sm mt-1 ${
+                  isOtpVerified ? "text-green-600" : "text-gray-600"
+                }`}
+              >
+                {verificationMsg}
+              </p>
+            )}
+            {errors.verificationCode && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.verificationCode}
+              </p>
             )}
           </FormField>
         )}

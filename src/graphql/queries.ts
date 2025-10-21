@@ -279,11 +279,11 @@ export const REQUEST_OTP = gql`
  * 驗證 OTP 密碼 (Verify OTP)
  */
 export const VERIFY_OTP = gql`
-  mutation VerifyOTP($email: String!, $otpCode: String!) {
-    verifyOtp(email: $email, otpCode: $otpCode) {
+  mutation VerifyOtpMutation($input: VerifyOtpInput!) {
+    verifyOTP(input: $input) {
       success
       message
-      verificationToken # 驗證成功後，返回用於註冊的短效 Token
+      verificationToken
     }
   }
 `;

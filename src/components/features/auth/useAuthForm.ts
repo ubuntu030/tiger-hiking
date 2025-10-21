@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import { isValidEmail } from "../../../utils/validators"; // 驗證電子郵件格式的工具函式
-import { REQUEST_OTP } from "../../../graphql/queries"; // 引入發送驗證碼的 GraphQL mutation
+import { REQUEST_OTP, VERIFY_OTP } from "../../../graphql/queries"; // 引入發送驗證碼的 GraphQL mutation
 import { useToast } from "../../../hooks/useToast"; // 引入 useToast Hook
 
 // 定義登入或註冊模式
@@ -57,6 +57,17 @@ export const useAuthForm = () => {
   // 狀態：驗證碼相關訊息
   const [verificationMsg, setVerificationMsg] = useState<string | null>(null);
 
+  // 狀態：OTP是否已驗證
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+
+  // 狀態：是否正在驗證OTP
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+
+  // 狀態：驗證成功後的Token
+  const [verificationToken, setVerificationToken] = useState<string | null>(
+    null
+  );
+
   // 判斷當前是否為登入模式
   const isLogin = mode === "login";
 
@@ -65,6 +76,9 @@ export const useAuthForm = () => {
 
   // GraphQL Mutation：發送驗證碼
   const [requestOTP] = useMutation(REQUEST_OTP);
+
+  // GraphQL Mutation：驗證OTP
+  const [verifyOTP] = useMutation(VERIFY_OTP);
 
   // 處理表單輸入變更
   const handleChange = useCallback(
@@ -118,6 +132,9 @@ export const useAuthForm = () => {
     setVerificationMsg(null);
     setIsCodeSent(false);
     setIsSendingCode(false);
+    setIsOtpVerified(false);
+    setIsVerifyingOtp(false);
+    setVerificationToken(null);
   }, []);
 
   // 發送驗證碼
@@ -176,6 +193,46 @@ export const useAuthForm = () => {
     }
   }, [formData.email, errors.email, requestOTP, showToast, validate]);
 
+  // 驗證OTP
+  const handleVerifyOtp = useCallback(async () => {
+    if (!formData.verificationCode) {
+      setErrors((prev) => ({ ...prev, verificationCode: "請輸入驗證碼" }));
+      return;
+    }
+    setIsVerifyingOtp(true);
+    setVerificationMsg(null);
+
+    try {
+      const { data } = await verifyOTP({
+        variables: {
+          input: {
+            email: formData.email,
+            otpCode: formData.verificationCode,
+          },
+        },
+      });
+
+      if (data?.verifyOTP?.success) {
+        setIsOtpVerified(true);
+        setVerificationToken(data.verifyOTP.verificationToken);
+        const message =
+          data.verifyOTP.message || "驗證成功！現在可以完成註冊。";
+        setVerificationMsg(message);
+        showToast(message, "success");
+      } else {
+        const message = data?.verifyOTP?.message || "驗證碼不正確或已過期。";
+        setVerificationMsg(message);
+        showToast(message, "error");
+      }
+    } catch (error) {
+      const message = "驗證過程中發生錯誤，請稍後再試。";
+      setVerificationMsg(message);
+      showToast(message, "error");
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  }, [formData.email, formData.verificationCode, verifyOTP, showToast]);
+
   // 提交表單
   const handleSubmit = useCallback(() => {
     // 驗證表單資料
@@ -207,9 +264,13 @@ export const useAuthForm = () => {
       }
     } else {
       // 模擬註冊邏輯
+      if (!isOtpVerified) {
+        showToast("請先完成電子郵件驗證。", "error");
+        return;
+      }
       alert("註冊成功！將自動登入並導向首頁。");
     }
-  }, [formData, isLogin, loginAttempts, validate]);
+  }, [formData, isLogin, loginAttempts, validate, isOtpVerified, showToast]);
 
   return {
     mode,
@@ -221,8 +282,12 @@ export const useAuthForm = () => {
     isCodeSent,
     isSendingCode,
     verificationMsg,
+    isOtpVerified,
+    isVerifyingOtp,
+    verificationToken,
     handleChange,
     handleSendVerificationCode,
+    handleVerifyOtp,
     handleSubmit,
     resetForm,
   };
