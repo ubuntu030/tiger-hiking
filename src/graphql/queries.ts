@@ -291,7 +291,7 @@ export const VERIFY_OTP = gql`
  * 註冊 (Register)
  */
 export const REGISTER_USER = gql`
-  mutation RegisterUser($input: RegisterInput!) {
+  mutation RegisterUser($input: RegisterUserInput!) {
     register(input: $input) {
       success
       message
@@ -304,9 +304,9 @@ export const REGISTER_USER = gql`
   }
 `;
 
-// 備註：後端 RegisterInput 結構應定義為：
+// 備註：後端 RegisterUserInput 結構應定義為：
 /*
-type RegisterInput {
+type RegisterUserInput {
   email: String!
   password: String!
   verificationToken: String! // 替換了 otpCode，用於證明 Email 已驗證

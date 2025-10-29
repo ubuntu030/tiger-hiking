@@ -1,7 +1,11 @@
 import { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import { isValidEmail } from "../../../utils/validators"; // 驗證電子郵件格式的工具函式
-import { REQUEST_OTP, VERIFY_OTP } from "../../../graphql/queries"; // 引入發送驗證碼的 GraphQL mutation
+import {
+  REQUEST_OTP,
+  VERIFY_OTP,
+  REGISTER_USER,
+} from "../../../graphql/queries"; // 引入 GraphQL mutation
 import { useToast } from "../../../hooks/useToast"; // 引入 useToast Hook
 
 // 定義登入或註冊模式
@@ -80,6 +84,9 @@ export const useAuthForm = () => {
   // GraphQL Mutation：驗證OTP
   const [verifyOTP] = useMutation(VERIFY_OTP);
 
+  // GraphQL Mutation：註冊用戶
+  const [registerUser] = useMutation(REGISTER_USER);
+
   // 處理表單輸入變更
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -111,6 +118,10 @@ export const useAuthForm = () => {
     if (!isLogin) {
       if (!formData.password) {
         newErrors.password = "密碼為必填欄位";
+      } else if (formData.password.length < 8) {
+        newErrors.password = "密碼長度至少為 8 個字元";
+      } else if (!/[a-zA-Z]/.test(formData.password)) {
+        newErrors.password = "密碼必須包含至少一個英文字母";
       }
       if (!formData.confirmPassword) {
         newErrors.confirmPassword = "確認密碼為必填欄位";
@@ -234,7 +245,7 @@ export const useAuthForm = () => {
   }, [formData.email, formData.verificationCode, verifyOTP, showToast]);
 
   // 提交表單
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     // 驗證表單資料
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -263,14 +274,49 @@ export const useAuthForm = () => {
         alert("登入成功！");
       }
     } else {
-      // 模擬註冊邏輯
-      if (!isOtpVerified) {
+      // 註冊邏輯
+      if (!isOtpVerified || !verificationToken) {
         showToast("請先完成電子郵件驗證。", "error");
         return;
       }
-      alert("註冊成功！將自動登入並導向首頁。");
+
+      try {
+        const { data } = await registerUser({
+          variables: {
+            input: {
+              email: formData.email,
+              password: formData.password,
+              verificationToken: verificationToken,
+            },
+          },
+        });
+
+        if (data?.register?.success) {
+          const message =
+            data.register.message || "註冊成功！將自動登入並導向首頁。";
+          showToast(message, "success");
+          // 在此處處理登入邏輯，例如儲存 accessToken
+          // const { accessToken, user } = data.register;
+          // ...
+        } else {
+          const message = data?.register?.message || "註冊失敗，請稍後再試。";
+          showToast(message, "error");
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        showToast("註冊過程中發生錯誤，請稍後再試。", "error");
+      }
     }
-  }, [formData, isLogin, loginAttempts, validate, isOtpVerified, showToast]);
+  }, [
+    formData,
+    isLogin,
+    loginAttempts,
+    validate,
+    isOtpVerified,
+    showToast,
+    registerUser,
+    verificationToken,
+  ]);
 
   return {
     mode,

@@ -1,6 +1,5 @@
 import { useAuthForm } from "./useAuthForm";
-import { Eye, EyeOff, Chrome, Facebook } from "lucide-react";
-import PasswordStrength from "./PasswordStrength";
+import { Chrome, Facebook } from "lucide-react";
 import Button from "../../common/Button";
 import FormField from "../../common/FormField";
 import InputField from "../../common/InputField";
@@ -8,7 +7,6 @@ import theme from "../../../constants/theme";
 
 const AuthForm = () => {
   const {
-    mode,
     setMode,
     formData,
     errors,
