@@ -282,29 +282,35 @@ export const useAuthForm = () => {
 
       try {
         const { data } = await registerUser({
+          // 使用我們定義的 RegisterUserInput 型別來確保變數結構的正確性
           variables: {
             input: {
+              // 這個物件的型別是 RegisterUserInput
               email: formData.email,
               password: formData.password,
-              verificationToken: verificationToken,
+              verificationToken: verificationToken, // verificationToken 來自 useState，且已確保非 null
             },
           },
         });
 
-        if (data?.register?.success) {
+        if (data?.registerUser?.success) {
           const message =
-            data.register.message || "註冊成功！將自動登入並導向首頁。";
+            data.registerUser.message || "註冊成功！將自動登入並導向首頁。";
           showToast(message, "success");
           // 在此處處理登入邏輯，例如儲存 accessToken
-          // const { accessToken, user } = data.register;
+          // const { accessToken, user } = data.registerUser;
           // ...
         } else {
-          const message = data?.register?.message || "註冊失敗，請稍後再試。";
+          const message =
+            data?.registerUser?.message || "註冊失敗，請稍後再試。";
           showToast(message, "error");
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        showToast("註冊過程中發生錯誤，請稍後再試。", "error");
+        if ((error as any)?.message) {
+          showToast((error as any).message, "error");
+        } else {
+          showToast("註冊過程中發生錯誤，請稍後再試。", "error");
+        }
       }
     }
   }, [

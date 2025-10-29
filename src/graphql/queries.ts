@@ -292,7 +292,7 @@ export const VERIFY_OTP = gql`
  */
 export const REGISTER_USER = gql`
   mutation RegisterUser($input: RegisterUserInput!) {
-    register(input: $input) {
+    registerUser(input: $input) {
       success
       message
       accessToken # 註冊成功後自動登入，返回登入 Token
@@ -304,12 +304,6 @@ export const REGISTER_USER = gql`
   }
 `;
 
-// 備註：後端 RegisterUserInput 結構應定義為：
-/*
-type RegisterUserInput {
-  email: String!
-  password: String!
-  verificationToken: String! // 替換了 otpCode，用於證明 Email 已驗證
-  // 可以在此處加入其他欄位，如 name 等...
-}
-*/
+// 備註：
+// 後端 RegisterUserInput 的結構對應前端的 `src/types/auth.model.ts` 中的 `RegisterUserInput` interface。
+// 它包含了 email, password, 和 verificationToken。
