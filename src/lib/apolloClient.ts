@@ -5,6 +5,9 @@ import { eventBus } from "./eventBus";
 const httpLink = new HttpLink({
   // TODO: 使用環境變數管理
   uri: import.meta.env.VITE_GRAPHQL_API_URL || "http://localhost:3000/graphql",
+  // 如果前端請求沒有包含 credentials: 'include'，瀏覽器也會忽略後端返回的 Set-Cookie 指令。
+  // same-origin 表示只有在同源請求時才會帶上 cookie，include 則是不論是否同源都會帶上 cookie。
+  credentials: "include",
 });
 
 // 這是錯誤處理的核心

@@ -4,11 +4,17 @@ import "./index.css";
 import App from "./App.tsx";
 import { ApolloProvider } from "@apollo/client";
 import client from "./lib/apolloClient.ts";
+import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import { ToastProvider } from "./contexts/ToastProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <ToastProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ToastProvider>
     </ApolloProvider>
   </StrictMode>
 );

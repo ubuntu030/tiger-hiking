@@ -289,13 +289,14 @@ export const VERIFY_OTP = gql`
 `;
 /**
  * 註冊 (Register)
+ * 後端 RegisterUserInput 的結構對應前端的 `src/types/auth.model.ts` 中的 `RegisterUserInput` interface。
+ * 它包含了 email, password, 和 verificationToken。
  */
 export const REGISTER_USER = gql`
   mutation RegisterUser($input: RegisterUserInput!) {
     registerUser(input: $input) {
       success
       message
-      accessToken # 註冊成功後自動登入，返回登入 Token
       user {
         id
         email
@@ -304,6 +305,14 @@ export const REGISTER_USER = gql`
   }
 `;
 
-// 備註：
-// 後端 RegisterUserInput 的結構對應前端的 `src/types/auth.model.ts` 中的 `RegisterUserInput` interface。
-// 它包含了 email, password, 和 verificationToken。
+/**
+ * 登出
+ */
+export const LOGOUT_USER = gql`
+  mutation LogoutUser {
+    logout {
+      success
+      message
+    }
+  }
+`;

@@ -2,22 +2,30 @@ import { Mountain } from "lucide-react";
 import theme from "../../constants/theme";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/auth.context";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
 
-  // 步驟 3: 將導覽連結從 page state 改為 URL 路徑
-  const navLinks = [
+  const baseNavLinks = [
     { name: "首頁", path: "/" },
     { name: "所有活動", path: "/activities" },
-    // { name: '活動相簿', path: '/gallery' },
     { name: "最新公告", path: "/announcements" },
     { name: "關於我們", path: "/about" },
     { name: "常見問題", path: "/faq" },
     { name: "聯繫我們", path: "/contact" },
-    { name: "會員中心", path: "/profile" },
-    { name: "登入/註冊", path: "/auth" },
   ];
+
+  const navLinks = isLoggedIn
+    ? [
+        ...baseNavLinks,
+        { name: "會員中心", path: "/profile" },
+      ]
+    : [
+        ...baseNavLinks,
+        { name: "登入/註冊", path: "/auth" },
+      ];
 
   return (
     <header className={`${theme.cardBg} sticky top-0 z-50 shadow-md`}>
@@ -43,6 +51,14 @@ const Header = () => {
                   {link.name}
                 </Link>
               ))}
+              {isLoggedIn && (
+                <button
+                  onClick={logout}
+                  className={`font-medium ${theme.textSecondary} hover:${theme.accent} transition-colors`}
+                >
+                  登出
+                </button>
+              )}
               <a
                 href="#"
                 className={`font-medium text-stone-400 cursor-not-allowed`}
@@ -89,6 +105,17 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            {isLoggedIn && (
+              <button
+                onClick={() => {
+                  logout();
+                  setIsMenuOpen(false);
+                }}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${theme.textSecondary} hover:bg-stone-100`}
+              >
+                登出
+              </button>
+            )}
             <a
               href="#"
               className={`block px-3 py-2 rounded-md text-base font-medium text-stone-400 cursor-not-allowed`}

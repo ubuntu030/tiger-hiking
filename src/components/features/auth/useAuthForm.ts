@@ -7,6 +7,7 @@ import {
   REGISTER_USER,
 } from "../../../graphql/queries"; // 引入 GraphQL mutation
 import { useToast } from "../../../hooks/useToast"; // 引入 useToast Hook
+import { useAuth } from "../../../contexts/auth.context";
 
 // 定義登入或註冊模式
 type AuthMode = "login" | "register";
@@ -37,6 +38,7 @@ const initialFormState: AuthFormState = {
 
 // 自訂 Hook：用於管理登入/註冊表單的邏輯
 export const useAuthForm = () => {
+  const { login, setUserState, loading: authLoading } = useAuth();
   // 狀態：登入或註冊模式
   const [mode, setMode] = useState<AuthMode>("login");
 
@@ -130,6 +132,11 @@ export const useAuthForm = () => {
       }
       if (!formData.verificationCode) {
         newErrors.verificationCode = "驗證碼為必填欄位";
+      }
+    } else {
+      // 登入模式也需要驗證密碼
+      if (!formData.password) {
+        newErrors.password = "密碼為必填欄位";
       }
     }
 
@@ -254,15 +261,14 @@ export const useAuthForm = () => {
     }
 
     if (isLogin) {
-      // 模擬登入邏輯
-      if (
-        formData.email !== "test@test.com" ||
-        formData.password !== "Password123!"
-      ) {
+      try {
+        await login(formData.email, formData.password);
+        showToast("登入成功！", "success");
+        // 登入成功後可以導向到其他頁面
+      } catch (error) {
         const newAttempts = loginAttempts + 1;
         setLoginAttempts(newAttempts);
 
-        // 如果嘗試次數超過限制，進入冷卻期
         if (newAttempts >= 5) {
           setIsCoolingDown(true);
           setTimeout(() => {
@@ -270,8 +276,12 @@ export const useAuthForm = () => {
             setLoginAttempts(0);
           }, 10000); // 10 秒冷卻
         }
-      } else {
-        alert("登入成功！");
+
+        if ((error as any)?.message) {
+          showToast((error as any).message, "error");
+        } else {
+          showToast("登入失敗，請檢查您的帳號或密碼。", "error");
+        }
       }
     } else {
       // 註冊邏輯
@@ -282,24 +292,23 @@ export const useAuthForm = () => {
 
       try {
         const { data } = await registerUser({
-          // 使用我們定義的 RegisterUserInput 型別來確保變數結構的正確性
           variables: {
             input: {
-              // 這個物件的型別是 RegisterUserInput
               email: formData.email,
               password: formData.password,
-              verificationToken: verificationToken, // verificationToken 來自 useState，且已確保非 null
+              verificationToken: verificationToken,
             },
           },
         });
 
-        if (data?.registerUser?.success) {
+        // 註冊成功後，後端會自動登入並回傳 user 物件
+        if (data?.registerUser?.success && data.registerUser.user) {
           const message =
-            data.registerUser.message || "註冊成功！將自動登入並導向首頁。";
+            data.registerUser.message || "註冊成功！已為您自動登入。";
           showToast(message, "success");
-          // 在此處處理登入邏輯，例如儲存 accessToken
-          // const { accessToken, user } = data.registerUser;
-          // ...
+
+          // 直接使用註冊回傳的 user 物件更新前端登入狀態，不再呼叫 login
+          setUserState(data.registerUser.user);
         } else {
           const message =
             data?.registerUser?.message || "註冊失敗，請稍後再試。";
@@ -316,9 +325,11 @@ export const useAuthForm = () => {
   }, [
     formData,
     isLogin,
+    login,
     loginAttempts,
     validate,
     isOtpVerified,
+    setUserState,
     showToast,
     registerUser,
     verificationToken,
@@ -337,6 +348,7 @@ export const useAuthForm = () => {
     isOtpVerified,
     isVerifyingOtp,
     verificationToken,
+    authLoading,
     handleChange,
     handleSendVerificationCode,
     handleVerifyOtp,
