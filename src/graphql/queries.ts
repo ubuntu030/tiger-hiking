@@ -248,22 +248,6 @@ export const CREATE_REGISTRATION = gql`
 `;
 
 /**
- * 登入
- */
-export const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      success
-      message
-      accessToken # 成功登入後，返回授權 Token
-      user {
-        id
-        email
-      }
-    }
-  }
-`;
-/**
  * 請求/發送 OTP 驗證碼 (Request OTP)
  */
 export const REQUEST_OTP = gql`
@@ -306,6 +290,22 @@ export const REGISTER_USER = gql`
 `;
 
 /**
+ * 登入
+ */
+export const LOGIN_USER = gql`
+  mutation LoginUser($input: LoginUserInput!) {
+    login(input: $input) {
+      success
+      message
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
+
+/**
  * 登出
  */
 export const LOGOUT_USER = gql`
@@ -313,6 +313,17 @@ export const LOGOUT_USER = gql`
     logout {
       success
       message
+    }
+  }
+`;
+/**
+ * 獲取當前使用者的個人資料用於更新前端登入狀態
+ */
+export const GET_MY_PROFILE = gql`
+  query GetMyProfile {
+    me {
+      id
+      email
     }
   }
 `;

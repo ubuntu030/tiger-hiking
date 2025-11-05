@@ -3,6 +3,11 @@
  */
 export interface RegisterUserInput {
   email: string;
-  password:string;
+  password: string;
   verificationToken: string;
+}
+
+export interface LoginUserInput {
+  email: string;
+  password: string;
 }

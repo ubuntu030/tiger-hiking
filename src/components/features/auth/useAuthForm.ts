@@ -74,6 +74,9 @@ export const useAuthForm = () => {
     null
   );
 
+  // 狀態：是否正在提交表單 (登入或註冊)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // 判斷當前是否為登入模式
   const isLogin = mode === "login";
 
@@ -260,6 +263,8 @@ export const useAuthForm = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     if (isLogin) {
       try {
         await login(formData.email, formData.password);
@@ -282,6 +287,8 @@ export const useAuthForm = () => {
         } else {
           showToast("登入失敗，請檢查您的帳號或密碼。", "error");
         }
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       // 註冊邏輯
@@ -320,6 +327,8 @@ export const useAuthForm = () => {
         } else {
           showToast("註冊過程中發生錯誤，請稍後再試。", "error");
         }
+      } finally {
+        setIsSubmitting(false);
       }
     }
   }, [
@@ -349,6 +358,7 @@ export const useAuthForm = () => {
     isVerifyingOtp,
     verificationToken,
     authLoading,
+    isSubmitting,
     handleChange,
     handleSendVerificationCode,
     handleVerifyOtp,
