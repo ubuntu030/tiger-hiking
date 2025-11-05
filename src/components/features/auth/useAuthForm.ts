@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../../utils/validators"; // 驗證電子郵件格式的工具函式
 import {
   REQUEST_OTP,
@@ -39,6 +40,7 @@ const initialFormState: AuthFormState = {
 // 自訂 Hook：用於管理登入/註冊表單的邏輯
 export const useAuthForm = () => {
   const { login, setUserState, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   // 狀態：登入或註冊模式
   const [mode, setMode] = useState<AuthMode>("login");
 
@@ -269,7 +271,7 @@ export const useAuthForm = () => {
       try {
         await login(formData.email, formData.password);
         showToast("登入成功！", "success");
-        // 登入成功後可以導向到其他頁面
+        navigate("/profile"); // 登入成功後導向到會員中心
       } catch (error) {
         const newAttempts = loginAttempts + 1;
         setLoginAttempts(newAttempts);
@@ -316,6 +318,7 @@ export const useAuthForm = () => {
 
           // 直接使用註冊回傳的 user 物件更新前端登入狀態，不再呼叫 login
           setUserState(data.registerUser.user);
+          navigate("/profile"); // 註冊成功後也導向到會員中心
         } else {
           const message =
             data?.registerUser?.message || "註冊失敗，請稍後再試。";
@@ -339,6 +342,7 @@ export const useAuthForm = () => {
     validate,
     isOtpVerified,
     setUserState,
+    navigate,
     showToast,
     registerUser,
     verificationToken,
