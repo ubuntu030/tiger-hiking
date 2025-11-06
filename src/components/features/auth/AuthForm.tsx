@@ -182,31 +182,34 @@ const AuthForm = () => {
         </Button>
       </form>
 
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">或</span>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <Button
-          variant="outline"
-          className="w-full flex items-center justify-center"
-        >
-          <Chrome size={20} className="mr-2" />
-          使用 Google 登入
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full flex items-center justify-center"
-        >
-          <Facebook size={20} className="mr-2" />
-          使用 Facebook 登入
-        </Button>
-      </div>
+      {isLogin && (
+        <>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">或</span>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center"
+            >
+              <Chrome size={20} className="mr-2" />
+              使用 Google 登入
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center"
+            >
+              <Facebook size={20} className="mr-2" />
+              使用 Facebook 登入
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
