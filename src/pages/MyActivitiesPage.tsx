@@ -21,7 +21,8 @@ const MyActivitiesPage: React.FC = () => {
 
   return (
     <div>
-      <PageTitle title="我的活動" />
+      {/* <PageTitle title="我的活動" /> */}
+      <h2 className="text-2xl font-bold mb-4">我的活動</h2>
       <div>
         {paginatedItems.length > 0 ? (
           paginatedItems.map((activity) => (
