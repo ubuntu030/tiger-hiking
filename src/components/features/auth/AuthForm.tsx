@@ -193,13 +193,15 @@ const AuthForm = () => {
             </div>
           </div>
           <div className="space-y-4">
-            <Button
-              variant="outline"
-              className="w-full flex items-center justify-center"
+            <a
+              href={`${import.meta.env.VITE_API_BASE_URL}/auth/google`}
+              className="inline-block w-full"
             >
-              <Chrome size={20} className="mr-2" />
-              使用 Google 登入
-            </Button>
+              <Button variant="outline" className="w-full">
+                <Chrome size={20} className="mr-2" />
+                使用 Google 登入
+              </Button>
+            </a>
             <Button
               variant="outline"
               className="w-full flex items-center justify-center"
