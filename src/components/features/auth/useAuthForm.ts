@@ -6,12 +6,13 @@ import {
   REQUEST_OTP,
   VERIFY_OTP,
   REGISTER_USER,
+  REQUEST_PASSWORD_RESET,
 } from "../../../graphql/queries"; // 引入 GraphQL mutation
 import { useToast } from "../../../hooks/useToast"; // 引入 useToast Hook
 import { useAuth } from "../../../contexts/auth.context";
 
 // 定義登入或註冊模式
-type AuthMode = "login" | "register";
+type AuthMode = "login" | "register" | "forgotPassword";
 
 // 定義表單的狀態結構
 export interface AuthFormState {
@@ -94,6 +95,9 @@ export const useAuthForm = () => {
   // GraphQL Mutation：註冊用戶
   const [registerUser] = useMutation(REGISTER_USER);
 
+  // GraphQL Mutation: 請求密碼重設
+  const [requestPasswordReset] = useMutation(REQUEST_PASSWORD_RESET);
+
   // 處理表單輸入變更
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -121,8 +125,13 @@ export const useAuthForm = () => {
       newErrors.email = "電子郵件格式不正確";
     }
 
-    // 如果是註冊模式，進一步驗證其他欄位
-    if (!isLogin) {
+    // 忘記密碼模式只需要驗證 email
+    if (mode === "forgotPassword") {
+      return newErrors;
+    }
+
+    // 註冊模式
+    if (mode === "register") {
       if (!formData.password) {
         newErrors.password = "密碼為必填欄位";
       } else if (formData.password.length < 8) {
@@ -138,15 +147,15 @@ export const useAuthForm = () => {
       if (!formData.verificationCode) {
         newErrors.verificationCode = "驗證碼為必填欄位";
       }
-    } else {
-      // 登入模式也需要驗證密碼
+    } else if (mode === "login") {
+      // 登入模式
       if (!formData.password) {
         newErrors.password = "密碼為必填欄位";
       }
     }
 
     return newErrors;
-  }, [formData, isLogin]);
+  }, [formData, mode]);
 
   // 重置表單
   const resetForm = useCallback(() => {
@@ -256,8 +265,48 @@ export const useAuthForm = () => {
     }
   }, [formData.email, formData.verificationCode, verifyOTP, showToast]);
 
+  // 請求忘記密碼
+  const handleForgotPasswordRequest = useCallback(async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const { data } = await requestPasswordReset({
+        variables: {
+          input: {
+            email: formData.email,
+          },
+        },
+      });
+
+      if (data?.requestPasswordReset?.success) {
+        showToast(
+          data.requestPasswordReset.message ||
+            "密碼重設請求已送出，請查看您的電子信箱。",
+          "success"
+        );
+        setMode("login"); // 返回登入畫面
+      } else {
+        showToast(
+          data?.requestPasswordReset?.message || "請求失敗，請稍後再試。",
+          "error"
+        );
+      }
+    } catch (error) {
+      showToast("請求過程中發生錯誤，請稍後再試。", "error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formData.email, requestPasswordReset, showToast, validate]);
+
   // 提交表單
   const handleSubmit = useCallback(async () => {
+    if (mode === "forgotPassword") return; // 忘記密碼模式使用另一個處理函式
+
     // 驗證表單資料
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -346,6 +395,7 @@ export const useAuthForm = () => {
     showToast,
     registerUser,
     verificationToken,
+    mode,
   ]);
 
   return {
@@ -367,6 +417,7 @@ export const useAuthForm = () => {
     handleSendVerificationCode,
     handleVerifyOtp,
     handleSubmit,
+    handleForgotPasswordRequest,
     resetForm,
   };
 };

@@ -20,6 +20,7 @@ import ProfileSettingsPage from "./pages/profile/ProfileSettingsPage";
 import ActivityHistoryPage from "./pages/profile/ActivityHistoryPage";
 import { Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/contact" element={<ContactUsPage />} />
               <Route path="/auth" element={<AuthPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
 
               {/* 受保護的路由 */}
               <Route element={<ProtectedRoute />}>

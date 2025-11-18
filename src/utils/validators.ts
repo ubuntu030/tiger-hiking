@@ -1,4 +1,10 @@
-import { REGEX_EMAIL, REGEX_PHONE, REGEX_TAIWAN_ID, REGEX_PASSPORT } from "../constants/regex";
+import {
+  REGEX_EMAIL,
+  REGEX_PHONE,
+  REGEX_TAIWAN_ID,
+  REGEX_PASSPORT,
+  REGEX_PASSWORD,
+} from "../constants/regex";
 
 // 驗證電子郵件
 export const isValidEmail = (email: string): boolean => REGEX_EMAIL.test(email);
@@ -13,8 +19,32 @@ export const isValidTaiwanId = (id: string): boolean => {
   }
 
   const letterValues: { [key: string]: number } = {
-    A: 10, B: 11, C: 12, D: 13, E: 14, F: 15, G: 16, H: 17, I: 34, J: 18, K: 19, L: 20, M: 21,
-    N: 22, O: 35, P: 23, Q: 24, R: 25, S: 26, T: 27, U: 28, V: 29, W: 32, X: 30, Y: 31, Z: 33,
+    A: 10,
+    B: 11,
+    C: 12,
+    D: 13,
+    E: 14,
+    F: 15,
+    G: 16,
+    H: 17,
+    I: 34,
+    J: 18,
+    K: 19,
+    L: 20,
+    M: 21,
+    N: 22,
+    O: 35,
+    P: 23,
+    Q: 24,
+    R: 25,
+    S: 26,
+    T: 27,
+    U: 28,
+    V: 29,
+    W: 32,
+    X: 30,
+    Y: 31,
+    Z: 33,
   };
 
   const firstLetter = id.charAt(0).toUpperCase();
@@ -38,4 +68,9 @@ export const isValidTaiwanId = (id: string): boolean => {
 };
 
 // 驗證護照
-export const isValidPassport = (passport: string): boolean => REGEX_PASSPORT.test(passport);
+export const isValidPassport = (passport: string): boolean =>
+  REGEX_PASSPORT.test(passport);
+
+// 驗證密碼
+export const isValidPassword = (password: string): boolean =>
+  REGEX_PASSWORD.test(password);

@@ -7,6 +7,7 @@ import theme from "../../../constants/theme";
 
 const AuthForm = () => {
   const {
+    mode,
     setMode,
     formData,
     errors,
@@ -21,7 +22,61 @@ const AuthForm = () => {
     handleSubmit,
     isVerifyingOtp,
     isOtpVerified,
+    isSubmitting,
+    handleForgotPasswordRequest,
   } = useAuthForm();
+
+  if (mode === "forgotPassword") {
+    return (
+      <div
+        className={`w-full max-w-md p-8 space-y-6 ${theme.cardBg} rounded-lg shadow-lg`}
+      >
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800">忘記密碼</h1>
+          <p className="text-gray-600">
+            請輸入您的電子郵件以接收密碼重設連結。
+          </p>
+        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleForgotPasswordRequest();
+          }}
+          className="space-y-6"
+        >
+          <FormField label="電子郵件" htmlFor="email">
+            <InputField
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
+          </FormField>
+          <Button
+            type="submit"
+            className="w-full bg-green-800 hover:bg-green-900 text-white"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "發送中..." : "發送重設信件"}
+          </Button>
+        </form>
+        <div className="text-center mt-4">
+          <button
+            type="button"
+            onClick={() => setMode("login")}
+            className="font-medium text-green-600 hover:underline"
+          >
+            返回登入
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -173,6 +228,18 @@ const AuthForm = () => {
           </FormField>
         )}
 
+        {isLogin && (
+          <div className="flex justify-end -mt-4 mb-4">
+            <button
+              type="button"
+              onClick={() => setMode("forgotPassword")}
+              className="text-sm font-medium text-blue-600 hover:underline"
+            >
+              忘記密碼？
+            </button>
+          </div>
+        )}
+
         <Button
           type="submit"
           className="w-full bg-green-800 hover:bg-green-900 text-white"
@@ -202,13 +269,13 @@ const AuthForm = () => {
                 使用 Google 登入
               </Button>
             </a>
-            <Button
+            {/* <Button
               variant="outline"
               className="w-full flex items-center justify-center"
             >
               <Facebook size={20} className="mr-2" />
               使用 Facebook 登入
-            </Button>
+            </Button> */}
           </div>
         </>
       )}

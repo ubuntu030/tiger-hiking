@@ -327,3 +327,27 @@ export const GET_MY_PROFILE = gql`
     }
   }
 `;
+
+/**
+ * 請求重設密碼郵件
+ */
+export const REQUEST_PASSWORD_RESET = gql`
+  mutation RequestPasswordReset($input: RequestPasswordResetInput!) {
+    requestPasswordReset(input: $input) {
+      success
+      message
+    }
+  }
+`;
+
+/**
+ * 重設密碼
+ */
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input) {
+      success
+      message
+    }
+  }
+`;
