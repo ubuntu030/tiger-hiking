@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useAuth } from "../../../contexts/auth.context";
 import {
   isValidTaiwanId,
   isValidPassport,
@@ -41,7 +42,11 @@ const initialFormState = {
 };
 
 export const useRegistrationForm = () => {
-  const [formData, setFormData] = useState(initialFormState);
+  const { user } = useAuth();
+  const [formData, setFormData] = useState({
+    ...initialFormState,
+    email: user?.email || "",
+  });
   const [errors, setErrors] = useState<ErrorMessages>({});
 
   const handleChange = useCallback(
@@ -108,9 +113,12 @@ export const useRegistrationForm = () => {
   }, [formData]);
 
   const resetForm = useCallback(() => {
-    setFormData(initialFormState);
+    setFormData({
+      ...initialFormState,
+      email: user?.email || "",
+    });
     setErrors({});
-  }, []);
+  }, [user]);
 
   return { formData, errors, handleChange, validate, setErrors, resetForm };
 };

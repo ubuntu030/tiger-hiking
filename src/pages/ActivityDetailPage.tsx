@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/common/Button";
 import theme from "../constants/theme";
 import Dialog from "../components/common/Dialog";
@@ -9,6 +9,7 @@ import { useToast } from "../hooks/useToast";
 import { format } from "date-fns";
 import { useActivityDetail } from "../hooks/useActivityDetail";
 import { useCreateRegistration } from "../hooks/useCreateRegistration";
+import { useAuth } from "../contexts/auth.context";
 
 const ActivityDetailPage = () => {
   const { activityId } = useParams<{ activityId: string }>();
@@ -20,6 +21,17 @@ const ActivityDetailPage = () => {
   const formRef = useRef<RegistrationFormHandle | null>(null);
   const { showToast } = useToast();
   const { createRegistration, loading: isSubmitting } = useCreateRegistration();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleRegistrationClick = () => {
+    if (!isLoggedIn) {
+      navigate("/auth", { state: { from: location } });
+    } else {
+      setIsModalOpen(true);
+    }
+  };
 
   const handleConfirmRegistration = async () => {
     const formData = formRef.current?.submit();
@@ -164,11 +176,15 @@ const ActivityDetailPage = () => {
             </div>
             <div className="mt-8">
               <Button
-                onClick={() => setIsModalOpen(true)}
+                onClick={handleRegistrationClick}
                 disabled={!isRegistrationOpen}
                 className="w-full text-lg"
               >
-                {isRegistrationOpen ? "立即報名申請" : "報名截止"}
+                {isRegistrationOpen
+                  ? isLoggedIn
+                    ? "立即報名申請"
+                    : "登入後報名申請"
+                  : "報名截止"}
               </Button>
             </div>
           </div>
