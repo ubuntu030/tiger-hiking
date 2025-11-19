@@ -55,6 +55,18 @@ export const GET_ACTIVITY_BY_ID = gql`
 `;
 
 /**
+ * 檢查使用者對於特定活動的報名狀態
+ */
+export const CHECK_USER_REGISTRATION_STATUS = gql`
+  query CheckUserRegistrationStatus($activityId: Int!) {
+    checkRegistrationStatus(activityId: $activityId) {
+      isRegistered
+      status
+    }
+  }
+`;
+
+/**
  * 獲取所有活動，支援名稱、狀態、日期篩選
  */
 export const GET_ALL_ACTIVITIES = gql`

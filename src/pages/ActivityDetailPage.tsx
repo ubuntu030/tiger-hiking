@@ -10,9 +10,11 @@ import { format } from "date-fns";
 import { useActivityDetail } from "../hooks/useActivityDetail";
 import { useCreateRegistration } from "../hooks/useCreateRegistration";
 import { useAuth } from "../contexts/auth.context";
+import { useCheckRegistrationStatus } from "../hooks/useCheckRegistrationStatus";
 
 const ActivityDetailPage = () => {
   const { activityId } = useParams<{ activityId: string }>();
+  const numericActivityId = activityId ? parseInt(activityId, 10) : 0;
   const { activity, loading, error, refetch } = useActivityDetail(
     activityId || ""
   );
@@ -24,6 +26,12 @@ const ActivityDetailPage = () => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const {
+    registrationStatus,
+    loading: isStatusLoading,
+    refetch: refetchStatus,
+  } = useCheckRegistrationStatus(numericActivityId);
 
   const handleRegistrationClick = () => {
     if (!isLoggedIn) {
@@ -47,6 +55,7 @@ const ActivityDetailPage = () => {
           showToast("報名成功！感謝您的參與。", "success");
           formRef.current?.reset(); // 成功後重設表單
           refetch(); // 重新獲取活動資料以更新報名人數
+          refetchStatus();
         }
       } catch (apiError) {
         // 錯誤通知已在 useCreateRegistration hook 中處理
@@ -84,6 +93,37 @@ const ActivityDetailPage = () => {
   }
 
   const isRegistrationOpen = activity.status === "報名登記";
+
+  const getButtonState = () => {
+    if (!isRegistrationOpen) {
+      return { text: "報名截止", disabled: true };
+    }
+
+    if (!isLoggedIn) {
+      return { text: "登入後報名申請", disabled: false };
+    }
+
+    if (isStatusLoading) {
+      return { text: "查詢中...", disabled: true };
+    }
+
+    if (registrationStatus?.isRegistered) {
+      switch (registrationStatus.status) {
+        case "PENDING":
+          return { text: "審核中", disabled: true };
+        case "APPROVED":
+          return { text: "報名已核准", disabled: true };
+        case "REJECTED":
+          return { text: "報名未核准", disabled: true };
+        default:
+          return { text: "已報名", disabled: true };
+      }
+    }
+
+    return { text: "立即報名申請", disabled: false };
+  };
+
+  const buttonState = getButtonState();
 
   return (
     <div>
@@ -123,8 +163,8 @@ const ActivityDetailPage = () => {
                   隨行人員
                 </span>
                 <span className="text-right">
-                  {activity.guides.leader}(領隊), {activity.guides.guide}(嚮導),
-                  {activity.guides.sweeper}(押隊)
+                  {activity.guides.leader}(領隊), {activity.guides.guide}(嚮導)
+                  , {activity.guides.sweeper}(押隊)
                 </span>
               </div>
               <div className="flex justify-between items-center gap-4">
@@ -177,14 +217,10 @@ const ActivityDetailPage = () => {
             <div className="mt-8">
               <Button
                 onClick={handleRegistrationClick}
-                disabled={!isRegistrationOpen}
+                disabled={buttonState.disabled}
                 className="w-full text-lg"
               >
-                {isRegistrationOpen
-                  ? isLoggedIn
-                    ? "立即報名申請"
-                    : "登入後報名申請"
-                  : "報名截止"}
+                {buttonState.text}
               </Button>
             </div>
           </div>
