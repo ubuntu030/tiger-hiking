@@ -1,5 +1,4 @@
-// 報名狀態
-export type RegistrationStatus = "已核准" | "未核准" | "已取消";
+import type { RegistrationStatus } from "./registration.model";
 
 // 繳費狀態
 export type PaymentStatus = "已收到款項" | "未繳費" | "已退款";

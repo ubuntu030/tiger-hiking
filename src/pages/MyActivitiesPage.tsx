@@ -1,7 +1,5 @@
 import React from "react";
 import { useMyActivities } from "../hooks/useMyActivities";
-import Spinner from "../components/common/Spinner";
-import PageTitle from "../components/layout/PageTitle";
 import { MyActivityCard } from "../components/features/my-activities/MyActivityCard";
 import { usePagination } from "../hooks/usePagination";
 import Pagination from "../components/common/Pagination";
