@@ -1,9 +1,24 @@
+import { useRef } from "react";
+import ProfileForm, {
+  type ProfileFormHandle,
+} from "../../components/features/profile/ProfileForm";
+import Button from "../../components/common/Button";
+
 const ProfileSettingsPage = () => {
+  const profileFormRef = useRef<ProfileFormHandle>(null);
+
+  const handleSaveChanges = () => {
+    profileFormRef.current?.submit();
+  };
+
   return (
     <div className="space-y-8">
       <section>
         <h2 className="text-2xl font-bold mb-4">基本資料管理</h2>
-        <p>此處將顯示與編輯會員基本資料的功能。</p>
+        <ProfileForm ref={profileFormRef} />
+        {/* <div className="mt-6 flex justify-end">
+          <Button onClick={handleSaveChanges}>儲存變更</Button>
+        </div> */}
       </section>
       <section>
         <h2 className="text-2xl font-bold mb-4">更改密碼</h2>

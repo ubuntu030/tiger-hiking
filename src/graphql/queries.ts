@@ -363,3 +363,61 @@ export const RESET_PASSWORD = gql`
     }
   }
 `;
+
+/**
+ * 獲取當前使用者的詳細個人資料
+ */
+export const GET_MY_PROFILE_DETAIL = gql`
+  query GetMyProfileDetail {
+    me {
+      id
+      email
+      profile {
+        gender
+        birthDate
+        nationality
+        idNumber
+        phoneNumber
+        emergencyContact
+        emergencyContactPhone
+        hikingExperience
+      }
+    }
+  }
+`;
+
+/**
+ * 更新當前使用者的個人資料
+ */
+export const UPDATE_MY_PROFILE = gql`
+  mutation UpdateMyProfile(
+    $gender: String
+    $birthDate: DateTime
+    $nationality: String
+    $idNumber: String
+    $phoneNumber: String
+    $emergencyContact: String
+    $emergencyContactPhone: String
+    $hikingExperience: String
+  ) {
+    updateMyProfile(
+      input: {
+        gender: $gender
+        birthDate: $birthDate
+        nationality: $nationality
+        idNumber: $idNumber
+        phoneNumber: $phoneNumber
+        emergencyContact: $emergencyContact
+        emergencyContactPhone: $emergencyContactPhone
+        hikingExperience: $hikingExperience
+      }
+    ) {
+      success
+      message
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
