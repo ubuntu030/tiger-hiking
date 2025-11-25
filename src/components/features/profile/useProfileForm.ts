@@ -12,6 +12,8 @@ import {
 } from "../../../graphql/queries";
 
 export interface ProfileFormData {
+  name: string;
+  address: string;
   gender: string;
   birthDate: string;
   nationality: string;
@@ -26,6 +28,8 @@ export interface ProfileFormData {
 export type ProfileFormErrors = Partial<Record<keyof ProfileFormData, string>>;
 
 const initialFormData: ProfileFormData = {
+  name: "",
+  address: "",
   gender: "MALE",
   birthDate: "",
   nationality: "local",
@@ -48,8 +52,10 @@ export const useProfileForm = () => {
       onCompleted: (data) => {
         if (data?.me) {
           const { email, profile } = data.me;
+          const name = data.me.name;
           const initialValues = {
             email: email || "",
+            name: name || "",
             gender: profile?.gender || "MALE",
             birthDate: profile?.birthDate
               ? new Date(profile.birthDate).toISOString().split("T")[0]
@@ -59,6 +65,7 @@ export const useProfileForm = () => {
             phoneNumber: profile?.phoneNumber || "",
             emergencyContact: profile?.emergencyContact || "",
             emergencyContactPhone: profile?.emergencyContactPhone || "",
+            address: profile?.address || "",
             hikingExperience: profile?.hikingExperience || "",
           };
           setFormData(initialValues);
@@ -89,6 +96,12 @@ export const useProfileForm = () => {
 
   const validate = useCallback(() => {
     const newErrors: ProfileFormErrors = {};
+    if (!formData.name) {
+      newErrors.name = "姓名為必填";
+    } else if (formData.name.length > 10) {
+      newErrors.name = "姓名不能超過 10 個字";
+    }
+
     if (!formData.gender) newErrors.gender = "性別為必填";
     if (!formData.birthDate) newErrors.birthDate = "生日為必填";
 
@@ -121,6 +134,12 @@ export const useProfileForm = () => {
       newErrors.emergencyContactPhone = "緊急聯絡人電話為必填";
     else if (!isValidPhone(formData.emergencyContactPhone))
       newErrors.emergencyContactPhone = "請輸入有效的緊急聯絡人電話";
+
+    if (!formData.address) {
+      newErrors.address = "地址為必填";
+    } else if (formData.address.length > 100) {
+      newErrors.address = "地址不能超過 100 個字";
+    }
 
     return newErrors;
   }, [formData]);

@@ -372,6 +372,7 @@ export const GET_MY_PROFILE_DETAIL = gql`
     me {
       id
       email
+      name
       profile {
         gender
         birthDate
@@ -381,6 +382,7 @@ export const GET_MY_PROFILE_DETAIL = gql`
         emergencyContact
         emergencyContactPhone
         hikingExperience
+        address
       }
     }
   }
@@ -391,6 +393,8 @@ export const GET_MY_PROFILE_DETAIL = gql`
  */
 export const UPDATE_MY_PROFILE = gql`
   mutation UpdateMyProfile(
+    $name: String
+    $address: String
     $gender: String
     $birthDate: DateTime
     $nationality: String
@@ -402,6 +406,8 @@ export const UPDATE_MY_PROFILE = gql`
   ) {
     updateMyProfile(
       input: {
+        name: $name
+        address: $address
         gender: $gender
         birthDate: $birthDate
         nationality: $nationality
@@ -417,6 +423,7 @@ export const UPDATE_MY_PROFILE = gql`
       user {
         id
         email
+        name
       }
     }
   }

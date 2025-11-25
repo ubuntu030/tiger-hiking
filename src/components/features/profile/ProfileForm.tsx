@@ -33,17 +33,17 @@ const ProfileForm = () => {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <RadioGroupField
-          label="性別"
-          name="gender"
-          selectedValue={formData.gender}
-          onChange={handleChange}
-          options={[
-            { label: "男性", value: "MALE" },
-            { label: "女性", value: "FEMALE" },
-          ]}
-          error={errors.gender}
-        />
+        <FormField label="姓名" htmlFor="name" error={errors.name}>
+          <InputField
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            error={!!errors.name}
+            maxLength={10}
+          />
+        </FormField>
+
         <FormField label="生日" htmlFor="birthDate" error={errors.birthDate}>
           <InputField
             id="birthDate"
@@ -56,17 +56,30 @@ const ProfileForm = () => {
         </FormField>
       </div>
 
-      <RadioGroupField
-        label="國籍"
-        name="nationality"
-        selectedValue={formData.nationality}
-        onChange={handleChange}
-        options={[
-          { label: "本國人", value: "local" },
-          { label: "外國人", value: "foreign" },
-        ]}
-        error={errors.nationality}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <RadioGroupField
+          label="性別"
+          name="gender"
+          selectedValue={formData.gender}
+          onChange={handleChange}
+          options={[
+            { label: "男性", value: "MALE" },
+            { label: "女性", value: "FEMALE" },
+          ]}
+          error={errors.gender}
+        />
+        <RadioGroupField
+          label="國籍"
+          name="nationality"
+          selectedValue={formData.nationality}
+          onChange={handleChange}
+          options={[
+            { label: "本國人", value: "local" },
+            { label: "外國人", value: "foreign" },
+          ]}
+          error={errors.nationality}
+        />
+      </div>
 
       <FormField label="電子郵件" htmlFor="email" error={errors.email}>
         <InputField
@@ -139,6 +152,17 @@ const ProfileForm = () => {
           />
         </FormField>
       </div>
+
+      <FormField label="聯絡地址" htmlFor="address" error={errors.address}>
+        <InputField
+          id="address"
+          name="address"
+          maxLength={100}
+          value={formData.address}
+          onChange={handleChange}
+          error={!!errors.address}
+        />
+      </FormField>
 
       <FormField
         label="登山經歷簡述"

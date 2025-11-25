@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import { useAuth } from "../../../contexts/auth.context";
 import {
   isValidTaiwanId,
@@ -6,6 +7,10 @@ import {
   isValidEmail,
   isValidPhone,
 } from "../../../utils/validators";
+import {
+  GET_MY_PROFILE_DETAIL,
+  GET_MY_PROFILE,
+} from "../../../graphql/queries";
 
 interface ErrorMessages {
   [key: string]: string | null;
@@ -48,6 +53,32 @@ export const useRegistrationForm = () => {
     email: user?.email || "",
   });
   const [errors, setErrors] = useState<ErrorMessages>({});
+
+  // 當使用者登入時，獲取其詳細個人資料以預填表單
+  useQuery(GET_MY_PROFILE_DETAIL, {
+    skip: !user, // 如果未登入，則跳過此查詢
+    onCompleted: (data) => {
+      if (data?.me?.profile) {
+        const { email, name, profile } = data.me;
+        setFormData((prev) => ({
+          ...prev,
+          name: name || prev.name,
+          email: email || prev.email,
+          gender: profile.gender || prev.gender,
+          idNumber: profile.idNumber || prev.idNumber,
+          nationality: profile.nationality || prev.nationality,
+          mobile: profile.phoneNumber || prev.mobile,
+          address: profile.address || prev.address,
+          emergencyContact: profile.emergencyContact || prev.emergencyContact,
+          emergencyPhone:
+            profile.emergencyContactPhone || prev.emergencyPhone,
+          hikingExperience: profile.hikingExperience || prev.hikingExperience, // 注意：'name' 和 'address' 不在 GET_MY_PROFILE_DETAIL 中，
+          // 所以它們會保留初始值或使用者已輸入的值。
+        }));
+      }
+    },
+    fetchPolicy: "network-only", // 確保獲取的是最新資料
+  });
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
