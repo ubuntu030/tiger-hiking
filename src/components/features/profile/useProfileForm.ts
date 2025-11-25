@@ -1,15 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import {
-  isValidEmail,
-  isValidPhone,
-  isValidTaiwanId,
-  isValidPassport,
-} from "../../../utils/validators";
+import { useToast } from "../../../hooks/useToast";
 import {
   GET_MY_PROFILE_DETAIL,
   UPDATE_MY_PROFILE,
 } from "../../../graphql/queries";
+import {
+  isValidEmail,
+  isValidPassport,
+  isValidPhone,
+  isValidTaiwanId,
+} from "../../../utils/validators";
 
 export interface ProfileFormData {
   name: string;
@@ -44,6 +45,7 @@ const initialFormData: ProfileFormData = {
 export const useProfileForm = () => {
   const [formData, setFormData] = useState<ProfileFormData>(initialFormData);
   const [errors, setErrors] = useState<ProfileFormErrors>({});
+  const { showToast } = useToast();
 
   // 1. 獲取使用者資料
   const { loading: queryLoading, error: queryError } = useQuery(
@@ -156,6 +158,7 @@ export const useProfileForm = () => {
           birthDate: birthDate ? new Date(birthDate).toISOString() : null,
         };
         await updateProfile({ variables });
+        showToast("資料更新成功！", "success");
         return true; // 表示成功
       } catch (e) {
         console.error("Error updating profile:", e);
@@ -163,7 +166,7 @@ export const useProfileForm = () => {
       }
     }
     return false; // 驗證失敗
-  }, [formData, validate, updateProfile]);
+  }, [formData, validate, updateProfile, showToast]);
 
   return {
     formData,
