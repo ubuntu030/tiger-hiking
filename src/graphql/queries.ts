@@ -428,3 +428,17 @@ export const UPDATE_MY_PROFILE = gql`
     }
   }
 `;
+
+/**
+ * 更改當前登入使用者的密碼
+ */
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
+    changePassword(
+      input: { currentPassword: $currentPassword, newPassword: $newPassword }
+    ) {
+      success
+      message
+    }
+  }
+`;
