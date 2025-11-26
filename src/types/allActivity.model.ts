@@ -18,6 +18,7 @@ export interface ActivityDetail {
   image: string;
   description: string;
   transport: string;
+  registrationDeadline: string;
   guides: {
     leader: string;
     guide: string;

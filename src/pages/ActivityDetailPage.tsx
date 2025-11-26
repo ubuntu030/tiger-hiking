@@ -130,9 +130,14 @@ const ActivityDetailPage = () => {
       <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
         <div className="lg:col-span-3">
           <h1 className="text-4xl font-bold mb-2">{activity.name}</h1>
-          <p className={`text-lg ${theme.textSecondary} mb-6`}>
-            {format(new Date(activity.startDate), "yyyy-MM-dd")} -{" "}
+          <p className={`text-lg ${theme.textSecondary} mb-1`}>
+            <span className="font-semibold">活動日期：</span>
+            {format(new Date(activity.startDate), "yyyy-MM-dd")} ~{" "}
             {format(new Date(activity.endDate), "yyyy-MM-dd")}
+          </p>
+          <p className={`text-lg ${theme.textSecondary} mb-6`}>
+            <span className="font-semibold">報名截止：</span>
+            {format(new Date(activity.registrationDeadline), "yyyy-MM-dd")}
           </p>
           <img
             src={activity.image}

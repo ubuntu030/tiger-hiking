@@ -32,14 +32,15 @@ export const GET_ACTIVITY_BY_ID = gql`
     activity(where: { id: $id }) {
       id
       name
-      status
+      status #活動狀態
       startDate
       endDate
       currentRegistrations #目前報名人數
-      maxSlots
+      maxSlots #活動名額上限
       image
       description
       transport #交通方式說明
+      registrationDeadline #報名截止日期
       guides {
         leader #領隊名稱
         guide #嚮導名稱
