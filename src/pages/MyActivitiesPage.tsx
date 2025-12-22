@@ -3,30 +3,31 @@ import { useMyActivities } from "../hooks/useMyActivities";
 import { MyActivityCard } from "../components/features/my-activities/MyActivityCard";
 import { usePagination } from "../hooks/usePagination";
 import Pagination from "../components/common/Pagination";
+import Spinner from "../components/common/Spinner";
+import PageTitle from "../components/layout/PageTitle";
 
 const MyActivitiesPage: React.FC = () => {
   const { myActivities, loading, error, refetch } = useMyActivities();
   const { paginatedItems, currentPage, totalPages, setCurrentPage } =
     usePagination(myActivities, { itemsPerPage: 5 });
 
-  // if (loading) {
-  //   return <Spinner />;
-  // }
+  if (loading) {
+    return <Spinner />;
+  }
 
-  // if (error) {
-  //   return <p>錯誤: {error.message}</p>;
-  // }
+  if (error) {
+    return <p>錯誤: {error.message}</p>;
+  }
 
   return (
     <div>
-      {/* <PageTitle title="我的活動" /> */}
-      <h2 className="text-2xl font-bold mb-4">我的活動</h2>
+      <PageTitle title="我的活動" />
       <div>
         {paginatedItems.length > 0 ? (
-          paginatedItems.map((activity) => (
+          paginatedItems.map((activity, index) => (
             <MyActivityCard
               key={activity.id}
-              activity={activity}
+              registrationActivity={activity}
               onUpdateSuccess={refetch}
             />
           ))

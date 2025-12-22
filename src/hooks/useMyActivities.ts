@@ -1,10 +1,10 @@
-import { mockData } from './../constants/mockData';
+import { mockData } from "./../constants/mockData";
 import { useQuery } from "@apollo/client";
-import { GET_MY_ACTIVITIES } from "../graphql/queries";
-import type { MyActivity } from "../types/my-activity.model";
+import type { MyRegistrationActivity } from "../types/my-activity.model";
+import { GET_MY_REGISTRATIONS } from "../graphql/queries";
 
 interface GetMyActivitiesData {
-  myRegistrations: MyActivity[];
+  myRegistrations: MyRegistrationActivity[];
 }
 
 /**
@@ -14,7 +14,7 @@ interface GetMyActivitiesData {
  */
 export const useMyActivities = () => {
   const { data, loading, error, refetch } = useQuery<GetMyActivitiesData>(
-    GET_MY_ACTIVITIES,
+    GET_MY_REGISTRATIONS,
     {
       // 確保在 refetch 時 loading 狀態會更新
       notifyOnNetworkStatusChange: true,
@@ -22,8 +22,8 @@ export const useMyActivities = () => {
   );
 
   return {
-    // myActivities: data?.myRegistrations || [],
-    myActivities: mockData.myActivities,
+    myActivities: data?.myRegistrations || [],
+    // myActivities: mockData.myActivities,
     loading,
     error,
     refetch,

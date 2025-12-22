@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { MyActivity } from '../../../types/my-activity.model';
+import type { MyRegistrationActivity } from '../../../types/my-activity.model';
 import { EditRegistrationDialog } from './EditRegistrationDialog';
 import theme from '../../../constants/theme';
 import Button from '../../common/Button';
@@ -8,11 +8,11 @@ import { useCancelRegistration } from '../../../hooks/useCancelRegistration';
 import Dialog from '../../common/Dialog';
 
 interface MyActivityCardProps {
-  activity: MyActivity;
+  registrationActivity: MyRegistrationActivity;
   onUpdateSuccess: () => void;
 }
 
-export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpdateSuccess }) => {
+export const MyActivityCard: React.FC<MyActivityCardProps> = ({ registrationActivity, onUpdateSuccess }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const { cancelRegistration, loading: isCanceling } = useCancelRegistration();
@@ -26,7 +26,7 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
   };
 
   const handleCancelRegistration = () => {
-    cancelRegistration(activity.id);
+    cancelRegistration(registrationActivity.activity.id);
     setIsCancelDialogOpen(false);
     onUpdateSuccess();
   };
@@ -44,7 +44,7 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
       <div className={`${theme.cardBg} rounded-lg p-6 mb-6 shadow-sm border ${theme.border}`}>
         <div className="flex justify-between items-start">
             <h3 className={`text-xl font-semibold ${theme.textPrimary} hover:${theme.accent}`}>
-              <Link to={`/activities/${activity.activityId}`}>{activity.name}</Link>
+              <Link to={`/activities/${registrationActivity.activity.id}`}>{registrationActivity.activity.name}</Link>
             </h3>
             <div className="flex space-x-2">
               <Button onClick={handleEdit}>編輯</Button>
@@ -55,27 +55,27 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
         <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mt-4 text-sm">
           <div>
             <p className={`${theme.textSecondary} font-medium`}>活動日期</p>
-            <p className={`${theme.textPrimary}`}>{new Date(activity.startDate).toLocaleDateString()} - {new Date(activity.endDate).toLocaleDateString()}</p>
+            <p className={`${theme.textPrimary}`}>{new Date(registrationActivity.activity.startDate).toLocaleDateString()} - {new Date(registrationActivity.activity.endDate).toLocaleDateString()}</p>
           </div>
           <div>
             <p className={`${theme.textSecondary} font-medium`}>選擇方案</p>
-            <p className={`${theme.textPrimary}`}>{activity.selectedPlan}</p>
+            <p className={`${theme.textPrimary}`}>{registrationActivity.plan}</p>
           </div>
           <div>
             <p className={`${theme.textSecondary} font-medium`}>應繳金額</p>
-            <p className={`${theme.textPrimary}`}>${activity.amountDue.toLocaleString()}</p>
+            {/* <p className={`${theme.textPrimary}`}>${registrationActivity.amountDue.toLocaleString()}</p> */}
           </div>
           <div>
             <p className={`${theme.textSecondary} font-medium`}>報名狀態</p>
-            {renderStatusChip(activity.registrationStatus)}
+            {renderStatusChip(registrationActivity.registrationStatus)}
           </div>
           <div>
             <p className={`${theme.textSecondary} font-medium`}>繳費狀態</p>
-            {renderStatusChip(activity.paymentStatus)}
+            {renderStatusChip(registrationActivity.paymentStatus)}
           </div>
           <div>
             <p className={`${theme.textSecondary} font-medium`}>報名時間</p>
-            <p className={`${theme.textPrimary}`}>{new Date(activity.registrationTime).toLocaleString()}</p>
+            <p className={`${theme.textPrimary}`}>{new Date(registrationActivity.createdAt).toLocaleString()}</p>
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({ activity, onUpda
       <EditRegistrationDialog 
         isOpen={isEditDialogOpen}
         onClose={handleCloseDialog}
-        activity={activity}
+        activity={registrationActivity}
         onSuccess={() => {
           onUpdateSuccess();
           handleCloseDialog();

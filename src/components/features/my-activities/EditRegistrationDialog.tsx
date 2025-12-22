@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Dialog from "../../common/Dialog";
 import Button from "../../common/Button";
 import { useUpdateRegistration } from "../../../hooks/useUpdateRegistration";
-import type { MyActivity } from "../../../types/my-activity.model";
+import type { MyRegistrationActivity } from "../../../types/my-activity.model";
 import { useActivityDetail } from "../../../hooks/useActivityDetail";
 import RadioGroupField from "../../common/RadioGroupField";
 import FormField from "../../common/FormField";
@@ -10,7 +10,7 @@ import InputField from "../../common/InputField";
 import Spinner from "../../common/Spinner";
 
 interface EditRegistrationDialogProps {
-  activity: MyActivity;
+  activity: MyRegistrationActivity;
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void; // Callback to refetch data on successful update

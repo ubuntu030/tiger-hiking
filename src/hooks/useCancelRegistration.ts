@@ -34,7 +34,7 @@ export const useCancelRegistration = () => {
     }
   );
 
-  const cancelRegistration = (registrationId: number) => {
+  const cancelRegistration = (registrationId: string) => {
     cancel({ variables: { registrationId } });
   };
 

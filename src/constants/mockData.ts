@@ -1,6 +1,6 @@
 import type { ActivityDetail } from "../types/allActivity.model";
 import type { Guide } from "../types/guide.model";
-import type { MyActivity } from "../types/my-activity.model";
+import type { MyRegistrationActivity } from "../types/my-activity.model";
 import type { SlideshowSlide } from "../types/slideshow.model";
 
 export const mockData: MockData = {
@@ -413,5 +413,5 @@ export interface MockData {
   faqs: FAQ[];
   albums: Album[];
   slideshow: SlideshowSlide[];
-  myActivities: MyActivity[];
+  myActivities: MyRegistrationActivity[];
 }

@@ -176,22 +176,25 @@ export const SEND_CONTACT_MESSAGE = gql`
 /**
  * 獲取當前使用者的所有報名活動
  */
-export const GET_MY_ACTIVITIES = gql`
-  query GetMyActivities {
+export const GET_MY_REGISTRATIONS = gql`
+  query MyRegistrations {
     myRegistrations {
+      # Registration details
       id
+      plan
+      createdAt
+      registrationStatus: status
+      bunkLotteryStatus
+      amountDue
+      paymentStatus
+      hikingExperience
+      # Associated activity details
       activity {
         id
         name
         startDate
         endDate
       }
-      plan
-      registrationStatus
-      registrationTime
-      amountDue
-      paymentStatus
-      hikingExperience
     }
   }
 `;
