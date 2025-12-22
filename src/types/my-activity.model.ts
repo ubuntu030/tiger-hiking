@@ -1,10 +1,15 @@
 import type { RegistrationStatus } from "./registration.model";
 
 // 繳費狀態
-export type PaymentStatus = "已收到款項" | "未繳費" | "已退款";
+export type PaymentStatus = "已收到款項" | "未繳費" | "已退款" | "無須繳費";
 
 // 山屋床位抽籤狀態
-export type BunkLotteryStatus = "已抽中" | "未抽中" | "尚未抽籤" | "候補中";
+export type BunkLotteryStatus =
+  | "已抽中"
+  | "未抽中"
+  | "尚未抽籤"
+  | "候補中"
+  | "無須抽籤";
 
 // 活動摘要資料模型
 export interface ActivitySummary {

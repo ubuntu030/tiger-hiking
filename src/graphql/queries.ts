@@ -264,6 +264,18 @@ export const CREATE_REGISTRATION = gql`
 `;
 
 /**
+ * 取消一個活動報名
+ */
+export const CANCEL_REGISTRATION_MUTATION = gql`
+  mutation CancelRegistration($registrationId: ID!) {
+    cancelRegistration(registrationId: $registrationId) {
+      success
+      message
+    }
+  }
+`;
+
+/**
  * 請求/發送 OTP 驗證碼 (Request OTP)
  */
 export const REQUEST_OTP = gql`

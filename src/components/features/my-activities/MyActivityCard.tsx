@@ -61,6 +61,11 @@ const renderStatusChip = (
       textColor = "text-gray-500";
       Icon = CircleOff;
       break;
+    case "USER_CANCELLED":
+      bgColor = "bg-gray-100";
+      textColor = "text-gray-500";
+      Icon = CircleOff;
+      break;
   }
 
   // 處理從 GraphQL Enum 直接傳來的 'PENDING', 'APPROVED' 等字串
@@ -69,7 +74,27 @@ const renderStatusChip = (
     APPROVED: "已核准",
     REJECTED: "未核准",
     CANCELLED: "已取消",
+    USER_CANCELLED: "使用者自行取消",
   };
+
+  const bunkLotteryStatusTextMap: Record<string, string> = {
+    WON: "已抽中",
+    LOST: "未抽中",
+    PENDING: "尚未抽籤",
+    WAITING: "候補中",
+    NO_LOTTERY: "無須抽籤",
+  };
+
+  if (status in bunkLotteryStatusTextMap) {
+    return (
+      <span
+        className={`inline-flex items-center gap-x-1.5 rounded-full ${bgColor} px-2 py-1 text-xs font-medium ${textColor}`}
+      >
+        <Icon className="h-3.5 w-3.5" />
+        {bunkLotteryStatusTextMap[status]}
+      </span>
+    );
+  }
 
   const displayText = statusTextMap[status] || status;
 
@@ -141,13 +166,12 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
             <Link to={`/activities/${activity.id}`}>{activity.name}</Link>
           </h3>
           <div className="flex space-x-2">
-            <Button onClick={handleEdit} variant="ghost" size="icon">
+            <Button onClick={handleEdit} variant="ghost">
               <Pencil color="green" className="h-5 w-5" />
             </Button>
             <Button
               onClick={() => setIsCancelDialogOpen(true)}
               variant="danger-ghost"
-              size="icon"
             >
               <Trash2 className="h-5 w-5" />
             </Button>

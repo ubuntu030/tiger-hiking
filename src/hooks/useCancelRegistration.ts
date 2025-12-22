@@ -1,16 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
 import { useToast } from "./useToast";
-import { GET_ALL_ACTIVITIES } from "../graphql/queries";
+import {
+  CANCEL_REGISTRATION_MUTATION,
+  GET_ALL_ACTIVITIES,
+} from "../graphql/queries";
 // import { MY_ACTIVITIES_QUERY } from "./useMyActivities";
-
-const CANCEL_REGISTRATION_MUTATION = gql`
-  mutation CancelRegistration($registrationId: ID!) {
-    cancelRegistration(registrationId: $registrationId) {
-      success
-      message
-    }
-  }
-`;
 
 export const useCancelRegistration = () => {
   const { showToast } = useToast();
@@ -22,10 +16,7 @@ export const useCancelRegistration = () => {
         if (data.cancelRegistration.success) {
           showToast("報名已取消", "success");
         } else {
-          showToast(
-            data.cancelRegistration.message || "取消報名失敗",
-            "error"
-          );
+          showToast(data.cancelRegistration.message || "取消報名失敗", "error");
         }
       },
       onError: (err) => {
