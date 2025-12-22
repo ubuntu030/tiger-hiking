@@ -15,10 +15,10 @@ const ProfileSettingsPage = () => {
         <h2 className="text-2xl font-bold mb-4">更改密碼</h2>
         <ChangePasswordForm />
       </section>
-      <section>
+      {/* <section>
         <h2 className="text-2xl font-bold mb-4">頭像上傳</h2>
         <p>此處將提供上傳頭像的功能。</p>
-      </section>
+      </section> */}
     </div>
   );
 };

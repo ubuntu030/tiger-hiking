@@ -5,7 +5,7 @@ import PageTitle from "../../components/layout/PageTitle";
 const ProfileLayout = () => {
   return (
     <div>
-      <PageTitle title="會員中心" />
+      {/* <PageTitle title="會員中心" /> */}
       <div className="flex flex-col md:flex-row gap-8">
         <ProfileSidebar />
         <main className="flex-1">
