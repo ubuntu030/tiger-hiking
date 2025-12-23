@@ -22,6 +22,7 @@ import {
   XCircle,
   Clock3,
   CircleOff,
+  Ticket,
 } from "lucide-react";
 import type { RegistrationStatus } from "../../../types/registration.model";
 
@@ -39,29 +40,31 @@ const renderStatusChip = (
 
   switch (status) {
     case "APPROVED":
-    case "已收到款項":
+    case "PAID":
+    case "NO_PAYMENT":
+    case "LOTTERY_WON":
+    case "LOTTERY_NO_LOTTERY":
       bgColor = "bg-green-100";
       textColor = "text-green-800";
       Icon = CheckCircle2;
       break;
     case "PENDING":
-    case "未繳費":
-      bgColor = "bg-yellow-100";
-      textColor = "text-yellow-800";
+    case "UNPAID":
+    case "LOTTERY_PENDING":
+    case "LOTTERY_WAITING":
+      bgColor = "bg-orange-100";
+      textColor = "text-orange-800";
       Icon = Clock3;
       break;
     case "REJECTED":
+    case "USER_CANCELLED":
+    case "LOTTERY_LOST":
       bgColor = "bg-red-100";
       textColor = "text-red-800";
       Icon = XCircle;
       break;
     case "CANCELLED":
-    case "已退款":
-      bgColor = "bg-gray-100";
-      textColor = "text-gray-500";
-      Icon = CircleOff;
-      break;
-    case "USER_CANCELLED":
+    case "REFUNDED":
       bgColor = "bg-gray-100";
       textColor = "text-gray-500";
       Icon = CircleOff;
@@ -75,26 +78,18 @@ const renderStatusChip = (
     REJECTED: "未核准",
     CANCELLED: "已取消",
     USER_CANCELLED: "使用者自行取消",
-  };
 
-  const bunkLotteryStatusTextMap: Record<string, string> = {
-    WON: "已抽中",
-    LOST: "未抽中",
-    PENDING: "尚未抽籤",
-    WAITING: "候補中",
-    NO_LOTTERY: "無須抽籤",
-  };
+    PAID: "已收到款項",
+    UNPAID: "未繳費",
+    REFUNDED: "已退款",
+    NO_PAYMENT: "無須繳費",
 
-  if (status in bunkLotteryStatusTextMap) {
-    return (
-      <span
-        className={`inline-flex items-center gap-x-1.5 rounded-full ${bgColor} px-2 py-1 text-xs font-medium ${textColor}`}
-      >
-        <Icon className="h-3.5 w-3.5" />
-        {bunkLotteryStatusTextMap[status]}
-      </span>
-    );
-  }
+    LOTTERY_WON: "已抽中",
+    LOTTERY_LOST: "未抽中",
+    LOTTERY_PENDING: "尚未抽籤",
+    LOTTERY_WAITING: "候補中",
+    LOTTERY_NO_LOTTERY: "無須抽籤",
+  };
 
   const displayText = statusTextMap[status] || status;
 
@@ -149,7 +144,12 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
     registrationStatus,
     paymentStatus,
     amountDue,
+    bunkLotteryStatus,
   } = registrationActivity;
+
+  const isActionsDisabled = ["REJECTED", "CANCELLED", "USER_CANCELLED"].includes(
+    registrationStatus as string
+  );
 
   return (
     <>
@@ -166,12 +166,22 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
             <Link to={`/activities/${activity.id}`}>{activity.name}</Link>
           </h3>
           <div className="flex space-x-2">
-            <Button onClick={handleEdit} variant="ghost">
-              <Pencil color="green" className="h-5 w-5" />
+            <Button
+              onClick={handleEdit}
+              variant="ghost"
+              disabled={isActionsDisabled}
+              className={isActionsDisabled ? "opacity-50 cursor-not-allowed" : ""}
+            >
+              <Pencil
+                color={isActionsDisabled ? "gray" : "green"}
+                className="h-5 w-5"
+              />
             </Button>
             <Button
               onClick={() => setIsCancelDialogOpen(true)}
               variant="danger-ghost"
+              disabled={isActionsDisabled}
+              className={isActionsDisabled ? "opacity-50 cursor-not-allowed" : ""}
             >
               <Trash2 className="h-5 w-5" />
             </Button>
@@ -199,6 +209,11 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
             icon={Hash}
             label="報名狀態"
             value={renderStatusChip(registrationStatus)}
+          />
+          <InfoItem
+            icon={Ticket}
+            label="山屋抽籤狀態"
+            value={renderStatusChip(bunkLotteryStatus)}
           />
           <InfoItem
             icon={CreditCard}
