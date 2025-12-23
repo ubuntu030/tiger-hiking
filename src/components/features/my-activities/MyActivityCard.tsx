@@ -23,6 +23,7 @@ import {
   Clock3,
   CircleOff,
   Ticket,
+  ExternalLink,
 } from "lucide-react";
 import type { RegistrationStatus } from "../../../types/registration.model";
 
@@ -161,9 +162,17 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
           className={`flex justify-between items-center pb-4 border-b ${theme.border}`}
         >
           <h3
-            className={`text-2xl font-bold tracking-tight ${theme.textPrimary} hover:${theme.accent}`}
+            className="text-2xl font-bold tracking-tight"
           >
-            <Link to={`/activities/${activity.id}`}>{activity.name}</Link>
+            <Link
+              to={`/activities/${activity.id}`}
+              className={`group flex items-center gap-2 ${theme.textPrimary} hover:${theme.accent}`}
+            >
+              <span className="group-hover:underline decoration-2 underline-offset-4">
+                {activity.name}
+              </span>
+              <ExternalLink className={`h-5 w-5 ${theme.textSecondary} group-hover:text-current transition-colors`} />
+            </Link>
           </h3>
           <div className="flex space-x-2">
             <Button
