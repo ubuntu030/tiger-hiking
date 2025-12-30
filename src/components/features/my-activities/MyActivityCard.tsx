@@ -175,7 +175,7 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
             </Link>
           </h3>
           <div className="flex space-x-2">
-            <Button
+            {/* <Button
               onClick={handleEdit}
               variant="ghost"
               disabled={isActionsDisabled}
@@ -185,7 +185,7 @@ export const MyActivityCard: React.FC<MyActivityCardProps> = ({
                 color={isActionsDisabled ? "gray" : "green"}
                 className="h-5 w-5"
               />
-            </Button>
+            </Button> */}
             <Button
               onClick={() => setIsCancelDialogOpen(true)}
               variant="danger-ghost"

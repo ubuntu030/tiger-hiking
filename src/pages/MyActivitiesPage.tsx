@@ -71,9 +71,7 @@ const MyActivitiesPage: React.FC = () => {
           您目前沒有報名任何活動，快去看看有什麼好玩的吧！
         </p>
         <div className="mt-6">
-          <Button as={Link} to="/activities">
-            瀏覽所有活動
-          </Button>
+          <Button to="/activities">瀏覽所有活動</Button>
         </div>
       </div>
     );
