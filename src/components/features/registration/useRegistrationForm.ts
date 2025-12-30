@@ -7,10 +7,7 @@ import {
   isValidEmail,
   isValidPhone,
 } from "../../../utils/validators";
-import {
-  GET_MY_PROFILE_DETAIL,
-  GET_MY_PROFILE,
-} from "../../../graphql/queries";
+import { GET_MY_PROFILE_DETAIL } from "../../../graphql/queries";
 
 interface ErrorMessages {
   [key: string]: string | null;
@@ -70,8 +67,7 @@ export const useRegistrationForm = () => {
           mobile: profile.phoneNumber || prev.mobile,
           address: profile.address || prev.address,
           emergencyContact: profile.emergencyContact || prev.emergencyContact,
-          emergencyPhone:
-            profile.emergencyContactPhone || prev.emergencyPhone,
+          emergencyPhone: profile.emergencyContactPhone || prev.emergencyPhone,
           hikingExperience: profile.hikingExperience || prev.hikingExperience, // 注意：'name' 和 'address' 不在 GET_MY_PROFILE_DETAIL 中，
           // 所以它們會保留初始值或使用者已輸入的值。
         }));

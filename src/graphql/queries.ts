@@ -325,9 +325,28 @@ export const LOGIN_USER = gql`
     login(input: $input) {
       success
       message
+      adminOtpRequired
       user {
         id
         email
+        role
+      }
+    }
+  }
+`;
+
+/**
+ * Admin Login Step 2: Verify OTP
+ */
+export const ADMIN_LOGIN_WITH_OTP = gql`
+  mutation AdminLoginWithOtp($input: LoginAdminWithOtpInput!) {
+    loginAdminWithOtp(input: $input) {
+      success
+      message
+      user {
+        id
+        email
+        role
       }
     }
   }
@@ -352,6 +371,7 @@ export const GET_MY_PROFILE = gql`
     me {
       id
       email
+      role
     }
   }
 `;
@@ -453,6 +473,63 @@ export const CHANGE_PASSWORD = gql`
     changePassword(
       input: { currentPassword: $currentPassword, newPassword: $newPassword }
     ) {
+      success
+      message
+    }
+  }
+`;
+
+/**
+ * Admin: Get all announcements
+ */
+export const ADMIN_GET_ANNOUNCEMENTS = gql`
+  query AdminGetAnnouncements($limit: Int, $offset: Int) {
+    admin_announcements(limit: $limit, offset: $offset) {
+      nodes {
+        id
+        title
+        content
+        date
+      }
+      totalCount
+    }
+  }
+`;
+
+/**
+ * Admin: Create an announcement
+ */
+export const ADMIN_CREATE_ANNOUNCEMENT = gql`
+  mutation AdminCreateAnnouncement($input: AdminCreateAnnouncementInput!) {
+    admin_createAnnouncement(input: $input) {
+      id
+      title
+      content
+      date
+    }
+  }
+`;
+
+/**
+ * Admin: Update an announcement
+ */
+export const ADMIN_UPDATE_ANNOUNCEMENT = gql`
+  mutation AdminUpdateAnnouncement($input: AdminUpdateAnnouncementInput!) {
+    admin_updateAnnouncement(input: $input) {
+      id
+      title
+      content
+      date
+    }
+  }
+`;
+
+/**
+ * Admin: Delete an announcement
+ */
+export const ADMIN_DELETE_ANNOUNCEMENT = gql`
+  mutation AdminDeleteAnnouncement($id: ID!) {
+    admin_removeAnnouncement(id: $id) {
       success
       message
     }
