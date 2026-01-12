@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { CheckCircle, XCircle, Info, X } from 'lucide-react';
+import { CheckCircle, XCircle, Info, X, AlertTriangle } from 'lucide-react';
 
-export type ToastType = 'success' | 'error' | 'info';
+export type ToastType = 'success' | 'error' | 'info' | 'warn';
 
 interface ToastProps {
   message: string;
@@ -21,6 +21,10 @@ const toastConfig = {
   info: {
     icon: <Info className="w-6 h-6 text-blue-500" />,
     style: 'bg-blue-50 border-blue-200 text-blue-800',
+  },
+  warn: {
+    icon: <AlertTriangle className="w-6 h-6 text-yellow-500" />,
+    style: 'bg-yellow-50 border-yellow-200 text-yellow-800',
   },
 };
 
