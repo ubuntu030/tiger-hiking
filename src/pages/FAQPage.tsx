@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormField from "../components/common/FormField";
 import InputField from "../components/common/InputField";
 import PageTitle from "../components/layout/PageTitle";
 import theme from "../constants/theme";
 import { useFAQs } from "../hooks/useFAQs";
 import useDebounce from "../hooks/useDebounce";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/common/Pagination";
 
 const FAQPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-  const { faqs, loading, error } = useFAQs(debouncedSearchTerm);
+
+  const {
+    currentPage,
+    offset,
+    limit,
+    totalPages,
+    handlePageChange,
+    setTotalPages,
+  } = usePagination(1, 10);
+
+  const { faqs, loading, error, totalCount } = useFAQs(
+    debouncedSearchTerm,
+    limit,
+    offset,
+  );
+
+  useEffect(() => {
+    if (totalCount !== undefined) {
+      setTotalPages(totalCount > 0 ? Math.ceil(totalCount / limit) : 0);
+    }
+  }, [totalCount, limit, setTotalPages]);
+
+  useEffect(() => {
+    handlePageChange(1);
+  }, [debouncedSearchTerm, handlePageChange]);
 
   return (
     <div>
@@ -44,24 +70,31 @@ const FAQPage = () => {
         </p>
       )}
       {!loading && !error && (
-        <div className="max-w-3xl mx-auto space-y-4">
-          {faqs?.map((faq) => (
-            <details
-              key={faq.id}
-              className={`p-4 rounded-lg ${theme.cardBg} shadow-sm group`}
-            >
-              <summary
-                className={`font-bold text-lg cursor-pointer list-none flex justify-between items-center ${theme.textPrimary}`}
+        <>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs?.map((faq) => (
+              <details
+                key={faq.id}
+                className={`p-4 rounded-lg ${theme.cardBg} shadow-sm group`}
               >
-                {faq.q}
-                <span className="transform transition-transform duration-300 group-open:rotate-180">
-                  &darr;
-                </span>
-              </summary>
-              <p className={`mt-4 ${theme.textSecondary}`}>{faq.a}</p>
-            </details>
-          ))}
-        </div>
+                <summary
+                  className={`font-bold text-lg cursor-pointer list-none flex justify-between items-center ${theme.textPrimary}`}
+                >
+                  {faq.q}
+                  <span className="transform transition-transform duration-300 group-open:rotate-180">
+                    &darr;
+                  </span>
+                </summary>
+                <p className={`mt-4 ${theme.textSecondary}`}>{faq.a}</p>
+              </details>
+            ))}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </>
       )}
     </div>
   );

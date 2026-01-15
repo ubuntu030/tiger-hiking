@@ -146,11 +146,14 @@ export const GET_ALL_GUIDES = gql`
  * 獲取所有問答
  */
 export const GET_FAQ = gql`
-  query SearchFaqs($keyword: String) {
-    searchFaqs(keyword: $keyword) {
-      id
-      q
-      a
+  query SearchFaqs($keyword: String, $limit: Int, $offset: Int) {
+    searchFaqs(keyword: $keyword, limit: $limit, offset: $offset) {
+      nodes {
+        id
+        q
+        a
+      }
+      totalCount
     }
   }
 `;
