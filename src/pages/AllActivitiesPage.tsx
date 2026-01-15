@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PageTitle from "../components/layout/PageTitle";
 import theme from "../constants/theme";
 import InputField from "../components/common/InputField";
@@ -43,8 +43,21 @@ const AllActivitiesPage = () => {
     currentPage,
     setCurrentPage,
     totalPages,
-    paginatedItems: paginatedActivities,
-  } = usePagination(activities, { itemsPerPage: 6 });
+    setTotalPages,
+    offset,
+    limit,
+    handlePageChange,
+  } = usePagination(1, 6);
+
+  useEffect(() => {
+    if (activities) {
+      setTotalPages(Math.ceil(activities.length / limit));
+    }
+  }, [activities, limit, setTotalPages]);
+
+  const paginatedActivities = activities
+    ? activities.slice(offset, offset + limit)
+    : [];
 
   const handleFilterChange = (
     e: React.ChangeEvent<
@@ -148,7 +161,7 @@ const AllActivitiesPage = () => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={handlePageChange}
           />
         </>
       )}
