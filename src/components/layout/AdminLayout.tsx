@@ -70,7 +70,7 @@ const AdminLayout = () => {
   );
 
   return (
-    <div className="flex min-h-screen bg-stone-100">
+    <div className="flex h-screen overflow-hidden bg-stone-100">
       {/* Mobile menu button */}
       <div className="lg:hidden">
         <button
