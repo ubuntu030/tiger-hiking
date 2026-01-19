@@ -22,8 +22,10 @@ import {
 } from "@mui/material";
 import { useAdminFaqs } from "../../hooks/useAdminFaqs";
 import { type Faq } from "../../hooks/useFAQs";
+import { useToast } from "../../hooks/useToast";
 
 const AdminFaqsPage = () => {
+  const { showToast } = useToast();
   // 搜尋關鍵字與分頁狀態
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -65,9 +67,14 @@ const AdminFaqsPage = () => {
   // 確認刪除操作
   const handleDeleteConfirm = async () => {
     if (selectedFaq) {
-      await deleteFaq(selectedFaq.id);
-      setDeleteDialogOpen(false);
-      setSelectedFaq(null);
+      try {
+        await deleteFaq(selectedFaq.id);
+        setDeleteDialogOpen(false);
+        setSelectedFaq(null);
+        showToast("刪除成功", "success");
+      } catch (err) {
+        showToast("刪除失敗", "error");
+      }
     }
   };
 
@@ -81,9 +88,14 @@ const AdminFaqsPage = () => {
   // 儲存編輯後的 FAQ
   const handleEditSave = async () => {
     if (selectedFaq) {
-      await updateFaq({ id: selectedFaq.id, ...editedFaq });
-      setEditDialogOpen(false);
-      setSelectedFaq(null);
+      try {
+        await updateFaq({ id: selectedFaq.id, ...editedFaq });
+        setEditDialogOpen(false);
+        setSelectedFaq(null);
+        showToast("更新成功", "success");
+      } catch (err) {
+        showToast("更新失敗", "error");
+      }
     }
   };
 
@@ -95,8 +107,13 @@ const AdminFaqsPage = () => {
 
   // 儲存新建立的 FAQ
   const handleCreateSave = async () => {
-    await createFaq(editedFaq);
-    setCreateDialogOpen(false);
+    try {
+      await createFaq(editedFaq);
+      setCreateDialogOpen(false);
+      showToast("建立成功", "success");
+    } catch (err) {
+      showToast("建立失敗", "error");
+    }
   };
 
   // 處理輸入框變更

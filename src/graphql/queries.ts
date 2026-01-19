@@ -530,12 +530,10 @@ export const ADMIN_UPDATE_ANNOUNCEMENT = gql`
 /**
  * Admin: Delete an announcement
  */
-
 export const ADMIN_DELETE_ANNOUNCEMENT = gql`
   mutation AdminDeleteAnnouncement($id: ID!) {
     admin_removeAnnouncement(id: $id) {
       success
-
       message
     }
   }
@@ -544,7 +542,6 @@ export const ADMIN_DELETE_ANNOUNCEMENT = gql`
 /**
  * Admin: Get all faqs
  */
-
 export const ADMIN_GET_FAQS = gql`
   query AdminGetFaqs($limit: Int, $offset: Int, $keyword: String) {
     searchFaqs(limit: $limit, offset: $offset, keyword: $keyword) {
@@ -561,14 +558,11 @@ export const ADMIN_GET_FAQS = gql`
 /**
  * Admin: Create an faq
  */
-
 export const ADMIN_CREATE_FAQ = gql`
   mutation AdminCreateFaq($input: AdminCreateFaqInput!) {
     admin_createFaq(input: $input) {
       id
-
       q
-
       a
     }
   }
@@ -577,30 +571,23 @@ export const ADMIN_CREATE_FAQ = gql`
 /**
  * Admin: Update an faq
  */
-
 export const ADMIN_UPDATE_FAQ = gql`
   mutation AdminUpdateFaq($input: AdminUpdateFaqInput!) {
     admin_updateFaq(input: $input) {
       id
-
       q
-
       a
     }
   }
 `;
 
 /**
-
  * Admin: Delete an faq
-
  */
-
 export const ADMIN_DELETE_FAQ = gql`
   mutation AdminDeleteFaq($id: ID!) {
     admin_removeFaq(id: $id) {
       success
-
       message
     }
   }

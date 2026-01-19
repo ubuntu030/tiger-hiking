@@ -79,7 +79,18 @@ export const useAdminFaqs = (
   };
 
   const handleUpdate = async (input: AdminUpdateFaqInput) => {
-    const response = await updateFaq({ variables: { input } });
+    const id = parseInt(input.id, 10);
+    if (isNaN(id)) {
+      throw new Error("Invalid ID: ID must be a number");
+    }
+    const response = await updateFaq({
+      variables: {
+        input: {
+          ...input,
+          id,
+        },
+      },
+    });
     refetch();
     return response;
   };
