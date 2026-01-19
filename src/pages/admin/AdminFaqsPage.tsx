@@ -139,9 +139,8 @@ const AdminFaqsPage = () => {
           size="small"
           value={searchQuery}
           onChange={(e) => {
-            setSearchQuery(e.target.value)
-            console.log(e.target.value);
-        }}
+            setSearchQuery(e.target.value);
+          }}
           sx={{ ml: 2, flexGrow: 1, maxWidth: 300 }}
         />
         <Button variant="contained" onClick={handleCreateClick}>
@@ -168,7 +167,11 @@ const AdminFaqsPage = () => {
                   <TableCell>{faq.q}</TableCell>
                   <TableCell>{faq.a}</TableCell>
                   <TableCell align="right">
-                    <Stack direction="row" spacing={1} justifyContent="flex-end">
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      justifyContent="flex-end"
+                    >
                       <Button
                         variant="outlined"
                         onClick={() => handleEditClick(faq)}
