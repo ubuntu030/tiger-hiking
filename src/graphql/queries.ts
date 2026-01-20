@@ -130,14 +130,56 @@ export const GET_ALL_ANNOUNCEMENT = gql`
 /**
  * 獲取所有嚮導列表
  */
-export const GET_ALL_GUIDES = gql`
-  query GetAllGuides {
-    guides {
+export const GET_GUIDES = gql`
+  query GetGuides($name: String) {
+    guides(name: $name) {
       id
       name
       role
       experience
       image
+    }
+  }
+`;
+
+/**
+ * Admin: Create a guide
+ */
+export const CREATE_GUIDE = gql`
+  mutation CreateGuide($input: CreateGuideInput!) {
+    createGuide(input: $input) {
+      id
+      name
+      role
+      experience
+      image
+    }
+  }
+`;
+
+/**
+ * Admin: Update a guide
+ */
+export const UPDATE_GUIDE = gql`
+  mutation UpdateGuide($input: UpdateGuideInput!) {
+    updateGuide(input: $input) {
+      id
+      name
+      role
+      experience
+      image
+    }
+  }
+`;
+
+/**
+ * Admin: Delete a guide
+ */
+export const DELETE_GUIDE = gql`
+  mutation DeleteGuide($id: ID!) {
+    removeGuide(id: $id) {
+      success
+      message
     }
   }
 `;

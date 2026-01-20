@@ -1,26 +1,34 @@
-import { useQuery } from '@apollo/client';
-import { GET_ALL_GUIDES } from '../graphql/queries';
+import { useQuery } from "@apollo/client";
+import { GET_GUIDES } from "../graphql/queries";
+import type { Guide } from "../types/guide.model";
 
-// 根據 GraphQL 查詢定義嚮導的 TypeScript 型別
-interface Guide {
-  id: string;
-  name: string;
-  role: string;
-  experience: string;
-  image: string;
-}
-
-// 定義查詢回傳資料的型別
-interface GetAllGuidesData {
+/**
+ * 定義 GET_GUIDES 查詢的回傳資料結構
+ */
+interface GetGuidesData {
   guides: Guide[];
 }
 
 /**
- * 獲取嚮導列表的自定義 Hook
+ * 獲取所有嚮導列表的自訂 Hook
+ *
+ * @returns 回傳包含嚮導列表、載入狀態、錯誤訊息以及重新查詢函式的物件
  */
-export const useGuides = () => {
-  const { data, loading, error } = useQuery<GetAllGuidesData>(GET_ALL_GUIDES);
+export const useGuides = (name?: string) => {
+  const { data, loading, error, refetch } = useQuery<GetGuidesData>(
+    GET_GUIDES,
+    {
+      // 當 name 為空字串時轉為 undefined，確保後端執行"查詢全部"而非"搜尋空字串"
+      variables: { name: name || undefined },
+      // 確保在 refetch 時 loading 狀態會更新，讓 UI 能顯示載入中
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
-  // 回傳整理過的資料，並提供預設空陣列以避免 undefined
-  return { guides: data?.guides || [], loading, error };
+  return {
+    guides: data?.guides || [],
+    loading,
+    error,
+    refetch,
+  };
 };

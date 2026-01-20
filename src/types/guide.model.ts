@@ -1,4 +1,3 @@
-// 嚮導資訊
 export interface Guide {
   id: number;
   name: string;
