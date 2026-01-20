@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { useGuides } from "../../hooks/useGuides";
 import { useToast } from "../../hooks/useToast";
+import useDebounce from "../../hooks/useDebounce";
 import type { Guide } from "../../types/guide.model";
 import {
   CREATE_GUIDE,
@@ -32,7 +33,8 @@ import ImagePreviewDialog from "../../components/common/ImagePreviewDialog";
 
 const AdminGuidesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { guides, loading, error, refetch } = useGuides(searchQuery);
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+  const { guides, loading, error, refetch } = useGuides(debouncedSearchQuery);
   const { showToast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
