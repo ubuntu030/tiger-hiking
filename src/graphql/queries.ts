@@ -120,9 +120,55 @@ export const GET_ALL_ANNOUNCEMENT = gql`
         id
         title
         content
-        date
+        createdAt
+        updatedAt
       }
       totalCount
+    }
+  }
+`;
+
+/**
+ * Admin: 建立一個新的公告
+ */
+export const CREATE_ANNOUNCEMENT = gql`
+  mutation CreateAnnouncement(
+    $createAnnouncementInput: CreateAnnouncementInput!
+  ) {
+    createAnnouncement(createAnnouncementInput: $createAnnouncementInput) {
+      id
+      title
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**
+ * Admin: 更新一個已有的公告
+ */
+export const UPDATE_ANNOUNCEMENT = gql`
+  mutation UpdateAnnouncement(
+    $updateAnnouncementInput: UpdateAnnouncementInput!
+  ) {
+    updateAnnouncement(updateAnnouncementInput: $updateAnnouncementInput) {
+      id
+      title
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**
+ * 刪除一個公告
+ */
+export const REMOVE_ANNOUNCEMENT = gql`
+  mutation RemoveAnnouncement($id: ID!) {
+    removeAnnouncement(id: $id) {
+      id
     }
   }
 `;
