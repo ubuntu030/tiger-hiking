@@ -174,7 +174,7 @@ const AdminAnnouncementsPage = () => {
               <TableCell>標題</TableCell>
               <TableCell>內容</TableCell>
               <TableCell>更新時間</TableCell>
-              <TableCell align="right">操作</TableCell>
+              <TableCell>操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

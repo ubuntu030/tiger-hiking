@@ -680,3 +680,75 @@ export const ADMIN_DELETE_FAQ = gql`
     }
   }
 `;
+
+/**
+ * Admin: Get all activities
+ */
+export const ADMIN_GET_ACTIVITIES = gql`
+  query AdminGetActivities(
+    $limit: Int
+    $offset: Int
+    $search: String
+    $sortField: String
+    $sortOrder: String
+  ) {
+    admin_activities(
+      limit: $limit
+      offset: $offset
+      search: $search
+      sortField: $sortField
+      sortOrder: $sortOrder
+    ) {
+      nodes {
+        id
+        name
+        startDate
+        registrationDeadline
+        guides {
+          leader
+          guide
+          sweeper
+        }
+        registeredCount
+        pendingCount
+        maxSlots
+        status
+      }
+      totalCount
+    }
+  }
+`;
+
+/**
+ * Admin: Create an activity
+ */
+export const ADMIN_CREATE_ACTIVITY = gql`
+  mutation AdminCreateActivity($input: AdminCreateActivityInput!) {
+    admin_createActivity(input: $input) {
+      id
+    }
+  }
+`;
+
+/**
+ * Admin: Update an activity
+ */
+export const ADMIN_UPDATE_ACTIVITY = gql`
+  mutation AdminUpdateActivity($input: AdminUpdateActivityInput!) {
+    admin_updateActivity(input: $input) {
+      id
+    }
+  }
+`;
+
+/**
+ * Admin: Delete an activity
+ */
+export const ADMIN_DELETE_ACTIVITY = gql`
+  mutation AdminDeleteActivity($id: ID!) {
+    admin_removeActivity(id: $id) {
+      success
+      message
+    }
+  }
+`;
