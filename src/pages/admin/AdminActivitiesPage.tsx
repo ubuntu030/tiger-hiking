@@ -25,8 +25,10 @@ import {
 import { Edit, Delete, FactCheck } from "@mui/icons-material";
 import { useAdminActivities } from "../../hooks/useAdminActivities";
 import useDebounce from "../../hooks/useDebounce";
+import { useNavigate } from "react-router-dom";
 
 const AdminActivitiesPage = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,6 +46,10 @@ const AdminActivitiesPage = () => {
       orderBy,
       order.toUpperCase(),
     );
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -130,7 +136,12 @@ const AdminActivitiesPage = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={{ ml: 2, flexGrow: 1, maxWidth: 300 }}
         />
-        <Button variant="contained">建立新活動</Button>
+        <Button
+          variant="contained"
+          onClick={() => handleNavigate("/admin/activities/add")}
+        >
+          建立新活動
+        </Button>
       </Box>
       <Paper>
         <TableContainer>
@@ -174,7 +185,7 @@ const AdminActivitiesPage = () => {
                 </TableRow>
               ) : (
                 activities?.map((activity) => (
-                  <TableRow key={activity.id}>
+                  <TableRow key={activity.id} hover>
                     <TableCell>{activity.name}</TableCell>
                     <TableCell>{formatDate(activity.startDate)}</TableCell>
                     <TableCell>
@@ -200,7 +211,12 @@ const AdminActivitiesPage = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="編輯">
-                        <IconButton aria-label="edit">
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() =>
+                            handleNavigate(`/admin/activities/edit/${activity.id}`)
+                          }
+                        >
                           <Edit />
                         </IconButton>
                       </Tooltip>

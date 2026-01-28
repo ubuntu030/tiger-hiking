@@ -34,12 +34,13 @@ import AdminGuidesPage from "./pages/admin/AdminGuidesPage";
 import AdminAlbumsPage from "./pages/admin/AdminAlbumsPage";
 import AdminFaqsPage from "./pages/admin/AdminFaqsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
-
+import AdminActivityAddPage from "./pages/admin/AdminActivityAddPage";
+import AdminActivityEditPage from "./pages/admin/AdminActivityEditPage";
 
 // A new component to handle conditional layout
 const AppContent = () => {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   // Admin routes have their own layout and don't use the public Header/Footer/PageContainer
   if (isAdminRoute) {
@@ -52,6 +53,11 @@ const AppContent = () => {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="activities" element={<AdminActivitiesPage />} />
+            <Route path="activities/add" element={<AdminActivityAddPage />} />
+            <Route
+              path="activities/edit/:id"
+              element={<AdminActivityEditPage />}
+            />
             <Route path="announcements" element={<AdminAnnouncementsPage />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="guides" element={<AdminGuidesPage />} />
@@ -120,4 +126,3 @@ function App() {
 }
 
 export default App;
-

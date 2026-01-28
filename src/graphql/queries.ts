@@ -42,9 +42,18 @@ export const GET_ACTIVITY_BY_ID = gql`
       transport #交通方式說明
       registrationDeadline #報名截止日期
       guides {
-        leader #領隊名稱
-        guide #嚮導名稱
-        sweeper #掃隊嚮導名稱
+        leaders {
+          id
+          name
+        }
+        guides {
+          id
+          name
+        }
+        sweepers {
+          id
+          name
+        }
       }
       plans {
         name
@@ -726,6 +735,31 @@ export const ADMIN_CREATE_ACTIVITY = gql`
   mutation AdminCreateActivity($input: AdminCreateActivityInput!) {
     admin_createActivity(input: $input) {
       id
+      name
+      startDate
+      endDate
+      status
+      description
+      registrationDeadline
+      image
+      maxSlots
+      transport
+      guides {
+        leaders {
+          name
+        }
+        guides {
+          name
+        }
+        sweepers {
+          name
+        }
+      }
+      plans {
+        name
+        price
+        detail
+      }
     }
   }
 `;
